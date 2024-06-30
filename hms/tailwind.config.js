@@ -9,7 +9,21 @@ export default {
   },
   plugins: [daisyui],
   daisyui: {
-    themes: ['emerald'], // false: only light + dark | true: all themes | array: specific themes like this ["light", "dark", "cupcake"]
+    themes: [
+      {
+        mytheme: {
+          primary: '#f5f5f4',
+          secondary: '#a8a29e',
+          accent: '#fef08a',
+          neutral: '#ff00ff',
+          'base-100': '#ffffff',
+          info: '#bbf7d0',
+          success: '#bef264',
+          warning: '#fcd34d',
+          error: '#fca5a5'
+        }
+      }
+    ],
     base: true, // applies background color and foreground color for root element by default
     styled: true, // include daisyUI colors and design decisions for all components
     utils: true, // adds responsive and modifier utility classes

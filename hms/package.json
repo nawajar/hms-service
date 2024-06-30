@@ -19,6 +19,8 @@
     "vue-router": "^4.3.0"
   },
   "devDependencies": {
+    "@import-meta-env/cli": "^0.6.8",
+    "@import-meta-env/unplugin": "^0.5.1",
     "@rushstack/eslint-patch": "^1.8.0",
     "@tsconfig/node20": "^20.1.4",
     "@types/node": "^20.12.5",
@@ -29,6 +31,7 @@
     "@vue/tsconfig": "^0.5.1",
     "autoprefixer": "^10.4.19",
     "daisyui": "^4.12.2",
+    "dotenv": "^16.4.5",
     "eslint": "^8.57.0",
     "eslint-plugin-vue": "^9.23.0",
     "npm-run-all2": "^6.1.2",
