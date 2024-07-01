@@ -28,9 +28,15 @@ const router = createRouter({
       component: LayoutVue,
       children: [
         {
-          path: '/',
-          name: 'patients', // 'patients'
+          path: '/dashboard',
+          name: 'DashBoard', // 'patients'
           component: HomeVueVue,
+          ...routeGuard(pb.authStore, { name: 'login' })
+        },
+        {
+          path: '/bookings',
+          name: 'Booking', // 'patients'
+          component: () => import('@/views/Booking.vue'),
           ...routeGuard(pb.authStore, { name: 'login' })
         }
       ]
