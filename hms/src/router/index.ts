@@ -3,7 +3,7 @@ import HomeVueVue from '@/views/HomeVue.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 import { pb } from '@/services/pb'
 import type { BaseAuthStore } from 'pocketbase'
-import LayoutVue from '@/views/Layout.vue'
+import LayoutVue from '@/views/MainLayout.vue'
 
 const routeGuard = (baseAuth: BaseAuthStore | null, fallBack?: { name: string }) => {
   const canI = baseAuth?.isValid || true
@@ -20,7 +20,7 @@ const router = createRouter({
     {
       path: '/login',
       name: 'login',
-      component: () => import('@/views/Login.vue')
+      component: () => import('@/views/LoginPage.vue')
     },
     {
       path: '/',
@@ -36,7 +36,7 @@ const router = createRouter({
         {
           path: '/bookings',
           name: 'Booking', // 'patients'
-          component: () => import('@/views/Booking.vue'),
+          component: () => import('@/views/BookingRoom.vue'),
           ...routeGuard(pb.authStore, { name: 'login' })
         }
       ]
