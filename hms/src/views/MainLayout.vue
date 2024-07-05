@@ -5,9 +5,9 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 </script>
 
 <template>
-  <div class="flex h-screen pb-4">
+  <div class="flex h-screen pb-4 w-full overflow-x-hidden">
     <div
-      class="relative flex h-[calc(100vh)] w-full max-w-[20rem] flex-col rounded-xl bg-white bg-clip-border p-4 text-gray-700 shadow-xl shadow-blue-gray-900/5"
+      class="relative flex min-h-full w-full max-w-[20rem] flex-col rounded-xl bg-white bg-clip-border text-gray-700 shadow-xl shadow-blue-gray-900/5"
     >
       <div class="p-4 mb-2">
         <h5
@@ -86,8 +86,8 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
         </li>
       </ul>
     </div>
-    <div class="w-full min-h-[100%]">
-      <div class="navbar bg-primary">
+    <div class="w-full min-h-full">
+      <div class="navbar bg-secondary">
         <div class="flex-1">
           <a class="btn btn-ghost text-xl">Search..</a>
         </div>

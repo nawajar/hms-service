@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 import daisyui from 'daisyui'
+import form from '@tailwindcss/forms'
 export default {
   purge: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
   content: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
@@ -7,7 +8,7 @@ export default {
   theme: {
     extend: {}
   },
-  plugins: [daisyui],
+  plugins: [daisyui, form],
   daisyui: {
     themes: [
       {

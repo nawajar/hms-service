@@ -1,12 +1,17 @@
 <template>
   <div class="w-full h-full mb-10 rounded overflow-y-scroll relative overflow-x-hidden">
-    <div class="flex gap-4 items-center">
-      <legend class="text-secondary text-xl">Booking</legend>
-      <button @click="refresh" class="hover:bg-neutral rounded-full w-8 h-8">
-        <font-awesome-icon icon="arrows-rotate" />
+    <div class="flex gap-4 items-center justify-between">
+      <div class="flex gap-4">
+        <legend class="text-secondary text-xl">Booking</legend>
+        <button @click="refresh" class="hover:bg-neutral rounded-full w-8 h-8">
+          <font-awesome-icon icon="arrows-rotate" />
+        </button>
+      </div>
+      <button @click="activeRight = !activeRight" class="text-neutral bg-black px-4 py-2 rounded">
+        Create
       </button>
     </div>
-    <div class="page-body">
+    <div class="page-body" :class="[activeRight ? 'opacity-20' : '']">
       <table class="mt-4 w-full min-w-max table-auto text-left">
         <thead>
           <tr>
@@ -219,15 +224,15 @@
     </div>
   </div>
 
-  <!-- <Teleport to="#mainLayout"> -->
   <div
+    ref="rightDrawer"
     id="rightDrawer"
     :class="[activeRight ? '' : 'translate-x-full']"
     class="absolute inset-y-0 right-0 w-1/2 bg-white shadow-lg transform transition-transform ease-in-out duration-300"
   >
-    <div class="flex items-center justify-between py-4 px-6 bg-white-500 h-[50px]">
-      <h2 class="text-white text-lg font-semibold">Drawer Right</h2>
-      <button id="closeRightDrawerBtn" class="text-white" @click="activeRight = !activeRight">
+    <div class="flex items-center justify-between py-4 px-6 bg-white-500 h-[50px] border-b-[1px]">
+      <h2 class="text-black text-lg font-semibold">Drawer Right</h2>
+      <button id="closeRightDrawerBtn" class="text-black" @click="activeRight = !activeRight">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           class="h-6 w-6"
@@ -246,7 +251,6 @@
     </div>
     <div class="h-[calc(100%-50px)] overflow-y-scroll c-scrollbox">
       <div class="container mx-auto p-4">
-        <h2 class="text-2xl font-semibold mb-4">Customer Information Form</h2>
         <form class="space-y-4">
           <div class="form-control">
             <label class="label">
@@ -280,25 +284,31 @@
               <option>Editor</option>
             </select>
           </div>
-          <div class="form-control mt-6">
-            <button type="submit" class="btn btn-primary w-full">Submit</button>
-          </div>
         </form>
       </div>
     </div>
-    <div class="bg-white-500 absolute right-0 bottom-0 p-3 w-full">
-      <h2 class="text-white text-lg font-semibold">Hello world</h2>
-      test
+    <div
+      class="flex bg-white-500 absolute right-0 bottom-0 p-3 w-full border-t-[1px] justify-between"
+    >
+      <button class="btn btn-error">Cancel</button>
+      <button class="btn btn-primary">Create</button>
     </div>
   </div>
-  <!-- </Teleport> -->
 </template>
 <script setup lang="ts">
 import { pb } from '@/services/pb'
 import { onMounted, ref } from 'vue'
+import { onClickOutside } from '@vueuse/core'
 
-const activeRight = ref(true)
+const activeRight = ref(false)
 const bookings = ref<any>([])
+const rightDrawer = ref(null)
+
+onClickOutside(rightDrawer, (event) => {
+  if (activeRight.value) {
+    activeRight.value = false
+  }
+})
 
 const refresh = async () => {
   getBookings()
