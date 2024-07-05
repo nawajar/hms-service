@@ -87,7 +87,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
       </ul>
     </div>
     <div class="w-full min-h-[100%]">
-      <div class="navbar bg-secondary">
+      <div class="navbar bg-primary">
         <div class="flex-1">
           <a class="btn btn-ghost text-xl">Search..</a>
         </div>
