@@ -245,52 +245,46 @@
       </button>
     </div>
     <div class="h-[calc(100%-50px)] overflow-y-scroll c-scrollbox">
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut enim elit, laoreet et purus sed,
-      vulputate pretium nulla. Phasellus tempus eu dolor ut cursus. Sed cursus congue est, ac Lorem
-      ipsum dolor sit amet, consectetur adipiscing elit. Ut enim elit, laoreet et purus sed,
-      vulputate pretium nulla. Phasellus tempus eu dolor ut cursus. Sed cursus congue est, ac Lorem
-      ipsum dolor sit amet, consectetur adipiscing elit. Ut enim elit, laoreet et purus sed,
-      vulputate pretium nulla. Phasellus tempus eu dolor ut cursus. Sed cursus congue est, ac Lorem
-      ipsum dolor sit amet, consectetur adipiscing elit. Ut enim elit, laoreet et purus sed,
-      vulputate pretium nulla. Phasellus tempus eu dolor ut cursus. Sed cursus congue est, ac Lorem
-      ipsum dolor sit amet, consectetur adipiscing elit. Ut enim elit, laoreet et purus sed,
-      vulputate pretium nulla. Phasellus tempus eu dolor ut cursus. Sed cursus congue est, ac Lorem
-      ipsum dolor sit amet, consectetur adipiscing elit. Ut enim elit, laoreet et purus sed,
-      vulputate pretium nulla. Phasellus tempus eu dolor ut cursus. Sed cursus congue est, ac Lorem
-      ipsum dolor sit amet, consectetur adipiscing elit. Ut enim elit, laoreet et purus sed,
-      vulputate pretium nulla. Phasellus tempus eu dolor ut cursus. Sed cursus congue est, ac Lorem
-      ipsum dolor sit amet, consectetur adipiscing elit. Ut enim elit, laoreet et purus sed,
-      vulputate pretium nulla. Phasellus tempus eu dolor ut cursus. Sed cursus congue est, ac Lorem
-      ipsum dolor sit amet, consectetur adipiscing elit. Ut enim elit, laoreet et purus sed,
-      vulputate pretium nulla. Phasellus tempus eu dolor ut cursus. Sed cursus congue est, ac Lorem
-      ipsum dolor sit amet, consectetur adipiscing elit. Ut enim elit, laoreet et purus sed,
-      vulputate pretium nulla. Phasellus tempus eu dolor ut cursus. Sed cursus congue est, ac Lorem
-      ipsum dolor sit amet, consectetur adipiscing elit. Ut enim elit, laoreet et purus sed,
-      vulputate pretium nulla. Phasellus tempus eu dolor ut cursus. Sed cursus congue est, ac Lorem
-      ipsum dolor sit amet, consectetur adipiscing elit. Ut enim elit, laoreet et purus sed,
-      vulputate pretium nulla. Phasellus tempus eu dolor ut cursus. Sed cursus congue est, ac Lorem
-      ipsum dolor sit amet, consectetur adipiscing elit. Ut enim elit, laoreet et purus sed,
-      vulputate pretium nulla. Phasellus tempus eu dolor ut cursus. Sed cursus congue est, ac Lorem
-      ipsum dolor sit amet, consectetur adipiscing elit. Ut enim elit, laoreet et purus sed,
-      vulputate pretium nulla. Phasellus tempus eu dolor ut cursus. Sed cursus congue est, ac Lorem
-      ipsum dolor sit amet, consectetur adipiscing elit. Ut enim elit, laoreet et purus sed,
-      vulputate pretium nulla. Phasellus tempus eu dolor ut cursus. Sed cursus congue est, ac Lorem
-      ipsum dolor sit amet, consectetur adipiscing elit. Ut enim elit, laoreet et purus sed,
-      vulputate pretium nulla. Phasellus tempus eu dolor ut cursus. Sed cursus congue est, ac Lorem
-      ipsum dolor sit amet, consectetur adipiscing elit. Ut enim elit, laoreet et purus sed,
-      vulputate pretium nulla. Phasellus tempus eu dolor ut cursus. Sed cursus congue est, ac Lorem
-      ipsum dolor sit amet, consectetur adipiscing elit. Ut enim elit, laoreet et purus sed,
-      vulputate pretium nulla. Phasellus tempus eu dolor ut cursus. Sed cursus congue est, ac Lorem
-      ipsum dolor sit amet, consectetur adipiscing elit. Ut enim elit, laoreet et purus sed,
-      vulputate pretium nulla. Phasellus tempus eu dolor ut cursus. Sed cursus congue est, ac Lorem
-      ipsum dolor sit amet, consectetur adipiscing elit. Ut enim elit, laoreet et purus sed,
-      vulputate pretium nulla. Phasellus tempus eu dolor ut cursus. Sed cursus congue est, ac Lorem
-      ipsum dolor sit amet, consectetur adipiscing elit. Ut enim elit, laoreet et purus sed,
-      vulputate pretium nulla. Phasellus tempus eu dolor ut cursus. Sed cursus congue est, ac Lorem
-      ipsum dolor sit amet, consectetur adipiscing elit. Ut enim elit, laoreet et purus sed,
-      vulputate pretium nulla. Phasellus tempus eu dolor ut cursus. Sed cursus congue est, ac Lorem
-      ipsum dolor sit amet, consectetur adipiscing elit. Ut enim elit, laoreet et purus sed,
-      vulputate pretium nulla. Phasellus tempus eu dolor ut cursus. Sed cursus congue est, ac
+      <div class="container mx-auto p-4">
+        <h2 class="text-2xl font-semibold mb-4">Customer Information Form</h2>
+        <form class="space-y-4">
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text">Customer Name</span>
+            </label>
+            <input type="text" placeholder="John Doe" class="input input-bordered w-full" />
+          </div>
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text">Email</span>
+            </label>
+            <input
+              type="email"
+              placeholder="john@example.com"
+              class="input input-bordered w-full"
+            />
+          </div>
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text">Phone Number</span>
+            </label>
+            <input type="tel" placeholder="(555) 123-4567" class="input input-bordered w-full" />
+          </div>
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text">Role</span>
+            </label>
+            <select class="select select-bordered w-full">
+              <option>Admin</option>
+              <option>User</option>
+              <option>Editor</option>
+            </select>
+          </div>
+          <div class="form-control mt-6">
+            <button type="submit" class="btn btn-primary w-full">Submit</button>
+          </div>
+        </form>
+      </div>
     </div>
     <div class="bg-white-500 absolute right-0 bottom-0 p-3 w-full">
       <h2 class="text-white text-lg font-semibold">Hello world</h2>

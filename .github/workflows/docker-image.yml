@@ -57,3 +57,24 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           # cache-from: type=gha
           # cache-to: type=gha,mode=max
+
+  deploy:
+    needs: build-and-push-docker-image
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: deploy new version to server
+        uses: appleboy/ssh-action@master
+        env:
+          TAG: ${{ needs.build.outputs.image_tags }}
+        with:
+          host: ${{ secrets.HOST }}
+          port: 22221
+          username: root
+          key: ${{ secrets.PRIVATE_KEY}}
+          envs: TAG
+          script: |
+            pwd
+            echo "$TAG"
+            sed -i 's|WEB_TAG=.*|WEB_TAG="'$TAG'"|g' /root/app/hms-service/api/.env 
+            cd /root/app/hms-service/api/ && ./start.sh
