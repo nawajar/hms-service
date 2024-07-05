@@ -66,7 +66,7 @@ jobs:
       - name: deploy new version to server
         uses: appleboy/ssh-action@master
         env:
-          TAG: ${{ needs.build.outputs.image_tags }}
+          TAG: ${{ needs.build-and-push-docker-image.outputs.image_tags }}
         with:
           host: ${{ secrets.HOST }}
           port: 22
