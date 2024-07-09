@@ -254,34 +254,36 @@
         <form class="space-y-4">
           <div class="form-control">
             <label class="label">
+              <span class="label-text">In</span>
+            </label>
+            <flat-pickr v-model="startDate" class="input input-bordered w-full" />
+          </div>
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text">Out</span>
+            </label>
+            <flat-pickr v-model="endDate" class="input input-bordered w-full" />
+          </div>
+          <div class="form-control">
+            <label class="label">
               <span class="label-text">Customer Name</span>
             </label>
             <input type="text" placeholder="John Doe" class="input input-bordered w-full" />
           </div>
           <div class="form-control">
             <label class="label">
-              <span class="label-text">Email</span>
-            </label>
-            <input
-              type="email"
-              placeholder="john@example.com"
-              class="input input-bordered w-full"
-            />
-          </div>
-          <div class="form-control">
-            <label class="label">
               <span class="label-text">Phone Number</span>
             </label>
-            <input type="tel" placeholder="(555) 123-4567" class="input input-bordered w-full" />
+            <input type="tel" placeholder="" class="input input-bordered w-full" />
           </div>
           <div class="form-control">
             <label class="label">
-              <span class="label-text">Role</span>
+              <span class="label-text">Room</span>
             </label>
-            <select class="select select-bordered w-full">
-              <option>Admin</option>
-              <option>User</option>
-              <option>Editor</option>
+            <select class="select select-bordered w-full" @click="onSelectRoom">
+              <option v-for="(r, idx) in availableRoom" :key="idx">
+                {{ r.room_no }}
+              </option>
             </select>
           </div>
         </form>
@@ -299,14 +301,21 @@
 import { pb } from '@/services/pb'
 import { onMounted, ref } from 'vue'
 import { onClickOutside } from '@vueuse/core'
+import flatPickr from 'vue-flatpickr-component'
+import 'flatpickr/dist/flatpickr.css'
+import type { RecordModel } from 'pocketbase'
 
 const activeRight = ref(false)
 const bookings = ref<any>([])
 const rightDrawer = ref(null)
+const startDate = ref(null)
+const endDate = ref(null)
 
-onClickOutside(rightDrawer, (event) => {
+const availableRoom = ref<RecordModel[]>([])
+
+onClickOutside(rightDrawer, (_) => {
   if (activeRight.value) {
-    activeRight.value = false
+    // activeRight.value = false
   }
 })
 
@@ -323,6 +332,20 @@ const getBookings = async () => {
 
   console.log('records ', records)
   bookings.value = records
+}
+
+const getRooms = async () => {
+  const rooms = await pb.collection('rooms').getFullList({
+    sort: '-created',
+    fields: '*'
+  })
+  availableRoom.value = rooms
+  console.log('room ', rooms)
+}
+
+const onSelectRoom = async () => {
+  console.log('on select room ')
+  getRooms()
 }
 
 onMounted(async () => {

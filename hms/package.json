@@ -19,9 +19,11 @@
     "@fortawesome/free-solid-svg-icons": "^6.5.2",
     "@fortawesome/vue-fontawesome": "^3.0.8",
     "@vueuse/core": "^10.11.0",
+    "flatpickr": "^4.6.13",
     "pinia": "^2.1.7",
     "pocketbase": "^0.21.3",
     "vue": "^3.4.21",
+    "vue-flatpickr-component": "^11.0.5",
     "vue-router": "^4.3.0"
   },
   "devDependencies": {
