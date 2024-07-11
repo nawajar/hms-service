@@ -9,7 +9,10 @@
       </div>
       <button @click="openCreate" class="text-neutral bg-black px-4 py-2 rounded">Create</button>
     </div>
-    <div class="page-body container" :class="[activeRight ? 'opacity-20' : '']">
+    <div
+      class="page-body container"
+      :class="[activeRightCreate || activeRightUpdate ? 'opacity-20' : '']"
+    >
       <table class="mt-4 w-full min-w-max table-auto text-left">
         <thead>
           <tr>
@@ -313,6 +316,7 @@
             </td>
             <td class="p-4 border-b border-blue-gray-50">
               <button
+                @click="editBook(booking)"
                 class="relative align-middle select-none font-sans font-medium text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none w-10 max-w-[40px] h-10 max-h-[40px] rounded-lg text-xs text-blue-gray-500 hover:bg-blue-gray-500/10 active:bg-blue-gray-500/30"
                 type="button"
               >
@@ -383,14 +387,17 @@
   </div>
 
   <div
-    ref="rightDrawer"
-    id="rightDrawer"
-    :class="[activeRight ? '' : 'translate-x-full']"
+    ref="rightDrawerCreate"
+    :class="[activeRightCreate ? '' : 'translate-x-full']"
     class="absolute inset-y-0 right-0 w-1/2 bg-white shadow-lg transform transition-transform ease-in-out duration-300"
   >
     <div class="flex items-center justify-between py-4 px-6 bg-white-500 h-[50px] border-b-[1px]">
-      <h2 class="text-black text-lg font-semibold">Bookings</h2>
-      <button id="closeRightDrawerBtn" class="text-black" @click="activeRight = !activeRight">
+      <h2 class="text-secondary text-lg font-semibold">Bookings</h2>
+      <button
+        id="closeRightDrawerBtn"
+        class="text-secondary"
+        @click="activeRightCreate = !activeRightCreate"
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           class="h-6 w-6"
@@ -462,11 +469,101 @@
         </form>
       </div>
     </div>
-    <div
-      class="flex bg-white-500 absolute right-0 bottom-0 p-3 w-full border-t-[1px] justify-between"
-    >
-      <button class="btn btn-error" @click="activeRight = !activeRight">Cancel</button>
+    <div class="flex bg-white absolute right-0 bottom-0 p-3 w-full border-t-[1px] justify-between">
+      <button class="btn btn-error" @click="activeRightCreate = !activeRightCreate">Cancel</button>
       <button class="btn btn-primary" @click="createBook">Create</button>
+    </div>
+  </div>
+
+  <div
+    ref="rightDrawerUpdate"
+    :class="[activeRightUpdate ? '' : 'translate-x-full']"
+    class="absolute inset-y-0 right-0 w-1/2 bg-white shadow-lg transform transition-transform ease-in-out duration-300"
+  >
+    <div class="flex items-center justify-between py-4 px-6 bg-white-500 h-[50px] border-b-[1px]">
+      <h2 class="text-secondary text-lg font-semibold">
+        Update Booking ({{ selectedBook?.cus_name }}) Room ({{ selectedBook?.expand.room.room_no }})
+      </h2>
+      <button
+        id="closeRightDrawerBtn"
+        class="text-secondary"
+        @click="activeRightUpdate = !activeRightUpdate"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-6 w-6"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M6 18L18 6M6 6l12 12"
+          ></path>
+        </svg>
+      </button>
+    </div>
+    <div class="h-[calc(100%-50px)] overflow-y-scroll c-scrollbox">
+      <div class="container mx-auto p-4">
+        <form class="space-y-4">
+          <div class="form-control">
+            <label class="label" for="paid">
+              <span class="label-text">Paid</span>
+            </label>
+            <input type="checkbox" id="paid" class="checkbox checkbox-primary" checked />
+          </div>
+          <div class="form-control">
+            <label class="label" for="paid_evidance">
+              <span class="label-text">Paid Evidence</span>
+            </label>
+            <input
+              type="file"
+              id="paid_evidance"
+              class="file-input file-input-bordered file-input-primary w-full"
+            />
+          </div>
+          <div class="form-control">
+            <label class="label" for="note">
+              <span class="label-text">Note</span>
+            </label>
+            <textarea id="note" class="textarea textarea-bordered w-full">test</textarea>
+          </div>
+          <div class="form-control">
+            <label class="label" for="cus_id_card">
+              <span class="label-text">Customer ID Card</span>
+            </label>
+            <input type="text" id="cus_id_card" class="input input-bordered w-full" value="test" />
+          </div>
+          <div class="form-control">
+            <label class="label" for="customer_address">
+              <span class="label-text">Customer Address</span>
+            </label>
+            <input
+              type="text"
+              id="customer_address"
+              class="input input-bordered w-full"
+              value="test"
+            />
+          </div>
+          <div class="form-control">
+            <label class="label" for="status">
+              <span class="label-text">Status</span>
+            </label>
+            <select id="status" class="select select-bordered w-full">
+              <option value="active">Active</option>
+              <option value="cancel">Cancel</option>
+              <option value="check-in">Check-in</option>
+              <option value="check-out">Check-out</option>
+            </select>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="flex bg-white absolute right-0 bottom-0 p-3 w-full border-t-[1px] justify-between">
+      <button class="btn btn-error" @click="activeRightUpdate = !activeRightUpdate">Cancel</button>
+      <button class="btn btn-primary" @click="createBook">UPDATE</button>
     </div>
   </div>
 </template>
@@ -479,9 +576,10 @@ import 'flatpickr/dist/flatpickr.css'
 import type { RecordModel } from 'pocketbase'
 import { DateTime, Interval } from 'luxon'
 
-const activeRight = ref(false)
+const activeRightCreate = ref(false)
+const activeRightUpdate = ref(false)
 const bookings = ref<any>([])
-const rightDrawer = ref(null)
+const rightDrawerCreate = ref(null)
 const startDate = ref(null)
 const endDate = ref(null)
 const selectedRoom = ref(null)
@@ -491,6 +589,7 @@ const availableRoom = ref<RecordModel[]>([])
 const viewBook = ref<any>(null)
 
 const showModal = ref(false)
+const selectedBook = ref<any>(null)
 
 const formatDate = (s: string) => {
   var d = s.split(' ').join('T')
@@ -511,6 +610,11 @@ const dayCount = (f: string, t: string) => {
   return diff.days + 1
 }
 
+const editBook = (book: any) => {
+  selectedBook.value = book
+  activeRightUpdate.value = !activeRightUpdate.value
+}
+
 const viewBookAt = (book: any) => {
   viewBook.value = book
   showModal.value = !showModal.value
@@ -527,20 +631,15 @@ const createBook = async () => {
   }
 
   await pb.collection('bookings').create(data)
-  activeRight.value = !activeRight.value
+  activeRightCreate.value = !activeRightCreate.value
   refresh()
 }
 
 const openCreate = () => {
-  activeRight.value = !activeRight.value
-  //getRooms()
+  activeRightCreate.value = !activeRightCreate.value
 }
 
-onClickOutside(rightDrawer, (_) => {
-  if (activeRight.value) {
-    // activeRight.value = false
-  }
-})
+onClickOutside(rightDrawerCreate, (_) => {})
 
 const refresh = async () => {
   getBookings()
