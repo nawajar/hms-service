@@ -272,7 +272,12 @@
                   <p
                     class="block antialiased font-sans text-sm leading-normal text-blue-gray-900 font-normal"
                   >
-                    {{ booking.paid ? 'Yes' : 'No' }}
+                    <!-- {{ booking.paid ? 'Yes' : 'No' }} -->
+
+                    <span class="flex items-center">
+                      <span class="badge badge-success mr-2" v-if="booking.paid">Paid</span>
+                      <span class="badge badge-error mr-2" v-if="!booking.paid">Unpaid</span>
+                    </span>
                   </p>
                 </div>
               </div>
@@ -308,10 +313,33 @@
             </td>
             <td class="p-4 border-b border-blue-gray-50">
               <div
-                class="items-center font-sans font-bold uppercase whitespace-nowrap select-none bg-green-500/20 text-green-600 py-1 px-2 text-xs rounded-md text-center"
-                style="opacity: 1"
+                class="bg-green-100 p-1 rounded-lg flex items-center justify-center text-center"
+                v-if="booking.status == 'active'"
               >
-                {{ booking.status }}
+                <i class="fas fa-check-circle text-green-500 text-2xl"></i>
+                <font-awesome-icon class="text-green-500" icon="check-circle" />
+                <span class="ml-3 text-green-800 font-semibold">{{ booking.status }}</span>
+              </div>
+              <div
+                class="bg-red-100 p-1 rounded-lg flex items-center justify-center text-center"
+                v-if="booking.status == 'cancel'"
+              >
+                <font-awesome-icon class="text-red-500" icon="times-circle" />
+                <span class="ml-3 text-red-800 font-semibold">Cancel</span>
+              </div>
+              <div
+                class="bg-blue-100 p-1 rounded-lg flex items-center justify-center text-center"
+                v-if="booking.status == 'check-in'"
+              >
+                <font-awesome-icon class="text-blue-500" icon="sign-in-alt" />
+                <span class="ml-3 text-blue-800 font-semibold">Check-in</span>
+              </div>
+              <div
+                class="bg-yellow-100 p-1 rounded-lg flex items-center justify-center text-center"
+                v-if="booking.status == 'check-out'"
+              >
+                <font-awesome-icon class="text-yellow-500" icon="sign-out-alt" />
+                <span class="ml-3 text-yellow-800 font-semibold">Check-out</span>
               </div>
             </td>
             <td class="p-4 border-b border-blue-gray-50">
@@ -338,22 +366,41 @@
           </tr>
         </tbody>
       </table>
-      <dialog :class="{ 'modal-open': showModal }" class="modal">
+      <dialog :class="{ 'modal-open': showModal }" class="modal" v-if="viewBook">
         <div class="modal-box w-11/12 max-w-5xl">
           <h1 class="text-3xl font-bold mb-8">Booking Information</h1>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
             <div>
               <h2 class="text-xl font-semibold mb-2">Booking Details</h2>
-              <p><strong>ID:</strong> RECORD_ID</p>
-              <p><strong>Room:</strong> RELATION_RECORD_ID</p>
-              <p><strong>Status:</strong> <span class="text-green-500">Active</span></p>
+              <p><strong>Room:</strong> {{ viewBook?.expand?.room?.room_no }}</p>
+              <p>
+                <strong>Status:</strong>
+                <span class="text-green-500" v-if="viewBook.status == 'active'">
+                  <font-awesome-icon class="text-green-500" icon="check-circle" />
+                  {{ viewBook.status }}
+                </span>
+                <span class="text-red-500" v-if="viewBook.status == 'cancel'">
+                  <span class="ml-3 text-red-800 font-semibold">Cancel</span>
+                  {{ viewBook.status }}
+                </span>
+                <span class="text-blue-500" v-if="viewBook.status == 'check-in'">
+                  <font-awesome-icon class="text-blue-500" icon="sign-in-alt" />{{
+                    viewBook.status
+                  }}
+                </span>
+                <span class="text-yellow-500" v-if="viewBook.status == 'check-out'">
+                  <font-awesome-icon class="text-yellow-500" icon="sign-out-alt" />{{
+                    viewBook.status
+                  }}
+                </span>
+              </p>
             </div>
             <div>
               <h2 class="text-xl font-semibold mb-2">Customer Details</h2>
-              <p><strong>Name:</strong> test</p>
-              <p><strong>Phone No:</strong> test</p>
-              <p><strong>ID Card:</strong> test</p>
-              <p><strong>Address:</strong> test</p>
+              <p><strong>Name:</strong> {{ viewBook.cus_name }}</p>
+              <p><strong>Phone No:</strong> {{ viewBook.cus_phone_no }}</p>
+              <p><strong>ID Card:</strong> {{ viewBook.cus_id_card }}</p>
+              <p><strong>Address:</strong> {{ viewBook.customer_address }}</p>
             </div>
           </div>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
@@ -364,16 +411,26 @@
             </div>
             <div>
               <h2 class="text-xl font-semibold mb-2">Payment</h2>
-              <p><strong>Paid:</strong> <span class="text-green-500">Yes</span></p>
               <p>
+                <strong>Paid:</strong>
+                <span class="text-green-500" v-if="viewBook.paid">Yes</span>
+                <span class="text-red-500" v-if="!viewBook.paid">No</span>
+              </p>
+              <p>
+                <strong>Amount:</strong>
+                <a href="#" class="text-black-500">{{ viewBook.price }}</a>
+              </p>
+              <p class="flex flex-col">
                 <strong>Payment Evidence:</strong>
-                <a href="#" class="text-blue-500">filename.jpg</a>
+                <a target="_blank" :href="fileUrl()" class="text-blue-500 underline overflow-auto">
+                  {{ viewBook.paid_evidance }}
+                </a>
               </p>
             </div>
           </div>
           <div>
             <h2 class="text-xl font-semibold mb-2">Additional Notes</h2>
-            <p>test</p>
+            <p>{{ viewBook.note }}</p>
           </div>
           <div class="modal-action">
             <form method="dialog">
@@ -452,9 +509,8 @@
             />
           </div>
           <div class="form-control">
-            {{ startDate }}
             <label class="label">
-              <span class="label-text">Room</span>
+              <span class="label-text">Room </span>
             </label>
             <select
               class="select select-bordered w-full"
@@ -471,12 +527,13 @@
     </div>
     <div class="flex bg-white absolute right-0 bottom-0 p-3 w-full border-t-[1px] justify-between">
       <button class="btn btn-error" @click="activeRightCreate = !activeRightCreate">Cancel</button>
-      <button class="btn btn-primary" @click="createBook">Create</button>
+      <button class="btn btn-primary" @click="createBook" :disabled="!selectedRoom">Create</button>
     </div>
   </div>
 
   <div
     ref="rightDrawerUpdate"
+    v-if="selectedBook"
     :class="[activeRightUpdate ? '' : 'translate-x-full']"
     class="absolute inset-y-0 right-0 w-1/2 bg-white shadow-lg transform transition-transform ease-in-out duration-300"
   >
@@ -506,14 +563,27 @@
       </button>
     </div>
     <div class="h-[calc(100%-50px)] overflow-y-scroll c-scrollbox">
-      <div class="container mx-auto p-4">
+      <div class="container mx-auto p-4 overflow-y-scroll mb-18">
         <form class="space-y-4">
-          <div class="form-control">
-            <label class="label" for="paid">
-              <span class="label-text">Paid</span>
-            </label>
-            <input type="checkbox" id="paid" class="checkbox checkbox-primary" checked />
+          <div class="flex">
+            <div class="form-control">
+              <label class="label" for="paid">
+                <span class="label-text">Paid</span>
+              </label>
+              <input
+                type="checkbox"
+                id="paid"
+                class="checkbox checkbox-primary"
+                v-model="selectedBook.paid"
+              />
+            </div>
+            <div class="form-control">
+              <label class="label" for="paid">
+                <span class="label-text font-bold">({{ selectedBook.price }})</span>
+              </label>
+            </div>
           </div>
+
           <div class="form-control">
             <label class="label" for="paid_evidance">
               <span class="label-text">Paid Evidence</span>
@@ -522,36 +592,46 @@
               type="file"
               id="paid_evidance"
               class="file-input file-input-bordered file-input-primary w-full"
+              @change="handleFileUpload($event)"
             />
           </div>
           <div class="form-control">
             <label class="label" for="note">
               <span class="label-text">Note</span>
             </label>
-            <textarea id="note" class="textarea textarea-bordered w-full">test</textarea>
+            <textarea
+              id="note"
+              class="textarea textarea-bordered w-full"
+              v-model="selectedBook.note"
+            ></textarea>
           </div>
           <div class="form-control">
             <label class="label" for="cus_id_card">
               <span class="label-text">Customer ID Card</span>
             </label>
-            <input type="text" id="cus_id_card" class="input input-bordered w-full" value="test" />
+            <input
+              type="text"
+              id="cus_id_card"
+              class="input input-bordered w-full"
+              v-model="selectedBook.cus_id_card"
+            />
           </div>
           <div class="form-control">
             <label class="label" for="customer_address">
               <span class="label-text">Customer Address</span>
             </label>
-            <input
-              type="text"
-              id="customer_address"
-              class="input input-bordered w-full"
-              value="test"
-            />
+
+            <textarea
+              id="note"
+              class="textarea textarea-bordered w-full"
+              v-model="selectedBook.customer_address"
+            ></textarea>
           </div>
           <div class="form-control">
             <label class="label" for="status">
               <span class="label-text">Status</span>
             </label>
-            <select id="status" class="select select-bordered w-full">
+            <select id="status" class="select select-bordered w-full" v-model="selectedBook.status">
               <option value="active">Active</option>
               <option value="cancel">Cancel</option>
               <option value="check-in">Check-in</option>
@@ -563,7 +643,7 @@
     </div>
     <div class="flex bg-white absolute right-0 bottom-0 p-3 w-full border-t-[1px] justify-between">
       <button class="btn btn-error" @click="activeRightUpdate = !activeRightUpdate">Cancel</button>
-      <button class="btn btn-primary" @click="createBook">UPDATE</button>
+      <button class="btn btn-primary" @click="updateBook">UPDATE</button>
     </div>
   </div>
 </template>
@@ -575,6 +655,7 @@ import flatPickr from 'vue-flatpickr-component'
 import 'flatpickr/dist/flatpickr.css'
 import type { RecordModel } from 'pocketbase'
 import { DateTime, Interval } from 'luxon'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 const activeRightCreate = ref(false)
 const activeRightUpdate = ref(false)
@@ -590,6 +671,12 @@ const viewBook = ref<any>(null)
 
 const showModal = ref(false)
 const selectedBook = ref<any>(null)
+const file = ref<any>(null)
+
+const handleFileUpload = async (event: any) => {
+  selectedBook.value.file = event.target.files[0]
+  console.log('selected file', file.value)
+}
 
 const formatDate = (s: string) => {
   var d = s.split(' ').join('T')
@@ -610,6 +697,10 @@ const dayCount = (f: string, t: string) => {
   return diff.days + 1
 }
 
+const fileUrl = () => {
+  return `https://xayluedyhotel.com/pb/api/files/${viewBook.value.collectionId}/${viewBook.value.id}/${viewBook.value.paid_evidance}?token=`
+}
+
 const editBook = (book: any) => {
   selectedBook.value = book
   activeRightUpdate.value = !activeRightUpdate.value
@@ -620,19 +711,50 @@ const viewBookAt = (book: any) => {
   showModal.value = !showModal.value
 }
 
+const updateBook = async () => {
+  const formData = new FormData()
+  console.log(file.value)
+  formData.append('paid', selectedBook.value.paid)
+  formData.append('note', selectedBook.value.note)
+  formData.append('cus_id_card', selectedBook.value.cus_id_card)
+  formData.append('customer_address', selectedBook.value.customer_address)
+  formData.append('status', selectedBook.value.status)
+
+  if (selectedBook.value.file?.size > 0) {
+    formData.append('paid_evidance', selectedBook.value.file)
+  }
+
+  await pb.collection('bookings').update(selectedBook?.value.id, formData)
+  activeRightUpdate.value = !activeRightUpdate.value
+  refresh()
+}
+
 const createBook = async () => {
+  var price = 0
+  if (startDate.value && endDate.value) {
+    const roomPrice = availableRoom.value.find((i: any) => i.id == selectedRoom.value)
+    price = dayCount(endDate.value, startDate.value) * roomPrice?.price
+  }
+
   const data = {
     room: selectedRoom.value,
-    cus_name: 'test',
-    cus_phone_no: 'test',
+    cus_name: customerName.value,
+    cus_phone_no: customerPhone.value,
     check_in_date: startDate.value,
     check_out_date: endDate.value,
-    status: 'active'
+    status: 'active',
+    price: price
   }
 
   await pb.collection('bookings').create(data)
   activeRightCreate.value = !activeRightCreate.value
   refresh()
+
+  selectedRoom.value = null
+  customerName.value = null
+  customerPhone.value = null
+  startDate.value = null
+  endDate.value = null
 }
 
 const openCreate = () => {
@@ -672,7 +794,7 @@ const getRooms = async () => {
       interval.contains(selectedStart) ||
       interval.contains(selectedEnd) ||
       interval.start?.equals(selectedStart) ||
-      interval.end?.equals(selectedStart) ||
+      //interval.end?.equals(selectedStart) ||
       interval.start?.equals(selectedEnd) ||
       interval.end?.equals(selectedEnd)
     ) {
