@@ -10,6 +10,7 @@ import {
   faBarsStaggered,
   faCheck,
   faCheckCircle,
+  faCircleCheck,
   faCube,
   faEye,
   faPhone,
@@ -30,7 +31,7 @@ library.add(
   faTimesCircle,
   faSignInAlt,
   faSignOutAlt,
-  faCheck
+  faCircleCheck
 )
 
 const app = createApp(App).component('font-awesome-icon', FontAwesomeIcon)

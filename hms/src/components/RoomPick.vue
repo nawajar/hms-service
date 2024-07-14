@@ -17,7 +17,11 @@
             >
               <div class="flex items-center gap-2">
                 <span>{{ r.room_no }}</span>
-                <font-awesome-icon class="text-primary" icon="check" v-if="isSelected(r.id)" />
+                <font-awesome-icon
+                  class="text-primary"
+                  icon="circle-check"
+                  v-if="isSelected(r.id)"
+                />
               </div>
             </button>
           </div>
@@ -59,6 +63,7 @@ const isSelected = (roomId: any) => {
 
 const addRoom = (roomId: string) => {
   if (isSelected(roomId)) {
+    selectedRoom.value = _.remove(selectedRoom.value, (s) => s != roomId)
     return
   }
   selectedRoom.value?.push(roomId)

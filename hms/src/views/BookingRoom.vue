@@ -258,10 +258,8 @@
                   <p
                     class="block antialiased font-sans text-sm leading-normal text-blue-gray-900 font-normal"
                   >
-                    {{
-                      dayCount(booking.check_out_date, booking.check_in_date) *
-                      booking.expand.room.price
-                    }}
+                    {{ numberWithCommas(booking.price) }}
+                    <!-- {{ booking.price }} -->
                   </p>
                 </div>
               </div>
@@ -288,7 +286,7 @@
                   <p
                     class="block antialiased font-sans text-sm leading-normal text-blue-gray-900 font-normal"
                   >
-                    {{ booking.expand.room.room_no }}
+                    {{ getListValJoin(booking.expand.room, 'room_no') }}
                   </p>
                 </div>
               </div>
@@ -384,7 +382,7 @@
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
         <div>
           <h2 class="text-xl font-semibold mb-2">Booking Details</h2>
-          <p><strong>Room:</strong> {{ viewBook?.expand?.room?.room_no }}</p>
+          <p><strong>Room:</strong> {{ getListValJoin(viewBook.expand.room, 'room_no') }}</p>
           <p>
             <strong>Status:</strong>
             <span class="text-green-500" v-if="viewBook.status == 'active'">
@@ -456,11 +454,7 @@
   >
     <div class="flex items-center justify-between py-4 px-6 bg-white-500 h-[50px] border-b-[1px]">
       <h2 class="text-secondary text-lg font-semibold">Bookings</h2>
-      <button
-        id="closeRightDrawerBtn"
-        class="text-secondary"
-        @click="activeRightCreate = !activeRightCreate"
-      >
+      <button id="closeRightDrawerBtn" class="text-secondary" @click="toggleCreate()">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           class="h-6 w-6"
@@ -536,7 +530,7 @@
       </div>
     </div>
     <div class="flex bg-white absolute p-2 right-0 bottom-0 w-full border-t-[1px] justify-between">
-      <button class="btn btn-error" @click="activeRightCreate = !activeRightCreate">Cancel</button>
+      <button class="btn btn-error" @click="toggleCreate()">Cancel</button>
       <button class="btn btn-primary" @click="createBook" :disabled="selectedRoom.length == 0">
         Create
       </button>
@@ -591,7 +585,9 @@
             </div>
             <div class="form-control">
               <label class="label" for="paid">
-                <span class="label-text font-bold">({{ selectedBook.price }})</span>
+                <span class="label-text font-bold"
+                  >({{ numberWithCommas(selectedBook.price) }})</span
+                >
               </label>
             </div>
           </div>
@@ -669,6 +665,7 @@ import type { RecordModel } from 'pocketbase'
 import { DateTime, Interval } from 'luxon'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import RoomPick from '@/components/RoomPick.vue'
+import _ from 'lodash'
 
 const activeRightCreate = ref(false)
 const activeRightUpdate = ref(false)
@@ -686,7 +683,19 @@ const showModal = ref(false)
 const selectedBook = ref<any>(null)
 const file = ref<any>(null)
 const openRoomPick = ref<boolean>(false)
-import _ from 'lodash'
+
+const toggleCreate = () => {
+  activeRightCreate.value = !activeRightCreate.value
+  clearCreateForm()
+}
+
+function numberWithCommas(x: any) {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+}
+
+const getListValJoin = (list: any, key: string) => {
+  return _.map(list, (l) => l[key]).join(',')
+}
 
 const onSelectRoom = (rooms: string[]) => {
   selectedRoom.value = rooms
@@ -728,11 +737,11 @@ const dayCount = (f: string, t: string) => {
   var start = DateTime.fromISO(s)
   var end = DateTime.fromISO(e)
   const diff = start.diff(end, ['days'])
-  return diff.days + 1
+  return diff.days
 }
 
 const fileUrl = () => {
-  return `https://xayluedyhotel.com/pb/api/files/${viewBook.value.collectionId}/${viewBook.value.id}/${viewBook.value.paid_evidance}?token=`
+  return `${import.meta.env.API_URL}api/files/${viewBook.value.collectionId}/${viewBook.value.id}/${viewBook.value.paid_evidance}?token=`
 }
 
 const editBook = (book: any) => {
@@ -766,8 +775,9 @@ const updateBook = async () => {
 const createBook = async () => {
   var price = 0
   if (startDate.value && endDate.value) {
-    const roomPrice = availableRoom.value.find((i: any) => i.id == selectedRoom.value)
-    price = dayCount(endDate.value, startDate.value) * roomPrice?.price
+    const roomPrice = _.sumBy(showRoomSelected.value, (a) => a.price)
+    console.log('day ', dayCount(endDate.value, startDate.value))
+    price = dayCount(endDate.value, startDate.value) * roomPrice
   }
 
   const data = {
@@ -783,7 +793,10 @@ const createBook = async () => {
   await pb.collection('bookings').create(data)
   activeRightCreate.value = !activeRightCreate.value
   refresh()
+  clearCreateForm()
+}
 
+const clearCreateForm = () => {
   selectedRoom.value = []
   customerName.value = null
   customerPhone.value = null
@@ -813,8 +826,10 @@ const getBookings = async () => {
 }
 
 const getRooms = async () => {
+  refresh()
   const rooms = await pb.collection('rooms').getFullList({
     sort: '-created',
+    filter: 'active = true && need_clean = false',
     fields: '*'
   })
 
@@ -851,6 +866,9 @@ onMounted(async () => {
 
 watch([startDate, endDate], () => {
   if ((startDate.value, endDate.value)) {
+    if (startDate.value == endDate.value) {
+      return
+    }
     getRooms()
   } else {
     availableRoom.value = []
