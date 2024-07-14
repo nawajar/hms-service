@@ -44,7 +44,7 @@
           />
         </div>
         <div class="flex items-center justify-between">
-          <button class="btn btn-primary w-full" type="button">Sign In</button>
+          <button @click="login()" class="btn btn-primary w-full" type="button">Sign In</button>
         </div>
       </form>
       <!-- <div class="p-4 flex flex-col gap-4 w-full">
