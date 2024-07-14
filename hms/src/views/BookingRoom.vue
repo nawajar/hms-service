@@ -366,82 +366,88 @@
           </tr>
         </tbody>
       </table>
-      <dialog :class="{ 'modal-open': showModal }" class="modal" v-if="viewBook">
-        <div class="modal-box w-11/12 max-w-5xl">
-          <h1 class="text-3xl font-bold mb-8">Booking Information</h1>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-            <div>
-              <h2 class="text-xl font-semibold mb-2">Booking Details</h2>
-              <p><strong>Room:</strong> {{ viewBook?.expand?.room?.room_no }}</p>
-              <p>
-                <strong>Status:</strong>
-                <span class="text-green-500" v-if="viewBook.status == 'active'">
-                  <font-awesome-icon class="text-green-500" icon="check-circle" />
-                  {{ viewBook.status }}
-                </span>
-                <span class="text-red-500" v-if="viewBook.status == 'cancel'">
-                  <span class="ml-3 text-red-800 font-semibold">Cancel</span>
-                  {{ viewBook.status }}
-                </span>
-                <span class="text-blue-500" v-if="viewBook.status == 'check-in'">
-                  <font-awesome-icon class="text-blue-500" icon="sign-in-alt" />{{
-                    viewBook.status
-                  }}
-                </span>
-                <span class="text-yellow-500" v-if="viewBook.status == 'check-out'">
-                  <font-awesome-icon class="text-yellow-500" icon="sign-out-alt" />{{
-                    viewBook.status
-                  }}
-                </span>
-              </p>
-            </div>
-            <div>
-              <h2 class="text-xl font-semibold mb-2">Customer Details</h2>
-              <p><strong>Name:</strong> {{ viewBook.cus_name }}</p>
-              <p><strong>Phone No:</strong> {{ viewBook.cus_phone_no }}</p>
-              <p><strong>ID Card:</strong> {{ viewBook.cus_id_card }}</p>
-              <p><strong>Address:</strong> {{ viewBook.customer_address }}</p>
-            </div>
-          </div>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-            <div>
-              <h2 class="text-xl font-semibold mb-2">Dates</h2>
-              <p><strong>Check-in Date:</strong> {{ viewBook?.check_in_date }}</p>
-              <p><strong>Check-out Date:</strong>{{ viewBook?.check_out_date }}</p>
-            </div>
-            <div>
-              <h2 class="text-xl font-semibold mb-2">Payment</h2>
-              <p>
-                <strong>Paid:</strong>
-                <span class="text-green-500" v-if="viewBook.paid">Yes</span>
-                <span class="text-red-500" v-if="!viewBook.paid">No</span>
-              </p>
-              <p>
-                <strong>Amount:</strong>
-                <a href="#" class="text-black-500">{{ viewBook.price }}</a>
-              </p>
-              <p class="flex flex-col">
-                <strong>Payment Evidence:</strong>
-                <a target="_blank" :href="fileUrl()" class="text-blue-500 underline overflow-auto">
-                  {{ viewBook.paid_evidance }}
-                </a>
-              </p>
-            </div>
-          </div>
-          <div>
-            <h2 class="text-xl font-semibold mb-2">Additional Notes</h2>
-            <p>{{ viewBook.note }}</p>
-          </div>
-          <div class="modal-action">
-            <form method="dialog">
-              <!-- if there is a button, it will close the modal -->
-              <button class="btn" @click="showModal = !showModal">Close</button>
-            </form>
-          </div>
-        </div>
-      </dialog>
     </div>
   </div>
+
+  <Teleport to="body">
+    <RoomPick
+      :show="openRoomPick"
+      :availableRoom="availableRoom"
+      @onSelect="onSelectRoom"
+      @close="openRoomPick = !openRoomPick"
+    ></RoomPick>
+  </Teleport>
+
+  <dialog :class="{ 'modal-open': showModal }" class="modal" v-if="viewBook">
+    <div class="modal-box w-11/12 max-w-5xl">
+      <h1 class="text-3xl font-bold mb-8">Booking Information</h1>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+        <div>
+          <h2 class="text-xl font-semibold mb-2">Booking Details</h2>
+          <p><strong>Room:</strong> {{ viewBook?.expand?.room?.room_no }}</p>
+          <p>
+            <strong>Status:</strong>
+            <span class="text-green-500" v-if="viewBook.status == 'active'">
+              <font-awesome-icon class="text-green-500" icon="check-circle" />
+              {{ viewBook.status }}
+            </span>
+            <span class="text-red-500" v-if="viewBook.status == 'cancel'">
+              <span class="ml-3 text-red-800 font-semibold">Cancel</span>
+              {{ viewBook.status }}
+            </span>
+            <span class="text-blue-500" v-if="viewBook.status == 'check-in'">
+              <font-awesome-icon class="text-blue-500" icon="sign-in-alt" />{{ viewBook.status }}
+            </span>
+            <span class="text-yellow-500" v-if="viewBook.status == 'check-out'">
+              <font-awesome-icon class="text-yellow-500" icon="sign-out-alt" />{{ viewBook.status }}
+            </span>
+          </p>
+        </div>
+        <div>
+          <h2 class="text-xl font-semibold mb-2">Customer Details</h2>
+          <p><strong>Name:</strong> {{ viewBook.cus_name }}</p>
+          <p><strong>Phone No:</strong> {{ viewBook.cus_phone_no }}</p>
+          <p><strong>ID Card:</strong> {{ viewBook.cus_id_card }}</p>
+          <p><strong>Address:</strong> {{ viewBook.customer_address }}</p>
+        </div>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+        <div>
+          <h2 class="text-xl font-semibold mb-2">Dates</h2>
+          <p><strong>Check-in Date:</strong> {{ viewBook?.check_in_date }}</p>
+          <p><strong>Check-out Date:</strong>{{ viewBook?.check_out_date }}</p>
+        </div>
+        <div>
+          <h2 class="text-xl font-semibold mb-2">Payment</h2>
+          <p>
+            <strong>Paid:</strong>
+            <span class="text-green-500" v-if="viewBook.paid">Yes</span>
+            <span class="text-red-500" v-if="!viewBook.paid">No</span>
+          </p>
+          <p>
+            <strong>Amount:</strong>
+            <a href="#" class="text-black-500">{{ viewBook.price }}</a>
+          </p>
+          <p class="flex flex-col">
+            <strong>Payment Evidence:</strong>
+            <a target="_blank" :href="fileUrl()" class="text-blue-500 underline overflow-auto">
+              {{ viewBook.paid_evidance }}
+            </a>
+          </p>
+        </div>
+      </div>
+      <div>
+        <h2 class="text-xl font-semibold mb-2">Additional Notes</h2>
+        <p>{{ viewBook.note }}</p>
+      </div>
+      <div class="modal-action">
+        <form method="dialog">
+          <!-- if there is a button, it will close the modal -->
+          <button class="btn" @click="showModal = !showModal">Close</button>
+        </form>
+      </div>
+    </div>
+  </dialog>
 
   <div
     ref="rightDrawerCreate"
@@ -471,63 +477,69 @@
         </svg>
       </button>
     </div>
-    <div class="h-[calc(100%-50px)] overflow-y-scroll c-scrollbox">
+    <div class="h-[calc(100%-50px-100px)] overflow-y-scroll c-scrollbox">
       <div class="container mx-auto p-4">
-        <form class="space-y-4">
-          <div class="form-control">
-            <label class="label">
-              <span class="label-text">In</span>
-            </label>
-            <flat-pickr v-model="startDate" class="input input-bordered w-full" />
-          </div>
-          <div class="form-control">
-            <label class="label">
-              <span class="label-text">Out</span>
-            </label>
-            <flat-pickr v-model="endDate" class="input input-bordered w-full" />
-          </div>
-          <div class="form-control">
-            <label class="label">
-              <span class="label-text">Customer Name</span>
-            </label>
-            <input
-              type="text"
-              placeholder=""
-              class="input input-bordered w-full"
-              v-model="customerName"
-            />
-          </div>
-          <div class="form-control">
-            <label class="label">
-              <span class="label-text">Phone Number</span>
-            </label>
-            <input
-              type="tel"
-              placeholder=""
-              class="input input-bordered w-full"
-              v-model="customerPhone"
-            />
-          </div>
-          <div class="form-control">
-            <label class="label">
-              <span class="label-text">Room </span>
-            </label>
-            <select
-              class="select select-bordered w-full"
-              @click="onSelectRoom"
-              v-model="selectedRoom"
+        <div class="form-control">
+          <label class="label">
+            <span class="label-text">In</span>
+          </label>
+          <flat-pickr v-model="startDate" class="input input-bordered w-full" />
+        </div>
+        <div class="form-control">
+          <label class="label">
+            <span class="label-text">Out</span>
+          </label>
+          <flat-pickr v-model="endDate" class="input input-bordered w-full" />
+        </div>
+        <div class="form-control">
+          <label class="label">
+            <span class="label-text">Customer Name</span>
+          </label>
+          <input
+            type="text"
+            placeholder=""
+            class="input input-bordered w-full"
+            v-model="customerName"
+          />
+        </div>
+        <div class="form-control">
+          <label class="label">
+            <span class="label-text">Phone Number</span>
+          </label>
+          <input
+            type="tel"
+            placeholder=""
+            class="input input-bordered w-full"
+            v-model="customerPhone"
+          />
+        </div>
+        <div class="form-control">
+          <label class="label">
+            <button class="btn btn-primary" @click="openSelectRoom()">Room</button>
+          </label>
+          <div class="flex flex-col gap-2">
+            <div
+              v-for="select of showRoomSelected"
+              :key="select.room_no"
+              class="flex items-center gap-2 p-2 bg-white rounded-lg shadow-md hover:bg-gray-100 cursor-pointer text-sm"
             >
-              <option v-for="(r, idx) in availableRoom" :key="idx" :value="r.id">
-                room {{ r.room_no }} ราคา {{ r.price }} ต่อคืน
-              </option>
-            </select>
+              <div>
+                <h2 class="font-bold">{{ select.room_type }}</h2>
+                <p class="text-gray-600">Room {{ select.room_no }}</p>
+              </div>
+              <div class="ml-auto">
+                <p class="font-semibold text-gray-800">${{ select.price }}/night</p>
+              </div>
+            </div>
           </div>
-        </form>
+        </div>
       </div>
     </div>
-    <div class="flex bg-white absolute right-0 bottom-0 p-3 w-full border-t-[1px] justify-between">
+    <div class="flex bg-white absolute p-2 right-0 bottom-0 w-full border-t-[1px] justify-between">
       <button class="btn btn-error" @click="activeRightCreate = !activeRightCreate">Cancel</button>
-      <button class="btn btn-primary" @click="createBook" :disabled="!selectedRoom">Create</button>
+      <button class="btn btn-primary" @click="createBook" :disabled="selectedRoom.length == 0">
+        Create
+      </button>
     </div>
   </div>
 
@@ -649,13 +661,14 @@
 </template>
 <script setup lang="ts">
 import { pb } from '@/services/pb'
-import { onMounted, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { onClickOutside } from '@vueuse/core'
 import flatPickr from 'vue-flatpickr-component'
 import 'flatpickr/dist/flatpickr.css'
 import type { RecordModel } from 'pocketbase'
 import { DateTime, Interval } from 'luxon'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import RoomPick from '@/components/RoomPick.vue'
 
 const activeRightCreate = ref(false)
 const activeRightUpdate = ref(false)
@@ -663,7 +676,7 @@ const bookings = ref<any>([])
 const rightDrawerCreate = ref(null)
 const startDate = ref(null)
 const endDate = ref(null)
-const selectedRoom = ref(null)
+const selectedRoom = ref<string[]>([])
 const customerName = ref(null)
 const customerPhone = ref(null)
 const availableRoom = ref<RecordModel[]>([])
@@ -672,10 +685,15 @@ const viewBook = ref<any>(null)
 const showModal = ref(false)
 const selectedBook = ref<any>(null)
 const file = ref<any>(null)
+const openRoomPick = ref<boolean>(false)
+import _ from 'lodash'
+
+const onSelectRoom = (rooms: string[]) => {
+  selectedRoom.value = rooms
+}
 
 const handleFileUpload = async (event: any) => {
   selectedBook.value.file = event.target.files[0]
-  console.log('selected file', file.value)
 }
 
 const formatDate = (s: string) => {
@@ -687,6 +705,22 @@ const toDate = (s: string) => {
   var d = s.split(' ').join('T')
   return DateTime.fromISO(d).set({ hour: 0 })
 }
+
+const openSelectRoom = () => {
+  selectedRoom.value = []
+  openRoomPick.value = !openRoomPick.value
+}
+
+const showRoomSelected = computed(() => {
+  return _.map(selectedRoom.value, (a: any) => {
+    const roomDetails = _.find(availableRoom.value, (se) => se.id == a)
+    return {
+      room_type: roomDetails?.room_type,
+      room_no: roomDetails?.room_no,
+      price: roomDetails?.price
+    }
+  })
+})
 
 const dayCount = (f: string, t: string) => {
   var s = f.split(' ').join('T')
@@ -750,7 +784,7 @@ const createBook = async () => {
   activeRightCreate.value = !activeRightCreate.value
   refresh()
 
-  selectedRoom.value = null
+  selectedRoom.value = []
   customerName.value = null
   customerPhone.value = null
   startDate.value = null
@@ -805,13 +839,11 @@ const getRooms = async () => {
 
   availableRoom.value = rooms.filter((r) => {
     var isBook = unavailableRoom.some((un: any) => {
-      return r.id == un.expand.room.id
+      return _.some(un.expand.room, (ex) => ex.id == r.id)
     })
     return !isBook
   })
 }
-
-const onSelectRoom = async () => {}
 
 onMounted(async () => {
   getBookings()
@@ -820,6 +852,8 @@ onMounted(async () => {
 watch([startDate, endDate], () => {
   if ((startDate.value, endDate.value)) {
     getRooms()
+  } else {
+    availableRoom.value = []
   }
 })
 </script>
