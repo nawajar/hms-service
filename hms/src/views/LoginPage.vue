@@ -89,6 +89,10 @@
 <script setup lang="ts">
 import { pb } from '@/services/pb'
 import { ref } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
+
+const router = useRouter()
+const route = useRoute()
 
 const userName = ref('')
 const password = ref('')
@@ -99,5 +103,8 @@ const login = async () => {
   }
   const authData = await pb.collection('users').authWithPassword(userName.value, password.value)
   console.log('Logged in.', authData)
+  router.push({
+    name: 'Booking'
+  })
 }
 </script>
