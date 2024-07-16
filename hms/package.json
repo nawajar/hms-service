@@ -20,6 +20,7 @@
     "@fortawesome/vue-fontawesome": "^3.0.8",
     "@types/lodash": "^4.17.6",
     "@vueuse/core": "^10.11.0",
+    "dropzone-vue": "^0.1.11",
     "flatpickr": "^4.6.13",
     "luxon": "^3.4.4",
     "pinia": "^2.1.7",

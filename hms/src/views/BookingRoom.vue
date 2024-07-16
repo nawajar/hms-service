@@ -416,28 +416,31 @@
           <p><strong>Check-out Date:</strong>{{ viewBook?.check_out_date }}</p>
         </div>
         <div>
-          <h2 class="text-xl font-semibold mb-2">Payment</h2>
-          <p>
-            <strong>Paid:</strong>
-            <span class="text-green-500" v-if="viewBook.paid">Yes</span>
-            <span class="text-red-500" v-if="!viewBook.paid">No</span>
-          </p>
-          <p>
-            <strong>Amount:</strong>
-            <a href="#" class="text-black-500">{{ viewBook.price }}</a>
-          </p>
-          <p class="flex flex-col">
-            <strong>Payment Evidence:</strong>
-            <a target="_blank" :href="fileUrl()" class="text-blue-500 underline overflow-auto">
-              {{ viewBook.paid_evidance }}
-            </a>
-          </p>
+          <h2 class="text-xl font-semibold mb-2">Additional Notes</h2>
+          <p>{{ viewBook.note }}</p>
         </div>
       </div>
       <div>
-        <h2 class="text-xl font-semibold mb-2">Additional Notes</h2>
-        <p>{{ viewBook.note }}</p>
+        <h2 class="text-xl font-semibold mb-2">Payment</h2>
+        <p>
+          <strong>Paid:</strong>
+          <span class="text-green-500" v-if="viewBook.paid">Yes</span>
+          <span class="text-red-500" v-if="!viewBook.paid">No</span>
+        </p>
+        <p>
+          <strong>Amount:</strong>
+          <a href="#" class="text-black-500">{{ viewBook.price }}</a>
+        </p>
+        <p class="flex flex-col">
+          <strong>Documents:</strong>
+          <p v-for="f of viewBook.cus_documents" :key="f">
+            <a target="_blank" :href="fileUrl(f)" class="text-blue-500 underline overflow-auto line-clamp-1">
+              {{ f }}
+            </a>
+          </p>
+        </p>
       </div>
+      
       <div class="modal-action">
         <form method="dialog">
           <!-- if there is a button, it will close the modal -->
@@ -592,27 +595,7 @@
             </div>
           </div>
 
-          <div class="form-control">
-            <label class="label" for="paid_evidance">
-              <span class="label-text">Paid Evidence</span>
-            </label>
-            <input
-              type="file"
-              id="paid_evidance"
-              class="file-input file-input-bordered file-input-primary w-full"
-              @change="handleFileUpload($event)"
-            />
-          </div>
-          <div class="form-control">
-            <label class="label" for="note">
-              <span class="label-text">Note</span>
-            </label>
-            <textarea
-              id="note"
-              class="textarea textarea-bordered w-full"
-              v-model="selectedBook.note"
-            ></textarea>
-          </div>
+
           <div class="form-control">
             <label class="label" for="cus_id_card">
               <span class="label-text">Customer ID Card</span>
@@ -633,6 +616,24 @@
               id="note"
               class="textarea textarea-bordered w-full"
               v-model="selectedBook.customer_address"
+            ></textarea>
+          </div>
+          <DropZone
+            :maxFiles="Number(10000000000)"
+            :uploadOnDrop="false"
+            :multipleUpload="true"
+            :parallelUpload="3"
+            @addedFile="onFileAdd"
+            @removedFile="onFileRemove"
+          />
+          <div class="form-control">
+            <label class="label" for="note">
+              <span class="label-text">Note</span>
+            </label>
+            <textarea
+              id="note"
+              class="textarea textarea-bordered w-full"
+              v-model="selectedBook.note"
             ></textarea>
           </div>
           <div class="form-control">
@@ -666,6 +667,8 @@ import { DateTime, Interval } from 'luxon'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import RoomPick from '@/components/RoomPick.vue'
 import _ from 'lodash'
+import DropZone from 'dropzone-vue'
+import 'dropzone-vue/dist/dropzone-vue.common.css'
 
 const activeRightCreate = ref(false)
 const activeRightUpdate = ref(false)
@@ -681,7 +684,6 @@ const viewBook = ref<any>(null)
 
 const showModal = ref(false)
 const selectedBook = ref<any>(null)
-const file = ref<any>(null)
 const openRoomPick = ref<boolean>(false)
 
 const toggleCreate = () => {
@@ -701,8 +703,15 @@ const onSelectRoom = (rooms: string[]) => {
   selectedRoom.value = rooms
 }
 
-const handleFileUpload = async (event: any) => {
-  selectedBook.value.file = event.target.files[0]
+const onFileAdd = async (event: any) => {
+  if (!selectedBook.value.file) {
+    selectedBook.value.file = []
+  }
+  selectedBook.value.file.push(event)
+}
+
+const onFileRemove = async (event: any) => {
+  _.remove(selectedBook.value.file, (i: any) => i?.id == event.id)
 }
 
 const formatDate = (s: string) => {
@@ -740,8 +749,8 @@ const dayCount = (f: string, t: string) => {
   return diff.days
 }
 
-const fileUrl = () => {
-  return `${import.meta.env.API_URL}api/files/${viewBook.value.collectionId}/${viewBook.value.id}/${viewBook.value.paid_evidance}?token=`
+const fileUrl = (fileName: string) => {
+  return `${import.meta.env.API_URL}api/files/${viewBook.value.collectionId}/${viewBook.value.id}/${fileName}?token=`
 }
 
 const editBook = (book: any) => {
@@ -756,20 +765,23 @@ const viewBookAt = (book: any) => {
 
 const updateBook = async () => {
   const formData = new FormData()
-  console.log(file.value)
   formData.append('paid', selectedBook.value.paid)
   formData.append('note', selectedBook.value.note)
   formData.append('cus_id_card', selectedBook.value.cus_id_card)
   formData.append('customer_address', selectedBook.value.customer_address)
   formData.append('status', selectedBook.value.status)
 
-  if (selectedBook.value.file?.size > 0) {
-    formData.append('paid_evidance', selectedBook.value.file)
+  if (selectedBook.value.file?.length > 0) {
+    //const fs = _.map(selectedBook.value.file, (f) => f.file)
+    _.forEach(selectedBook.value.file, (f: any) => {
+      formData.append('cus_documents', f.file)
+    })
   }
 
   await pb.collection('bookings').update(selectedBook?.value.id, formData)
   activeRightUpdate.value = !activeRightUpdate.value
   refresh()
+  selectedBook.value = null
 }
 
 const createBook = async () => {
