@@ -433,11 +433,11 @@
         </p>
         <p class="flex flex-col">
           <strong>Documents:</strong>
-          <p v-for="f of viewBook.cus_documents" :key="f">
+          <div v-for="f of viewBook.cus_documents" :key="f">
             <a target="_blank" :href="fileUrl(f)" class="text-blue-500 underline overflow-auto line-clamp-1">
               {{ f }}
             </a>
-          </p>
+          </div>
         </p>
       </div>
       
@@ -772,16 +772,34 @@ const updateBook = async () => {
   formData.append('status', selectedBook.value.status)
 
   if (selectedBook.value.file?.length > 0) {
-    //const fs = _.map(selectedBook.value.file, (f) => f.file)
     _.forEach(selectedBook.value.file, (f: any) => {
       formData.append('cus_documents', f.file)
     })
   }
 
-  await pb.collection('bookings').update(selectedBook?.value.id, formData)
-  activeRightUpdate.value = !activeRightUpdate.value
-  refresh()
-  selectedBook.value = null
+  const res =await pb.collection('bookings').update(selectedBook?.value.id, formData)
+  if(res){
+
+    if(res.status == 'check-out') {
+      pb.collection('rooms').update(selectedBook?.value.id, formData)
+      const roomIds = selectedBook?.value.room
+      await importRecordsInParallel(roomIds, {
+        need_clean: true
+      })
+    }
+
+    activeRightUpdate.value = !activeRightUpdate.value
+    refresh()
+    selectedBook.value = null
+  }
+  
+}
+
+const  importRecordsInParallel = async (ids:string[] , value: any) => {
+    const promises = ids.map((record:any) => {
+      pb.collection('rooms').update(record, value)
+    })
+    return Promise.all(promises);
 }
 
 const createBook = async () => {
@@ -841,7 +859,7 @@ const getRooms = async () => {
   refresh()
   const rooms = await pb.collection('rooms').getFullList({
     sort: '-created',
-    filter: 'active = true && need_clean = false',
+    filter: 'active = true',
     fields: '*'
   })
 
