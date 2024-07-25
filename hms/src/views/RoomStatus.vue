@@ -1,131 +1,104 @@
 <template>
-  <div class="container mx-auto">
+  <div class="w-full h-full mb-10 rounded overflow-y-scroll relative overflow-x-hidden">
     <div class="container mx-auto p-6">
-      <h2 class="text-3xl font-bold mb-8 text-gray-800">Room Status</h2>
-
+      <h2 class="text-3xl font-bold mb-8 text-gray-800">สถานะห้อง {{ allRooms.length }} ห้อง</h2>
       <!-- Floor 1 -->
-      <div class="mb-12">
-        <h3 class="text-2xl font-semibold mb-6 text-gray-700">Floor 1</h3>
+      <div class="mb-12" v-for="(value, name, index) in groupRoom" :key="index">
+        <h3 class="text-2xl font-semibold mb-6 text-gray-700">ชั้น {{ name }}</h3>
         <div class="grid grid-cols-6 gap-2">
-          <div class="p-4 border border-gray-400 rounded-lg bg-red-100 text-gray-800">
+          <div
+            class="p-4 border border-gray-300 text-gray-800 rounded-lg shadow-md relative"
+            :class="{ 'bg-red-100': r.need_clean }"
+            v-for="r of value"
+            :key="r.room_no"
+          >
             <div class="flex items-center justify-between">
-              <h4 class="font-bold">101</h4>
-              <i class="fas fa-broom text-red-600 text-xl"></i>
+              <h4 class="font-bold">ห้อง {{ r.room_no }}</h4>
             </div>
-            <p class="text-sm">Need Clean</p>
-          </div>
-          <div class="p-4 border border-gray-400 rounded-lg bg-green-100 text-gray-800">
-            <div class="flex items-center justify-between">
-              <h4 class="font-bold">102</h4>
-              <i class="fas fa-check-circle text-green-600 text-xl"></i>
+            <button class="absolute right-1 top-2" @click="getBookingOfRoom(r.id)">
+              <font-awesome-icon class="text-[#6C946F]" icon="bars-staggered" />
+            </button>
+            <div class="absolute right-1 bottom-2" v-if="r.need_clean">
+              <font-awesome-icon class="text-[#FF4C4C]" icon="broom" />
             </div>
-            <p class="text-sm">Clean</p>
-          </div>
-          <!-- Repeat similar blocks for other rooms on Floor 1 -->
-          <!-- Example for additional rooms -->
-          <div class="p-4 border border-gray-400 rounded-lg bg-red-100 text-gray-800">
-            <div class="flex items-center justify-between">
-              <h4 class="font-bold">103</h4>
-              <i class="fas fa-broom text-red-600 text-xl"></i>
+            <div class="flex items-center space-x-2">
+              <div class="flex gap-2 items-center" v-if="r.room_type == 'family'">
+                <font-awesome-icon class="text-[#FFDE4D]" icon="crown" />
+                <span class="text-sm">VIP ห้องครอบครัว</span>
+              </div>
+              <div class="flex gap-2 items-center" v-if="r.room_type == 'single_bed'">
+                <font-awesome-icon class="text-[#96C9F4]" icon="bed" />
+                <span class="text-sm">เตียงเดี่ยว</span>
+              </div>
+              <div class="flex gap-2 items-center" v-if="r.room_type == 'twin_bed'">
+                <font-awesome-icon class="text-[#FFC7ED]" icon="bed" />
+                <span class="text-sm">เตียงคู่</span>
+              </div>
             </div>
-            <p class="text-sm">Need Clean</p>
+            <p class="text-sm">ราคา : ${{ r.price }}</p>
           </div>
-          <div class="p-4 border border-gray-400 rounded-lg bg-green-100 text-gray-800">
-            <div class="flex items-center justify-between">
-              <h4 class="font-bold">104</h4>
-              <i class="fas fa-check-circle text-green-600 text-xl"></i>
-            </div>
-            <p class="text-sm">Clean</p>
-          </div>
-          <div class="p-4 border border-gray-400 rounded-lg bg-red-100 text-gray-800">
-            <div class="flex items-center justify-between">
-              <h4 class="font-bold">105</h4>
-              <i class="fas fa-broom text-red-600 text-xl"></i>
-            </div>
-            <p class="text-sm">Need Clean</p>
-          </div>
-          <div class="p-4 border border-gray-400 rounded-lg bg-green-100 text-gray-800">
-            <div class="flex items-center justify-between">
-              <h4 class="font-bold">106</h4>
-              <i class="fas fa-check-circle text-green-600 text-xl"></i>
-            </div>
-            <p class="text-sm">Clean</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Floor 2 -->
-      <div class="mb-12">
-        <h3 class="text-2xl font-semibold mb-6 text-gray-700">Floor 2</h3>
-        <div class="grid grid-cols-6 gap-2">
-          <!-- Repeat similar blocks for rooms on Floor 2 -->
-          <!-- Example for rooms on Floor 2 -->
-          <div class="p-4 border border-gray-400 rounded-lg bg-red-100 text-gray-800">
-            <div class="flex items-center justify-between">
-              <h4 class="font-bold">201</h4>
-              <i class="fas fa-broom text-red-600 text-xl"></i>
-            </div>
-            <p class="text-sm">Need Clean</p>
-          </div>
-          <div class="p-4 border border-gray-400 rounded-lg bg-green-100 text-gray-800">
-            <div class="flex items-center justify-between">
-              <h4 class="font-bold">202</h4>
-              <i class="fas fa-check-circle text-green-600 text-xl"></i>
-            </div>
-            <p class="text-sm">Clean</p>
-          </div>
-          <!-- Add more room blocks as needed -->
-        </div>
-      </div>
-
-      <!-- Floor 3 -->
-      <div class="mb-12">
-        <h3 class="text-2xl font-semibold mb-6 text-gray-700">Floor 3</h3>
-        <div class="grid grid-cols-6 gap-2">
-          <!-- Repeat similar blocks for rooms on Floor 3 -->
-          <!-- Example for rooms on Floor 3 -->
-          <div class="p-4 border border-gray-400 rounded-lg bg-red-100 text-gray-800">
-            <div class="flex items-center justify-between">
-              <h4 class="font-bold">301</h4>
-              <i class="fas fa-broom text-red-600 text-xl"></i>
-            </div>
-            <p class="text-sm">Need Clean</p>
-          </div>
-          <div class="p-4 border border-gray-400 rounded-lg bg-green-100 text-gray-800">
-            <div class="flex items-center justify-between">
-              <h4 class="font-bold">302</h4>
-              <i class="fas fa-check-circle text-green-600 text-xl"></i>
-            </div>
-            <p class="text-sm">Clean</p>
-          </div>
-          <!-- Add more room blocks as needed -->
-        </div>
-      </div>
-
-      <!-- Floor 4 -->
-      <div class="mb-12">
-        <h3 class="text-2xl font-semibold mb-6 text-gray-700">Floor 4</h3>
-        <div class="grid grid-cols-6 gap-2">
-          <!-- Repeat similar blocks for rooms on Floor 4 -->
-          <!-- Example for rooms on Floor 4 -->
-          <div class="p-4 border border-gray-400 rounded-lg bg-red-100 text-gray-800">
-            <div class="flex items-center justify-between">
-              <h4 class="font-bold">401</h4>
-              <i class="fas fa-broom text-red-600 text-xl"></i>
-            </div>
-            <p class="text-sm">Need Clean</p>
-          </div>
-          <div class="p-4 border border-gray-400 rounded-lg bg-green-100 text-gray-800">
-            <div class="flex items-center justify-between">
-              <h4 class="font-bold">402</h4>
-              <i class="fas fa-check-circle text-green-600 text-xl"></i>
-            </div>
-            <p class="text-sm">Clean</p>
-          </div>
-          <!-- Add more room blocks as needed -->
         </div>
       </div>
     </div>
   </div>
+
+  <dialog :class="{ 'modal-open': showModal }" class="modal" v-if="viewRoomBooking">
+    <div class="modal-box w-11/12 max-w-5xl">
+      <h1 class="text-3xl font-bold mb-8">การจองห้อง</h1>
+      <div class="flex items-center gap-2" v-for="vr of viewRoomBooking" :key="vr">
+        <font-awesome-icon class="text-[#88D66C]" icon="right-from-bracket" />
+        <h4 class="text-md font-bold">จองโดย {{ vr.cus_name }}</h4>
+        <p class="text-sm text-gray-600">
+          เข้าพัก {{ toDateStr(vr.check_in_date) }} ถึง {{ toDateStr(vr.check_out_date) }}
+        </p>
+      </div>
+      <div class="modal-action">
+        <form method="dialog">
+          <!-- if there is a button, it will close the modal -->
+          <button class="btn" @click="showModal = !showModal">Close</button>
+        </form>
+      </div>
+    </div>
+  </dialog>
 </template>
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { onMounted, ref, computed } from 'vue'
+import { pb } from '@/services/pb'
+import _ from 'lodash'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+
+const allRooms = ref([])
+const showModal = ref(false)
+const viewRoomBooking = ref(null)
+const groupRoom = computed(() => {
+  return _.groupBy(allRooms.value, (r) => r.floor)
+})
+
+const toDateStr = (s: string) => {
+  var d = s.split(' ')
+  return d[0]
+}
+
+const getRooms = async () => {
+  const rooms = await pb.collection('rooms').getFullList({
+    sort: 'room_no',
+    filter: 'active = true',
+    fields: '*'
+  })
+  allRooms.value = rooms
+}
+const getBookingOfRoom = async (roomId: string) => {
+  console.log(roomId)
+  const resultList = await pb.collection('bookings').getList(1, 50, {
+    filter: `status = 'active' && room.id ?~ '${roomId}'`,
+    fields: 'check_in_date,check_out_date,cus_name'
+  })
+  if (resultList.items.length > 0) {
+    showModal.value = !showModal.value
+    viewRoomBooking.value = resultList.items
+  }
+}
+onMounted(async () => {
+  getRooms()
+})
+</script>

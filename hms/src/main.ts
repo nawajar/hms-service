@@ -8,12 +8,16 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import {
   faArrowsRotate,
   faBarsStaggered,
+  faBed,
+  faBroom,
   faCheck,
   faCheckCircle,
   faCircleCheck,
+  faCrown,
   faCube,
   faEye,
   faPhone,
+  faRightFromBracket,
   faSignInAlt,
   faSignOutAlt,
   faTimesCircle
@@ -31,7 +35,12 @@ library.add(
   faTimesCircle,
   faSignInAlt,
   faSignOutAlt,
-  faCircleCheck
+  faCircleCheck,
+  faBed,
+  faCrown,
+  faBroom,
+  faBarsStaggered,
+  faRightFromBracket
 )
 
 const app = createApp(App).component('font-awesome-icon', FontAwesomeIcon)
