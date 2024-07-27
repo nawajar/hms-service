@@ -45,6 +45,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
             Booking
           </RouterLink>
         </li>
+
         <li>
           <RouterLink :to="'rooms'">
             <div class="grid mr-4 place-items-center">
@@ -54,10 +55,16 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
             <div class="grid ml-auto place-items-center justify-self-end">
               <div
                 class="relative grid items-center px-2 py-1 font-sans text-xs font-bold uppercase rounded-full select-none whitespace-nowrap bg-blue-gray-500/20 text-blue-gray-900"
-              >
-                <span class="">14</span>
-              </div>
+              ></div>
             </div>
+          </RouterLink>
+        </li>
+        <li>
+          <RouterLink :to="'rooms-schedule'" activeClass="border-indigo-500">
+            <div class="grid mr-4 place-items-center">
+              <font-awesome-icon icon="calendar-day"></font-awesome-icon>
+            </div>
+            Room Schedule
           </RouterLink>
         </li>
       </ul>

@@ -67,9 +67,9 @@ import { pb } from '@/services/pb'
 import _ from 'lodash'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
-const allRooms = ref([])
+const allRooms = ref<any>([])
 const showModal = ref(false)
-const viewRoomBooking = ref(null)
+const viewRoomBooking = ref<any>(null)
 const groupRoom = computed(() => {
   return _.groupBy(allRooms.value, (r) => r.floor)
 })
@@ -88,8 +88,8 @@ const getRooms = async () => {
   allRooms.value = rooms
 }
 const getBookingOfRoom = async (roomId: string) => {
-  console.log(roomId)
   const resultList = await pb.collection('bookings').getList(1, 50, {
+    sort: 'check_in_date',
     filter: `status = 'active' && room.id ?~ '${roomId}'`,
     fields: 'check_in_date,check_out_date,cus_name'
   })
