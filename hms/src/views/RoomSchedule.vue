@@ -50,10 +50,29 @@
                     <td class="border border-gray-300 p-2 text-center font-bold">
                       {{ room.room_no }}
                     </td>
-                    <template v-for="day in calendar.days" :key="day">
+                    <template
+                      v-for="day in calendar.days.filter((d) => isThisMonth(d.month))"
+                      :key="day"
+                    >
                       <td
-                        v-if="isThisMonth(day.month)"
+                        v-if="
+                          getRoomSchedule(
+                            getRoomNo(room.id),
+                            toStringDate(day.year, day.month, day.day)
+                          )?.isStart
+                        "
                         class="relative text-center border border-gray-300 p-2"
+                        :colspan="
+                          getRoomSchedule(
+                            getRoomNo(room.id),
+                            toStringDate(day.year, day.month, day.day)
+                          )
+                            ? getRoomSchedule(
+                                getRoomNo(room.id),
+                                toStringDate(day.year, day.month, day.day)
+                              ).span
+                            : 1
+                        "
                         :class="{
                           'bg-green-500 text-white':
                             getRoomSchedule(
@@ -102,18 +121,20 @@
                           }}
                         </button>
                       </td>
-                      <!-- <td
-                        v-if="
-                          isThisMonth(day.month) &&
-                          !getRoomSchedule(
+                      <span
+                        v-else-if="
+                          getRoomSchedule(
                             getRoomNo(room.id),
                             toStringDate(day.year, day.month, day.day)
-                          )
+                          )?.isStart == false
                         "
-                        class="text-center border border-gray-300 p-2"
+                        class="text-center border border-gray-300 p-2 hidden"
                       >
-                        {{ `${toStringDate(day.year, day.month, day.day)}` }}
-                      </td> -->
+                        <!-- {{ `s${toStringDate(day.year, day.month, day.day)}` }} -->
+                      </span>
+                      <td v-else class="text-center border border-gray-300 p-2">
+                        <!-- {{ `s${toStringDate(day.year, day.month, day.day)}` }} -->
+                      </td>
                     </template>
                   </tr>
                 </template>
@@ -133,6 +154,7 @@
             เข้าพัก {{ toThaiFromCheckDate(viewRoomBooking.checkIn) }} ถึง
             {{ toThaiFromCheckDate(viewRoomBooking.checkOut) }}
           </p>
+          <p>เบอร์ {{ viewRoomBooking.cusPhone }}</p>
         </div>
         <div class="modal-action">
           <form method="dialog">
@@ -147,9 +169,9 @@
 <script setup lang="ts">
 import { Calendar, type Day } from 'normal-calendar'
 import { pb } from '@/services/pb'
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { DateTime } from 'luxon'
-import _, { chain } from 'lodash'
+import _ from 'lodash'
 
 const showModal = ref(false)
 const viewRoomBooking = ref<any>(null)
@@ -204,18 +226,25 @@ const roomSchedules = computed(() => {
     var e = booking.check_out_date.split(' ').join('T')
 
     let currentDate = DateTime.fromISO(s)
+    const startDate = DateTime.fromISO(s)
     const endDate = DateTime.fromISO(e)
+    const spanDay = calculateSpan(endDate, startDate)
     while (currentDate < endDate) {
       const dateString = currentDate.toISO()!.split('T')[0]
+
       booking.room.forEach((room: any) => {
         if (!schedules[getRoomNo(room)]) {
           schedules[getRoomNo(room)] = {}
         }
+
         schedules[getRoomNo(room)][dateString ?? ''] = {
           status: booking.status,
           cusName: booking.cus_name,
+          cusPhone: booking.cus_phone_no,
           checkIn: booking.check_in_date,
-          checkOut: booking.check_out_date
+          checkOut: booking.check_out_date,
+          isStart: startDate.toFormat('dd-MM-yyyy') == currentDate.toFormat('dd-MM-yyyy'),
+          span: spanDay
         }
       })
 
@@ -225,6 +254,10 @@ const roomSchedules = computed(() => {
   return schedules
 })
 
+const calculateSpan = (startDate: DateTime, endDate: DateTime) => {
+  return startDate.diff(endDate, ['days']).days
+}
+
 const getRoomNo = (id: string) => {
   return _.find(allRooms.value, (r: any) => r.id == id).room_no
 }
@@ -232,7 +265,7 @@ const getRoomNo = (id: string) => {
 const getBookings = async () => {
   const records = await pb.collection('bookings').getFullList({
     filter: `status = 'active' || status ='check-out' || status='check-in'`,
-    fields: 'check_in_date,check_out_date,cus_name,room,status'
+    fields: 'id,check_in_date,check_out_date,cus_name,room,status,cus_phone_no'
   })
 
   bookings.value = records
@@ -268,7 +301,6 @@ const getRooms = async () => {
 }
 
 onMounted(() => {
-  console.log(toDay.getMonth())
   getRooms()
   getBookings()
 })

@@ -14,6 +14,7 @@ import {
   faCheck,
   faCheckCircle,
   faCircleCheck,
+  faClockRotateLeft,
   faCrown,
   faCube,
   faEye,
@@ -42,7 +43,8 @@ library.add(
   faBroom,
   faBarsStaggered,
   faRightFromBracket,
-  faCalendarDay
+  faCalendarDay,
+  faClockRotateLeft
 )
 
 const app = createApp(App).component('font-awesome-icon', FontAwesomeIcon)
