@@ -9,6 +9,29 @@
       </div>
       <button @click="openCreate" class="text-neutral bg-black px-4 py-2 rounded">Create</button>
     </div>
+    <div class="relative mt-4 p-2">
+      <input
+        type="text"
+        v-model="searchQuery"
+        @input="onSearch"
+        placeholder="Search..."
+        class="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+      />
+      <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+        <svg
+          class="h-5 w-5 text-gray-400"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M12.9 14.32a8 8 0 111.41-1.41l3.25 3.24a1 1 0 11-1.41 1.41l-3.25-3.24zM8 14a6 6 0 100-12 6 6 0 000 12z"
+            clip-rule="evenodd"
+          />
+        </svg>
+      </div>
+    </div>
     <div
       class="page-body container"
       :class="[activeRightCreate || activeRightUpdate ? 'opacity-20' : '']"
@@ -130,7 +153,7 @@
                 </svg>
               </p>
             </th>
-            
+
             <th
               class="cursor-pointer border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50"
             >
@@ -292,7 +315,7 @@
                 </div>
               </div>
             </td>
-            
+
             <td class="p-4 border-b border-blue-gray-50">
               <div class="flex flex-col">
                 <p
@@ -433,16 +456,20 @@
           <strong>Amount:</strong>
           <a href="#" class="text-black-500">{{ viewBook.price }}</a>
         </p>
-        <p class="flex flex-col">
+        <div class="flex flex-col">
           <strong>Documents:</strong>
           <div v-for="f of viewBook.cus_documents" :key="f">
-            <a target="_blank" :href="fileUrl(f)" class="text-blue-500 underline overflow-auto line-clamp-1">
+            <a
+              target="_blank"
+              :href="fileUrl(f)"
+              class="text-blue-500 underline overflow-auto line-clamp-1"
+            >
               {{ f }}
             </a>
           </div>
-        </p>
+        </div>
       </div>
-      
+
       <div class="modal-action">
         <form method="dialog">
           <!-- if there is a button, it will close the modal -->
@@ -536,7 +563,13 @@
     </div>
     <div class="flex bg-white absolute p-2 right-0 bottom-0 w-full border-t-[1px] justify-between">
       <button class="btn btn-error" @click="toggleCreate()">Cancel</button>
-      <button class="btn btn-primary" @click="createBook" :disabled="selectedRoom.length == 0 || !customerPhone || !customerName || validCreateDate == false">
+      <button
+        class="btn btn-primary"
+        @click="createBook"
+        :disabled="
+          selectedRoom.length == 0 || !customerPhone || !customerName || validCreateDate == false
+        "
+      >
         Create
       </button>
     </div>
@@ -596,7 +629,6 @@
               </label>
             </div>
           </div>
-
 
           <div class="form-control">
             <label class="label" for="cus_id_card">
@@ -688,7 +720,19 @@ const showModal = ref(false)
 const selectedBook = ref<any>(null)
 const openRoomPick = ref<boolean>(false)
 const validCreateDate = ref<boolean>(false)
+const searchQuery = ref('')
 
+const onSearch = async () => {
+  const query = searchQuery.value
+  const records = await pb.collection('bookings').getFullList({
+    sort: '-created',
+    filter: `room.room_no ~ '${query}' || cus_name ~ '${query}'`,
+    expand: 'room',
+    fields: '*'
+  })
+
+  bookings.value = records
+}
 const toThaiFromCheckDate = (date: string) => {
   var s = date.split(' ').join('T')
   const dateL = DateTime.fromISO(s)
@@ -728,11 +772,6 @@ const onFileAdd = async (event: any) => {
 
 const onFileRemove = async (event: any) => {
   _.remove(selectedBook.value.file, (i: any) => i?.id == event.id)
-}
-
-const formatDate = (s: string) => {
-  var d = s.split(' ').join('T')
-  return DateTime.fromISO(d).toFormat('yyyy-MM-dd')
 }
 
 const toDate = (s: string) => {
@@ -793,10 +832,9 @@ const updateBook = async () => {
     })
   }
 
-  const res =await pb.collection('bookings').update(selectedBook?.value.id, formData)
-  if(res){
-
-    if(res.status == 'check-out') {
+  const res = await pb.collection('bookings').update(selectedBook?.value.id, formData)
+  if (res) {
+    if (res.status == 'check-out') {
       pb.collection('rooms').update(selectedBook?.value.id, formData)
       const roomIds = selectedBook?.value.room
       await importRecordsInParallel(roomIds, {
@@ -808,14 +846,13 @@ const updateBook = async () => {
     refresh()
     selectedBook.value = null
   }
-  
 }
 
-const  importRecordsInParallel = async (ids:string[] , value: any) => {
-    const promises = ids.map((record:any) => {
-      pb.collection('rooms').update(record, value)
-    })
-    return Promise.all(promises);
+const importRecordsInParallel = async (ids: string[], value: any) => {
+  const promises = ids.map((record: any) => {
+    pb.collection('rooms').update(record, value)
+  })
+  return Promise.all(promises)
 }
 
 const createBook = async () => {
@@ -868,7 +905,6 @@ const getBookings = async () => {
     fields: '*'
   })
 
-  console.log('records ', records)
   bookings.value = records
 }
 
@@ -919,7 +955,7 @@ watch([startDate, endDate], () => {
     }
     var selectedStart = toDate(startDate.value ?? '')
     var selectedEnd = toDate(endDate.value ?? '')
-    if(selectedStart > selectedEnd ) {
+    if (selectedStart > selectedEnd) {
       validCreateDate.value = false
       return
     }

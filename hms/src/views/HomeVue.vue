@@ -1,6 +1,7 @@
 <template>
   <div class="w-full h-full text-black">
-    <div class="stats shadow">
+    <div class="p-4 bg-blue-100 text-blue-800 rounded-md">{{ toDayThai }}</div>
+    <div class="stats shadow p-4 md:grid md:grid-cols-3 gap-4">
       <div class="stat">
         <div class="stat-figure text-primary">
           <svg
@@ -46,53 +47,42 @@
       <div class="stat">
         <div class="stat-figure text-secondary">
           <div class="avatar online">
-            <div class="w-16 rounded-full">
+            <div class="w-16 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
               <img
                 src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
+                alt="Avatar"
               />
             </div>
           </div>
         </div>
-        <div class="stat-value">81</div>
+        <div class="stat-value text-secondary">81</div>
         <div class="stat-title">Wait for clean</div>
-        <div class="stat-desc text-secondary">81 room wait</div>
+        <div class="stat-desc">81 rooms waiting</div>
       </div>
     </div>
-
-    <div class="mb-4">
-      <input type="text" placeholder="Search..." class="input input-bordered w-full max-w-xs" />
-      <button class="btn btn-primary ml-2">Filter</button>
-    </div>
-    <div class="overflow-x-auto">
-      <table class="table w-full">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Name</th>
-            <th>Job</th>
-            <th>Favorite Color</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th>1</th>
-            <td>John Doe</td>
-            <td>Software Engineer</td>
-            <td>Blue</td>
-          </tr>
-          <tr>
-            <th>2</th>
-          </tr>
-        </tbody>
-      </table>
+    <div class="mt-6">
+      <h2 class="text-xl font-semibold">Monthly Income</h2>
+      <div class="w-full h-64">
+        <IncomeChart />
+      </div>
     </div>
   </div>
 </template>
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { pb } from '@/services/pb'
-
+import IncomeChart from '@/views/IncomeChart.vue'
+const today = new Date()
 const item = ref()
+
+const toDayThai = computed(() => {
+  const result = today.toLocaleDateString('th-TH', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  })
+  return result
+})
 
 onMounted(async () => {
   console.log('Test', pb.authStore.isValid)

@@ -6,7 +6,7 @@ import type { BaseAuthStore } from 'pocketbase'
 import LayoutVue from '@/views/MainLayout.vue'
 
 const routeGuard = (baseAuth: BaseAuthStore | null, fallBack?: { name: string }) => {
-  const canI = baseAuth?.isValid || true
+  const canI = baseAuth?.isValid
   return {
     beforeEnter: () => canI || fallBack,
     meta: {
