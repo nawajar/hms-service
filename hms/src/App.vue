@@ -2,7 +2,7 @@
 import { RouterView } from 'vue-router'
 import { computed } from 'vue'
 import { useLoaderStore } from '@/stores/loader'
-import HMSLoader from '@/views/loader/HMSLoader.vue'
+import HMSLoader from '@/views/HMSLoader.vue'
 
 const store = useLoaderStore()
 const isLoading = computed(() => store.isLoading)

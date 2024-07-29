@@ -17,12 +17,12 @@ import {
 import { Bar } from 'vue-chartjs'
 
 import { pb } from '@/services/pb'
-import { computed, onMounted, ref, watch } from 'vue'
+import { onMounted, ref } from 'vue'
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 
 const bookings = ref<any>([])
-const chartData = ref({
+const chartData = ref<any>({
   labels: [],
   datasets: [
     {
@@ -38,10 +38,10 @@ const options = {
   maintainAspectRatio: false
 }
 
-const processBookingData = (bookings) => {
-  const incomeByMonth = {}
+const processBookingData = (bookings: any) => {
+  const incomeByMonth: any = {}
 
-  bookings.forEach((booking) => {
+  bookings.forEach((booking: any) => {
     var checkInDate = booking.check_in_date.split(' ').join('T')
     const month = new Date(checkInDate).toLocaleString('default', {
       month: 'short',
