@@ -177,7 +177,6 @@ const showModal = ref(false)
 const viewRoomBooking = ref<any>(null)
 
 const calendarRef = ref()
-const toDay = new Date()
 const allRooms = ref<any>([])
 const bookings = ref<any>([])
 const today = new Date()
@@ -262,15 +261,6 @@ const getRoomNo = (id: string) => {
   return _.find(allRooms.value, (r: any) => r.id == id).room_no
 }
 
-const getBookings = async () => {
-  const records = await pb.collection('bookings').getFullList({
-    filter: `status = 'active' || status ='check-out' || status='check-in'`,
-    fields: 'id,check_in_date,check_out_date,cus_name,room,status,cus_phone_no'
-  })
-
-  bookings.value = records
-}
-
 const toStringDate = (y: number, m: number, d: number) => {
   const dd = new Date(y, m, d)
   const lDate = DateTime.fromJSDate(dd)
@@ -289,6 +279,15 @@ const toThaiDate = (d: number, m: number, y: number) => {
 
 const isThisMonth = (month: number) => {
   return calendarRef.value.context.month == month
+}
+
+const getBookings = async () => {
+  const records = await pb.collection('bookings').getFullList({
+    filter: `status = 'active' || status ='check-out' || status='check-in'`,
+    fields: 'id,check_in_date,check_out_date,cus_name,room,status,cus_phone_no'
+  })
+
+  bookings.value = records
 }
 
 const getRooms = async () => {

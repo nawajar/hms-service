@@ -13,6 +13,7 @@ import {
   faCalendarDay,
   faCheck,
   faCheckCircle,
+  faCheckToSlot,
   faCircleCheck,
   faClockRotateLeft,
   faCrown,
@@ -20,12 +21,14 @@ import {
   faEye,
   faPhone,
   faRightFromBracket,
+  faRightToBracket,
   faSignInAlt,
   faSignOutAlt,
   faTimesCircle
 } from '@fortawesome/free-solid-svg-icons'
 import { faUser } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import {  init } from '@/services/pb'
 library.add(
   faPhone,
   faUser,
@@ -44,12 +47,15 @@ library.add(
   faBarsStaggered,
   faRightFromBracket,
   faCalendarDay,
-  faClockRotateLeft
+  faClockRotateLeft,
+  faRightToBracket,
+  faCheckToSlot
 )
 
 const app = createApp(App).component('font-awesome-icon', FontAwesomeIcon)
 
 app.use(createPinia())
 app.use(router)
+init()
 
 app.mount('#app')

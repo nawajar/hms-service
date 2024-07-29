@@ -1,8 +1,16 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
+import { RouterView } from 'vue-router'
+import { computed } from 'vue'
+import { useLoaderStore } from '@/stores/loader'
+import HMSLoader from '@/views/loader/HMSLoader.vue'
+
+const store = useLoaderStore()
+const isLoading = computed(() => store.isLoading)
 </script>
 
 <template>
-  <RouterView/>
+  <div class="relative">
+    <HMSLoader :visible="isLoading" />
+    <RouterView />
+  </div>
 </template>
-
