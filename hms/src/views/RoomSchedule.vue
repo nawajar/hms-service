@@ -13,13 +13,13 @@
           <div class="head flex items-center justify-between p-4 bg-gray-100 rounded-md shadow">
             <div class="flex space-x-2">
               <button
-                @click="calendar.trigger.prevMonth()"
+                @click="prevMonth()"
                 class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex items-center"
               >
                 <i class="fas fa-chevron-left mr-2"></i> Prev Month
               </button>
               <button
-                @click="calendar.trigger.nextMonth()"
+                @click="nextMonth()"
                 class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex items-center"
               >
                 Next Month <i class="fas fa-chevron-right ml-2"></i>
@@ -169,7 +169,7 @@
 <script setup lang="ts">
 import { Calendar, type Day } from 'normal-calendar'
 import { pb } from '@/services/pb'
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { DateTime } from 'luxon'
 import _ from 'lodash'
 
@@ -180,6 +180,20 @@ const calendarRef = ref()
 const allRooms = ref<any>([])
 const bookings = ref<any>([])
 const today = new Date()
+
+const prevMonth = () => {
+  calendarRef.value.context.trigger.prevMonth()
+  var date = new Date(calendarRef.value.context.year, calendarRef.value.context.month, 1)
+  getBookings(date)
+  // console.log('m ', calendarRef.value.context.month)
+}
+
+const nextMonth = () => {
+  calendarRef.value.context.trigger.nextMonth()
+  var date = new Date(calendarRef.value.context.year, calendarRef.value.context.month, 1)
+  getBookings(date)
+  // console.log('m ', calendarRef.value.context.month)
+}
 
 const isToday = (d: number, m: number, y: number) => {
   var date = new Date(y, m, d)
@@ -281,9 +295,13 @@ const isThisMonth = (month: number) => {
   return calendarRef.value.context.month == month
 }
 
-const getBookings = async () => {
+const getBookings = async (focusDate: Date) => {
+  const todayFilter = DateTime.fromJSDate(focusDate)
+  const todayFormat = todayFilter.toFormat('yyyy-MM-dd')
+  const endDate = todayFilter.endOf('month')
+  const endDateFormat = endDate.toFormat('yyyy-MM-dd')
   const records = await pb.collection('bookings').getFullList({
-    filter: `status = 'active' || status ='check-out' || status='check-in'`,
+    filter: `(status = 'active' || status ='check-out' || status='check-in') && (check_in_date >= '${todayFormat} 00:00:00' && check_in_date <= '${endDateFormat} 23:59:59')`,
     fields: 'id,check_in_date,check_out_date,cus_name,room,status,cus_phone_no'
   })
 
@@ -301,6 +319,6 @@ const getRooms = async () => {
 
 onMounted(() => {
   getRooms()
-  getBookings()
+  getBookings(new Date())
 })
 </script>
