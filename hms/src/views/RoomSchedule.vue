@@ -311,14 +311,14 @@ const getBookings = async (focusDate: Date) => {
 const getRooms = async () => {
   const rooms = await pb.collection('rooms').getFullList({
     sort: 'room_no',
-    filter: 'active = true',
+    // filter: 'active = true',
     fields: '*'
   })
   allRooms.value = rooms
 }
 
-onMounted(() => {
-  getRooms()
+onMounted(async () => {
+  await getRooms()
   getBookings(new Date())
 })
 </script>
