@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 <template>
   <div class="flex h-screen pb-4 w-full overflow-x-hidden">
     <div
-      class="relative flex min-h-full w-full max-w-[14rem] flex-col rounded-xl bg-white bg-clip-border text-gray-700 shadow-xl shadow-blue-gray-900/5"
+      class="relative flex min-h-full max-w-[10rem] flex-col rounded-xl bg-white bg-clip-border text-gray-700 shadow-xl shadow-blue-gray-900/5"
     >
       <div class="p-4 mb-2">
         <h5

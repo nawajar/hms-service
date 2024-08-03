@@ -835,7 +835,6 @@ const updateBook = async () => {
   const res = await pb.collection('bookings').update(selectedBook?.value.id, formData)
   if (res) {
     if (res.status == 'check-out') {
-      pb.collection('rooms').update(selectedBook?.value.id, formData)
       const roomIds = selectedBook?.value.room
       await importRecordsInParallel(roomIds, {
         need_clean: true

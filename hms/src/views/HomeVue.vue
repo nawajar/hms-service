@@ -4,28 +4,45 @@
     <div class="stats shadow p-4 md:grid md:grid-cols-3 gap-4">
       <div class="stat">
         <div class="stat-figure text-primary">
-          <font-awesome-icon class="" icon="fa-right-to-bracket" />
+          <font-awesome-icon class="text-4xl" icon="fa-right-to-bracket" />
         </div>
         <div class="stat-value text-info">{{ bookingsToday.length }}</div>
-        <div class="stat-title">รายการจอง วันนี้</div>
+        <div class="stat-title text-info">รายการจอง วันนี้</div>
+        <div class="stat-desc text-info"></div>
+      </div>
+      <div class="stat">
+        <div class="stat-figure text-primary">
+          <font-awesome-icon class="text-4xl text-blue-800" icon="fa-hand-holding-dollar" />
+        </div>
+        <div class="stat-value text-blue-800">{{ bookingPaid }}</div>
+        <div class="stat-title text-blue-800">จ่ายแล้ว</div>
+        <div class="stat-desc"></div>
+      </div>
+
+      <div class="stat">
+        <div class="stat-figure text-primary">
+          <font-awesome-icon class="text-error text-4xl" icon="fa-exclamation" />
+        </div>
+        <div class="stat-value text-error">{{ bookingUnPaid }}</div>
+        <div class="stat-title text-error">ยังไม่จ่าย</div>
         <div class="stat-desc"></div>
       </div>
 
       <div class="stat">
         <div class="stat-figure text-secondary">
-          <font-awesome-icon class="text-info" icon="fa-check-to-slot" />
+          <font-awesome-icon class="text-warning text-4xl" icon="fa-check-to-slot" />
         </div>
         <div class="stat-value text-warning">{{ availableRoom }}</div>
-        <div class="stat-title">ห้องว่าง</div>
+        <div class="stat-title text-warning">ห้องว่าง</div>
         <div class="stat-desc"></div>
       </div>
 
       <div class="stat">
         <div class="stat-figure text-error">
-          <font-awesome-icon class="text-error" icon="fa-broom" />
+          <font-awesome-icon class="text-error text-4xl" icon="fa-broom" />
         </div>
         <div class="stat-value text-error">{{ needCleanRoom }}</div>
-        <div class="stat-title">ห้องรอทำความสะอาด</div>
+        <div class="stat-title text-error">ห้องรอทำความสะอาด</div>
         <div class="stat-desc"></div>
       </div>
     </div>
@@ -43,6 +60,14 @@ const today = new Date()
 const allRooms = ref<any>([])
 const bookingsToday = ref<any>([])
 import _ from 'lodash'
+
+const bookingPaid = computed(() => {
+  return _.filter(bookingsToday.value, (b) => b.paid == true).length
+})
+
+const bookingUnPaid = computed(() => {
+  return _.filter(bookingsToday.value, (b) => b.paid == false).length
+})
 
 const toDayThai = computed(() => {
   const result = today.toLocaleDateString('th-TH', {
@@ -63,7 +88,7 @@ const getBookingsToDay = async () => {
   const todayFormat = todayFilter.toFormat('yyyy-MM-dd')
   const records = await pb.collection('bookings').getFullList({
     filter: `check_in_date >= '${todayFormat} 00:00:00' && check_in_date <= '${todayFormat} 23:59:59'`,
-    fields: 'id,room'
+    fields: 'id,room,paid'
   })
 
   bookingsToday.value = records

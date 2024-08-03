@@ -18,7 +18,9 @@ import {
   faClockRotateLeft,
   faCrown,
   faCube,
+  faExclamation,
   faEye,
+  faHandHoldingDollar,
   faPhone,
   faRightFromBracket,
   faRightToBracket,
@@ -49,7 +51,9 @@ library.add(
   faCalendarDay,
   faClockRotateLeft,
   faRightToBracket,
-  faCheckToSlot
+  faCheckToSlot,
+  faHandHoldingDollar,
+  faExclamation
 )
 
 const app = createApp(App).component('font-awesome-icon', FontAwesomeIcon)

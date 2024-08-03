@@ -12,14 +12,33 @@
             v-for="r of value"
             :key="r.room_no"
           >
+            <div
+              :class="{
+                'bg-[#FFDE4D]': r.room_type == 'family',
+                'bg-[#96C9F4]': r.room_type == 'single_bed',
+                'bg-[#FFC7ED]': r.room_type == 'twin_bed'
+              }"
+              class="bg-green-200 min-h-full min-w-2 absolute left-0 top-0 rounded-tl-lg rounded-bl-lg"
+            ></div>
+
             <div class="flex items-center justify-between">
               <h4 class="font-bold">ห้อง {{ r.room_no }}</h4>
             </div>
             <button class="absolute right-1 top-2" @click="getBookingOfRoom(r.id)">
               <font-awesome-icon class="text-[#6C946F]" icon="bars-staggered" />
             </button>
-            <div class="absolute right-1 bottom-2" v-if="r.need_clean">
-              <font-awesome-icon class="text-[#FF4C4C]" icon="broom" />
+            <div class="absolute right-1 bottom-2 dropdown dropdown-end">
+              <DropDown
+                :items="['ทำความสะอาดเรียบร้อย']"
+                @clickMenu="markRoomClean(r.id)"
+                v-if="r.need_clean"
+              >
+                <template v-slot:default="{ onClick }">
+                  <button @click="onClick" role="button" class="absolute right-1 bottom-2">
+                    <font-awesome-icon class="text-[#FF4C4C]" icon="broom" />
+                  </button>
+                </template>
+              </DropDown>
             </div>
             <div class="flex items-center space-x-2">
               <div class="flex gap-2 items-center" v-if="r.room_type == 'family'">
@@ -66,10 +85,17 @@ import { onMounted, ref, computed } from 'vue'
 import { pb } from '@/services/pb'
 import _ from 'lodash'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import DropDown from '@/components/DropDown.vue'
 
 const allRooms = ref<any>([])
 const showModal = ref(false)
 const viewRoomBooking = ref<any>(null)
+
+const markRoomClean = async (roomId: string) => {
+  await pb.collection('rooms').update(roomId, { need_clean: false })
+  await getRooms()
+}
+
 const groupRoom = computed(() => {
   return _.groupBy(allRooms.value, (r) => r.floor)
 })
