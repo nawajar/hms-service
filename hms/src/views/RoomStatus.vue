@@ -18,7 +18,7 @@
                 'bg-[#96C9F4]': r.room_type == 'single_bed',
                 'bg-[#FFC7ED]': r.room_type == 'twin_bed'
               }"
-              class="bg-green-200 min-h-full min-w-2 absolute left-0 top-0 rounded-tl-lg rounded-bl-lg"
+              class="min-h-full min-w-2 absolute left-0 top-0 rounded-tl-lg rounded-bl-lg"
             ></div>
 
             <div class="flex items-center justify-between">

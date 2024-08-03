@@ -13,7 +13,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
         <h5
           class="block font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900"
         >
-          <!-- Xayluedee Hotel -->ASDF
+          Xayluedee Hotel
         </h5>
       </div>
       <ul class="menu bg-primary-200 min-w-[120px] gap-2">
