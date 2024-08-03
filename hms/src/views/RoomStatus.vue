@@ -8,7 +8,7 @@
         <div class="grid grid-cols-6 gap-2">
           <div
             class="p-4 border border-gray-300 text-gray-800 rounded-lg shadow-md relative"
-            :class="{ 'bg-red-100': r.need_clean }"
+            :class="{ 'bg-red-100': r.need_clean, 'opacity-30': !r.active }"
             v-for="r of value"
             :key="r.room_no"
           >
@@ -108,7 +108,7 @@ const toDateStr = (s: string) => {
 const getRooms = async () => {
   const rooms = await pb.collection('rooms').getFullList({
     sort: 'room_no',
-    filter: 'active = true',
+    // filter: 'active = true',
     fields: '*'
   })
   allRooms.value = rooms

@@ -8,24 +8,24 @@
         </div>
         <div class="stat-value text-info">{{ bookingsToday.length }}</div>
         <div class="stat-title text-info">รายการจอง วันนี้</div>
-        <div class="stat-desc text-info"></div>
+        <div class="text-base text-info">ยอดรวม {{ sumPrice }}</div>
       </div>
       <div class="stat">
         <div class="stat-figure text-primary">
           <font-awesome-icon class="text-4xl text-blue-800" icon="fa-hand-holding-dollar" />
         </div>
-        <div class="stat-value text-blue-800">{{ bookingPaid }}</div>
+        <div class="stat-value text-blue-800">{{ bookingPaid.length }}</div>
         <div class="stat-title text-blue-800">จ่ายแล้ว</div>
-        <div class="stat-desc"></div>
+        <div class="stext-base text-blue-800">ยอดรวม {{ sumPaid }}</div>
       </div>
 
       <div class="stat">
         <div class="stat-figure text-primary">
           <font-awesome-icon class="text-error text-4xl" icon="fa-exclamation" />
         </div>
-        <div class="stat-value text-error">{{ bookingUnPaid }}</div>
+        <div class="stat-value text-error">{{ bookingUnPaid.length }}</div>
         <div class="stat-title text-error">ยังไม่จ่าย</div>
-        <div class="stat-desc"></div>
+        <div class="text-base text-error">ยอดรวม {{ sumUnPaid }}</div>
       </div>
 
       <div class="stat">
@@ -62,11 +62,23 @@ const bookingsToday = ref<any>([])
 import _ from 'lodash'
 
 const bookingPaid = computed(() => {
-  return _.filter(bookingsToday.value, (b) => b.paid == true).length
+  return _.filter(bookingsToday.value, (b) => b.paid == true)
 })
 
 const bookingUnPaid = computed(() => {
-  return _.filter(bookingsToday.value, (b) => b.paid == false).length
+  return _.filter(bookingsToday.value, (b) => b.paid == false)
+})
+
+const sumPaid = computed(() => {
+  return _.sumBy(bookingPaid.value, (bp: any) => Number(bp?.price))
+})
+
+const sumUnPaid = computed(() => {
+  return _.sumBy(bookingUnPaid.value, (bp: any) => Number(bp?.price))
+})
+
+const sumPrice = computed(() => {
+  return _.sumBy(bookingsToday.value, (bp: any) => Number(bp?.price))
 })
 
 const toDayThai = computed(() => {
@@ -88,7 +100,7 @@ const getBookingsToDay = async () => {
   const todayFormat = todayFilter.toFormat('yyyy-MM-dd')
   const records = await pb.collection('bookings').getFullList({
     filter: `check_in_date >= '${todayFormat} 00:00:00' && check_in_date <= '${todayFormat} 23:59:59'`,
-    fields: 'id,room,paid'
+    fields: 'id,room,paid,price'
   })
 
   bookingsToday.value = records

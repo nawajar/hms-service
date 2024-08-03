@@ -80,7 +80,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
     <div class="w-full min-h-full">
       <div class="navbar bg-secondary">
         <div class="flex-1">
-          <a class="btn btn-ghost text-xl">Search..</a>
+          <a class="btn btn-ghost text-xl"></a>
         </div>
         <div class="flex-none gap-2">
           <font-awesome-icon icon="user" />
