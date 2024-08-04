@@ -8,24 +8,24 @@
         day: new Date()
       }"
     >
-      <div class="calendar-container">
+      <div class="calendar-containers">
         <div v-if="calendar.isOpenCalendar()">
-          <div class="head flex items-center justify-between p-4 bg-gray-100 rounded-md shadow">
+          <div class="head flex items-center p-4 bg-gray-100 rounded-md shadow">
+            <div class="text-lg font-semibold">{{ calendar.monthName }} {{ calendar.year }}</div>
             <div class="flex space-x-2">
               <button
                 @click="prevMonth()"
-                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex items-center"
+                class="text-white font-bold py-2 px-4 rounded flex items-center"
               >
-                <i class="fas fa-chevron-left mr-2"></i> Prev Month
+                <font-awesome-icon class="text-blue-500" icon="fa-chevron-left" />
               </button>
               <button
                 @click="nextMonth()"
-                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex items-center"
+                class="text-white font-bold py-2 px-4 rounded flex items-center"
               >
-                Next Month <i class="fas fa-chevron-right ml-2"></i>
+                <font-awesome-icon class="text-blue-500" icon="fa-chevron-right" />
               </button>
             </div>
-            <div class="text-lg font-semibold">{{ calendar.monthName }} {{ calendar.year }}</div>
           </div>
 
           <div class="overflow-x-auto">

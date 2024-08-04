@@ -73,7 +73,7 @@ onMounted(() => {
     </div>
   </Calendar>
 </template>
-<style lang="scss">
+<style lang="scss" scoped>
 .head {
   display: flex;
   flex-direction: column;
