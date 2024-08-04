@@ -395,6 +395,7 @@
 
   <Teleport to="body">
     <RoomPick
+      v-if="availableRoom.length > 0"
       :show="openRoomPick"
       :availableRoom="availableRoom"
       @onSelect="onSelectRoom"
@@ -489,6 +490,7 @@
   </dialog>
 
   <div
+    v-if="activeRightCreate"
     ref="rightDrawerCreate"
     :class="[activeRightCreate ? '' : 'translate-x-full']"
     class="absolute inset-y-0 right-0 w-1/2 bg-white shadow-lg transform transition-transform ease-in-out duration-300"
@@ -594,11 +596,7 @@
   >
     <div class="h-[calc(100%-5rem)] overflow-y-scroll p-4">
       <div class="flex items-center justify-between py-4 px-6 bg-white-500 h-[50px] border-b-[1px]">
-        <h2 class="text-secondary text-lg font-semibold">
-          Update Booking ({{ selectedBook?.cus_name }}) Room ({{
-            selectedBook?.expand.room.room_no
-          }})
-        </h2>
+        <h2 class="text-secondary text-lg font-semibold">Update Booking</h2>
         <button
           id="closeRightDrawerBtn"
           class="text-secondary"

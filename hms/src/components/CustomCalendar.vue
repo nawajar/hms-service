@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Calendar, type Day } from 'normal-calendar'
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { DateTime } from 'luxon'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
@@ -19,6 +19,10 @@ const onSelectDay = (day: Day) => {
 const isThisMonth = (month: number) => {
   return target.value.context.month == month
 }
+
+onMounted(() => {
+  pickDate.value = ''
+})
 
 //onClickOutside(target, (event) => target.value.context)
 </script>
