@@ -516,15 +516,17 @@
       <div class="container mx-auto p-4">
         <div class="form-control">
           <label class="label">
-            <span class="label-text">In</span>
+            <span class="label-text">เชคอิน</span>
           </label>
-          <flat-pickr v-model="startDate" class="input input-bordered w-full" />
+          <CustomCalendar v-model="startDate"></CustomCalendar>
+          <!-- <flat-pickr v-model="startDate" class="input input-bordered w-full" /> -->
         </div>
         <div class="form-control">
           <label class="label">
-            <span class="label-text">Out</span>
+            <span class="label-text">เชคเอ้า</span>
           </label>
-          <flat-pickr v-model="endDate" class="input input-bordered w-full" />
+          <CustomCalendar v-model="endDate"></CustomCalendar>
+          <!-- <flat-pickr v-model="endDate" class="input input-bordered w-full" /> -->
         </div>
         <div class="form-control">
           <label class="label">
@@ -727,6 +729,7 @@ import RoomPick from '@/components/RoomPick.vue'
 import _ from 'lodash'
 import DropZone from 'dropzone-vue'
 import 'dropzone-vue/dist/dropzone-vue.common.css'
+import CustomCalendar from '@/components/CustomCalendar.vue'
 
 const activeRightCreate = ref(false)
 const activeRightUpdate = ref(false)
@@ -885,7 +888,6 @@ const createBook = async () => {
   var price = 0
   if (startDate.value && endDate.value) {
     const roomPrice = _.sumBy(showRoomSelected.value, (a) => a.price)
-    console.log('day ', dayCount(endDate.value, startDate.value))
     price = dayCount(endDate.value, startDate.value) * roomPrice
   }
 
@@ -977,12 +979,14 @@ watch([startDate, endDate], () => {
   if ((startDate.value, endDate.value)) {
     if (startDate.value == endDate.value) {
       validCreateDate.value = false
+      availableRoom.value = []
       return
     }
     var selectedStart = toDate(startDate.value ?? '')
     var selectedEnd = toDate(endDate.value ?? '')
     if (selectedStart > selectedEnd) {
       validCreateDate.value = false
+      availableRoom.value = []
       return
     }
     validCreateDate.value = true

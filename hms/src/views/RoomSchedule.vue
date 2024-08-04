@@ -48,7 +48,7 @@
                 <template v-for="room in allRooms" :key="room.id">
                   <tr class="hover:bg-gray-50">
                     <td class="border border-gray-300 p-2 text-center font-bold">
-                      {{ room.room_no }}
+                      <p class="text-blue-500">{{ room.room_no }}</p>
                     </td>
                     <template
                       v-for="day in calendar.days.filter((d) => isThisMonth(d.month))"

@@ -14,6 +14,8 @@ import {
   faCheck,
   faCheckCircle,
   faCheckToSlot,
+  faChevronLeft,
+  faChevronRight,
   faCircleCheck,
   faCircleDollarToSlot,
   faClockRotateLeft,
@@ -57,7 +59,9 @@ library.add(
   faHandHoldingDollar,
   faExclamation,
   faCircleDollarToSlot,
-  faXmark
+  faXmark,
+  faChevronLeft,
+  faChevronRight
 )
 
 const app = createApp(App).component('font-awesome-icon', FontAwesomeIcon)
