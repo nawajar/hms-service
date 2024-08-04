@@ -7,16 +7,16 @@
           <font-awesome-icon class="text-4xl" icon="fa-right-to-bracket" />
         </div>
         <div class="stat-value text-info">{{ bookingsToday.length }}</div>
-        <div class="stat-title text-info">รายการจอง วันนี้</div>
-        <div class="text-base text-info">ยอดรวม {{ sumPrice }}</div>
+        <div class="stat-title text-info">{{ $t('dashboard.book_today') }}</div>
+        <div class="text-base text-info">{{ $t('dashboard.summary_amt') }} {{ sumPrice }}</div>
       </div>
       <div class="stat">
         <div class="stat-figure text-primary">
           <font-awesome-icon class="text-4xl text-blue-800" icon="fa-hand-holding-dollar" />
         </div>
         <div class="stat-value text-blue-800">{{ bookingPaid.length }}</div>
-        <div class="stat-title text-blue-800">จ่ายแล้ว</div>
-        <div class="stext-base text-blue-800">ยอดรวม {{ sumPaid }}</div>
+        <div class="stat-title text-blue-800">{{ $t('dashboard.paid') }}</div>
+        <div class="stext-base text-blue-800">{{ $t('dashboard.summary_amt') }} {{ sumPaid }}</div>
       </div>
 
       <div class="stat">
@@ -24,8 +24,8 @@
           <font-awesome-icon class="text-error text-4xl" icon="fa-exclamation" />
         </div>
         <div class="stat-value text-error">{{ bookingUnPaid.length }}</div>
-        <div class="stat-title text-error">ยังไม่จ่าย</div>
-        <div class="text-base text-error">ยอดรวม {{ sumUnPaid }}</div>
+        <div class="stat-title text-error">{{ $t('dashboard.un_paid') }}</div>
+        <div class="text-base text-error">{{ $t('dashboard.summary_amt') }} {{ sumUnPaid }}</div>
       </div>
 
       <div class="stat">
@@ -33,7 +33,7 @@
           <font-awesome-icon class="text-warning text-4xl" icon="fa-check-to-slot" />
         </div>
         <div class="stat-value text-warning">{{ availableRoom }}</div>
-        <div class="stat-title text-warning">ห้องว่าง</div>
+        <div class="stat-title text-warning">{{ $t('dashboard.available_room') }}</div>
         <div class="stat-desc"></div>
       </div>
 
@@ -42,7 +42,7 @@
           <font-awesome-icon class="text-error text-4xl" icon="fa-broom" />
         </div>
         <div class="stat-value text-error">{{ needCleanRoom }}</div>
-        <div class="stat-title text-error">ห้องรอทำความสะอาด</div>
+        <div class="stat-title text-error">{{ $t('dashboard.need_clean_room') }}</div>
         <div class="stat-desc"></div>
       </div>
     </div>

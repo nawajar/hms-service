@@ -5,6 +5,7 @@ import App from './App.vue'
 import router from './router'
 import './index.css'
 import { library } from '@fortawesome/fontawesome-svg-core'
+import { createI18n } from 'vue-i18n'
 import {
   faArrowsRotate,
   faBarsStaggered,
@@ -35,6 +36,7 @@ import {
 import { faUser } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import {  init } from '@/services/pb'
+import messages from '@/i18n/translate'
 library.add(
   faPhone,
   faUser,
@@ -66,6 +68,11 @@ library.add(
 
 const app = createApp(App).component('font-awesome-icon', FontAwesomeIcon)
 
+const i18n = createI18n({
+  locale: 'laos',
+  messages: messages
+})
+app.use(i18n)
 app.use(createPinia())
 app.use(router)
 init()
