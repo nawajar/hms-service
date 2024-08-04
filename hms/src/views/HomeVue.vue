@@ -70,15 +70,24 @@ const bookingUnPaid = computed(() => {
 })
 
 const sumPaid = computed(() => {
-  return _.sumBy(bookingPaid.value, (bp: any) => Number(bp?.price))
+  return _.sumBy(
+    bookingPaid.value,
+    (bp: any) => Number(bp?.price) + Number(bp?.extra_charge_amt ?? 0)
+  )
 })
 
 const sumUnPaid = computed(() => {
-  return _.sumBy(bookingUnPaid.value, (bp: any) => Number(bp?.price))
+  return _.sumBy(
+    bookingUnPaid.value,
+    (bp: any) => Number(bp?.price) + Number(bp?.extra_charge_amt ?? 0)
+  )
 })
 
 const sumPrice = computed(() => {
-  return _.sumBy(bookingsToday.value, (bp: any) => Number(bp?.price))
+  return _.sumBy(
+    bookingsToday.value,
+    (bp: any) => Number(bp?.price) + Number(bp?.extra_charge_amt ?? 0)
+  )
 })
 
 const toDayThai = computed(() => {
@@ -100,7 +109,7 @@ const getBookingsToDay = async () => {
   const todayFormat = todayFilter.toFormat('yyyy-MM-dd')
   const records = await pb.collection('bookings').getFullList({
     filter: `check_in_date >= '${todayFormat} 00:00:00' && check_in_date <= '${todayFormat} 23:59:59'`,
-    fields: 'id,room,paid,price'
+    fields: 'id,room,paid,price,extra_charge_amt'
   })
 
   bookingsToday.value = records

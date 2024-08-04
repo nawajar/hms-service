@@ -89,7 +89,7 @@
                               getRoomNo(room.id),
                               toStringDate(day.year, day.month, day.day)
                             )?.status === 'check-in',
-                          'bg-yellow-500 text-black':
+                          'bg-red-500 text-black':
                             getRoomSchedule(
                               getRoomNo(room.id),
                               toStringDate(day.year, day.month, day.day)

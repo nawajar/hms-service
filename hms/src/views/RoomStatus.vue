@@ -2,8 +2,20 @@
   <div class="w-full h-full mb-10 rounded overflow-y-scroll relative overflow-x-hidden">
     <div class="container mx-auto p-6">
       <h2 class="text-3xl font-bold mb-8 text-gray-800">สถานะห้อง {{ allRooms.length }} ห้อง</h2>
+      <div class="container mx-auto">
+        <div class="mb-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded">
+          <p class="font-semibold">
+            ห้องเปิดใช้งาน : <span class="font-bold">{{ readyRoom.length }}</span>
+          </p>
+        </div>
+        <div class="p-4 bg-red-100 border border-red-400 text-red-700 rounded">
+          <p class="font-semibold">
+            ห้องรอทำความสะอาด : <span class="font-bold">{{ needCleanRoom.length }}</span>
+          </p>
+        </div>
+      </div>
       <!-- Floor 1 -->
-      <div class="mb-12" v-for="(value, name, index) in groupRoom" :key="index">
+      <div class="mt-4 mb-12" v-for="(value, name, index) in groupRoom" :key="index">
         <h3 class="text-2xl font-semibold mb-6 text-gray-700">ชั้น {{ name }}</h3>
         <div class="grid grid-cols-6 gap-2">
           <div
@@ -29,9 +41,8 @@
             </button>
             <div class="absolute right-1 bottom-2 dropdown dropdown-end">
               <DropDown
-                :items="['ทำความสะอาดเรียบร้อย']"
-                @clickMenu="markRoomClean(r.id)"
-                v-if="r.need_clean"
+                :items="['ทำความสะอาดเรียบร้อย', 'ต้องการทำความสะอาด']"
+                @clickMenu="markRoomClean($event, r.id)"
               >
                 <template v-slot:default="{ onClick }">
                   <button @click="onClick" role="button" class="absolute right-1 bottom-2">
@@ -91,8 +102,21 @@ const allRooms = ref<any>([])
 const showModal = ref(false)
 const viewRoomBooking = ref<any>(null)
 
-const markRoomClean = async (roomId: string) => {
-  await pb.collection('rooms').update(roomId, { need_clean: false })
+const needCleanRoom = computed(() => {
+  return _.filter(allRooms.value, (r) => r.need_clean)
+})
+
+const readyRoom = computed(() => {
+  return _.filter(allRooms.value, (r) => r.active)
+})
+
+const markRoomClean = async (menuId: number, roomId: string) => {
+  if (menuId == 0) {
+    await pb.collection('rooms').update(roomId, { need_clean: false })
+  }
+  if (menuId == 1) {
+    await pb.collection('rooms').update(roomId, { need_clean: true })
+  }
   await getRooms()
 }
 

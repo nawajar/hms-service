@@ -293,7 +293,8 @@
                   <p
                     class="block antialiased font-sans text-sm leading-normal text-blue-gray-900 font-normal"
                   >
-                    {{ numberWithCommas(booking.price) }}
+                    {{ numberWithCommas(booking.price) }} คชจ เพิ่ม(
+                    {{ booking.extra_charge_amt ?? 0 }})
                     <!-- {{ booking.price }} -->
                   </p>
                 </div>
@@ -456,6 +457,14 @@
           <strong>Amount:</strong>
           <a href="#" class="text-black-500">{{ viewBook.price }}</a>
         </p>
+        <p>
+          <strong>ค่าใช้จ่ายเพิ่ม:</strong>
+          <a href="#" class="text-black-500">{{ viewBook.extra_charge_details }}</a>
+        </p>
+        <p>
+          <strong>ค่าใช้จ่ายจำนวน:</strong>
+          <a href="#" class="text-black-500">{{ viewBook.extra_charge_amt }}</a>
+        </p>
         <div class="flex flex-col">
           <strong>Documents:</strong>
           <div v-for="f of viewBook.cus_documents" :key="f">
@@ -579,36 +588,47 @@
     ref="rightDrawerUpdate"
     v-if="selectedBook"
     :class="[activeRightUpdate ? '' : 'translate-x-full']"
-    class="absolute inset-y-0 right-0 w-1/2 bg-white shadow-lg transform transition-transform ease-in-out duration-300"
+    class="flex flex-col h-full absolute inset-y-0 right-0 w-1/2 bg-white shadow-lg transform transition-transform ease-in-out duration-300"
   >
-    <div class="flex items-center justify-between py-4 px-6 bg-white-500 h-[50px] border-b-[1px]">
-      <h2 class="text-secondary text-lg font-semibold">
-        Update Booking ({{ selectedBook?.cus_name }}) Room ({{ selectedBook?.expand.room.room_no }})
-      </h2>
-      <button
-        id="closeRightDrawerBtn"
-        class="text-secondary"
-        @click="activeRightUpdate = !activeRightUpdate"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="h-6 w-6"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
+    <div class="h-[calc(100%-5rem)] overflow-y-scroll p-4">
+      <div class="flex items-center justify-between py-4 px-6 bg-white-500 h-[50px] border-b-[1px]">
+        <h2 class="text-secondary text-lg font-semibold">
+          Update Booking ({{ selectedBook?.cus_name }}) Room ({{
+            selectedBook?.expand.room.room_no
+          }})
+        </h2>
+        <button
+          id="closeRightDrawerBtn"
+          class="text-secondary"
+          @click="activeRightUpdate = !activeRightUpdate"
         >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M6 18L18 6M6 6l12 12"
-          ></path>
-        </svg>
-      </button>
-    </div>
-    <div class="h-[calc(100%-50px)] overflow-y-scroll c-scrollbox">
-      <div class="container mx-auto p-4 overflow-y-scroll mb-18">
-        <form class="space-y-4">
+          <font-awesome-icon class="" icon="fa-xmark" />
+        </button>
+      </div>
+      <div class="">
+        <form class="space-y-4 overflow-y-scroll">
+          <div class="form-control">
+            <label class="label" for="extra_charge_details">
+              <span class="label-text">ค่าใช้จ่ายเพิ่ม</span>
+            </label>
+            <input
+              type="text"
+              id="extra_charge_details"
+              class="input input-bordered w-full"
+              v-model="selectedBook.extra_charge_details"
+            />
+          </div>
+          <div class="form-control">
+            <label class="label" for="extra_charge_amt">
+              <span class="label-text">ค่าใช้จ่ายเพิ่ม จำนวน</span>
+            </label>
+            <input
+              type="number"
+              id="extra_charge_amt"
+              class="input input-bordered w-full"
+              v-model="selectedBook.extra_charge_amt"
+            />
+          </div>
           <div class="flex">
             <div class="form-control">
               <label class="label" for="paid">
@@ -624,7 +644,9 @@
             <div class="form-control">
               <label class="label" for="paid">
                 <span class="label-text font-bold"
-                  >({{ numberWithCommas(selectedBook.price) }})</span
+                  >({{
+                    numberWithCommas(selectedBook.price + (selectedBook.extra_charge_amt ?? 0))
+                  }})</span
                 >
               </label>
             </div>
@@ -653,7 +675,7 @@
             ></textarea>
           </div>
           <DropZone
-            :maxFiles="Number(10000000000)"
+            :maxFiles="Number(5)"
             :uploadOnDrop="false"
             :multipleUpload="true"
             :parallelUpload="3"
@@ -684,7 +706,9 @@
         </form>
       </div>
     </div>
-    <div class="flex bg-white absolute right-0 bottom-0 p-3 w-full border-t-[1px] justify-between">
+    <div
+      class="flex bg-white absolute right-0 bottom-0 p-3 w-full border-t-[1px] justify-between h-[5rem]"
+    >
       <button class="btn btn-error" @click="activeRightUpdate = !activeRightUpdate">Cancel</button>
       <button class="btn btn-primary" @click="updateBook">UPDATE</button>
     </div>
@@ -825,6 +849,9 @@ const updateBook = async () => {
   formData.append('cus_id_card', selectedBook.value.cus_id_card)
   formData.append('customer_address', selectedBook.value.customer_address)
   formData.append('status', selectedBook.value.status)
+
+  formData.append('extra_charge_details', selectedBook.value.extra_charge_details)
+  formData.append('extra_charge_amt', selectedBook.value.extra_charge_amt)
 
   if (selectedBook.value.file?.length > 0) {
     _.forEach(selectedBook.value.file, (f: any) => {

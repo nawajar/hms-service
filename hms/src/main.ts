@@ -15,6 +15,7 @@ import {
   faCheckCircle,
   faCheckToSlot,
   faCircleCheck,
+  faCircleDollarToSlot,
   faClockRotateLeft,
   faCrown,
   faCube,
@@ -26,7 +27,8 @@ import {
   faRightToBracket,
   faSignInAlt,
   faSignOutAlt,
-  faTimesCircle
+  faTimesCircle,
+  faXmark
 } from '@fortawesome/free-solid-svg-icons'
 import { faUser } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
@@ -53,7 +55,9 @@ library.add(
   faRightToBracket,
   faCheckToSlot,
   faHandHoldingDollar,
-  faExclamation
+  faExclamation,
+  faCircleDollarToSlot,
+  faXmark
 )
 
 const app = createApp(App).component('font-awesome-icon', FontAwesomeIcon)
