@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full h-full mb-10 rounded overflow-y-scroll relative overflow-x-hidden">
+  <div class="min-w-[400px] h-full mb-10 rounded overflow-y-scroll relative overflow-x-hidden">
     <div class="flex gap-4 items-center justify-between">
       <div class="flex gap-4">
         <legend class="text-secondary text-xl">Booking</legend>

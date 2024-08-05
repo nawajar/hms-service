@@ -87,7 +87,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
           {{ pb.authStore.model?.name }}
         </div>
       </div>
-      <div class="p-8 h-[calc(100%-50px)] relative">
+      <div class="p-8 h-[calc(100%-50px)] w-full">
         <RouterView></RouterView>
       </div>
     </div>
