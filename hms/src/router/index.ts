@@ -34,6 +34,12 @@ const router = createRouter({
           ...routeGuard(pb.authStore, { name: 'login' })
         },
         {
+          path: '/booking-create',
+          name: 'Booking Create', // 'patients'
+          component: () => import('@/views/BookingCreate.vue'),
+          ...routeGuard(pb.authStore, { name: 'login' })
+        },
+        {
           path: '/bookings',
           name: 'Booking', // 'patients'
           component: () => import('@/views/BookingRoom.vue'),

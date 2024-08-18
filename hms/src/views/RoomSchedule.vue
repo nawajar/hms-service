@@ -297,11 +297,13 @@ const isThisMonth = (month: number) => {
 
 const getBookings = async (focusDate: Date) => {
   const todayFilter = DateTime.fromJSDate(focusDate)
-  const todayFormat = todayFilter.toFormat('yyyy-MM-dd')
+  const startDate = todayFilter.startOf('month')
   const endDate = todayFilter.endOf('month')
+
+  const startDateFormat = startDate.toFormat('yyyy-MM-dd')
   const endDateFormat = endDate.toFormat('yyyy-MM-dd')
   const records = await pb.collection('bookings').getFullList({
-    filter: `(status = 'active' || status ='check-out' || status='check-in') && (check_in_date >= '${todayFormat} 00:00:00' && check_in_date <= '${endDateFormat} 23:59:59')`,
+    filter: `(status = 'active' || status ='check-out' || status='check-in') && (check_in_date >= '${startDateFormat} 00:00:00' && check_in_date <= '${endDateFormat} 23:59:59')`,
     fields: 'id,check_in_date,check_out_date,cus_name,room,status,cus_phone_no'
   })
 
@@ -319,6 +321,6 @@ const getRooms = async () => {
 
 onMounted(async () => {
   await getRooms()
-  getBookings(new Date())
+  await getBookings(new Date())
 })
 </script>

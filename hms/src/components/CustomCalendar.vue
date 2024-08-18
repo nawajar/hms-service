@@ -32,7 +32,7 @@ onMounted(() => {
     <div class="calendar-container">
       <input
         type="text"
-        class="input input-bordered w-full"
+        class="flex-1 border p-2 rounded"
         @click="calendar.toggle"
         v-model="pickDate"
       />
@@ -60,7 +60,7 @@ onMounted(() => {
             <div class="text-center">ส</div>
             <template v-for="day of calendar.days" :key="day">
               <button
-                class="day"
+                class="day text-center"
                 :class="{ 'opacity-50': !isThisMonth(day.month) }"
                 @click="onSelectDay(day)"
               >
@@ -80,9 +80,9 @@ onMounted(() => {
 }
 
 .calendar-container {
-  width: 100%;
+  @apply w-full;
   input {
-    width: 100%;
+    @apply w-full;
   }
 }
 
@@ -91,7 +91,7 @@ onMounted(() => {
   display: grid;
   grid-template-columns: repeat(7, auto);
   .day {
-    @apply hover:bg-info rounded-full w-[40px] h-[40px];
+    @apply hover:bg-info rounded-full h-[40px];
   }
 }
 </style>
