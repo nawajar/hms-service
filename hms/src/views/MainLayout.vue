@@ -45,15 +45,23 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
             ກາຮຂອງ
           </RouterLink>
         </li>
-
         <li>
+          <RouterLink :to="'booking-list'" activeClass="border-indigo-500">
+            <div class="grid mr-4 place-items-center">
+              <font-awesome-icon icon="bars-staggered"></font-awesome-icon>
+            </div>
+            ຮາຍກາຮຂອງ
+          </RouterLink>
+        </li>
+
+        <!-- <li>
           <RouterLink :to="'bookings'" activeClass="border-indigo-500">
             <div class="grid mr-4 place-items-center">
               <font-awesome-icon icon="bars-staggered"></font-awesome-icon>
             </div>
             Booking
           </RouterLink>
-        </li>
+        </li> -->
 
         <li>
           <RouterLink :to="'rooms'">

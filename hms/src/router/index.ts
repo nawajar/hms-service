@@ -40,11 +40,17 @@ const router = createRouter({
           ...routeGuard(pb.authStore, { name: 'login' })
         },
         {
-          path: '/bookings',
-          name: 'Booking', // 'patients'
-          component: () => import('@/views/BookingRoom.vue'),
+          path: '/booking-list',
+          name: 'Booking List', // 'patients'
+          component: () => import('@/views/BookingList.vue'),
           ...routeGuard(pb.authStore, { name: 'login' })
         },
+        // {
+        //   path: '/bookings',
+        //   name: 'Booking', // 'patients'
+        //   component: () => import('@/views/BookingRoom.vue'),
+        //   ...routeGuard(pb.authStore, { name: 'login' })
+        // },
         {
           path: '/rooms',
           name: 'Rooms', // 'patients'

@@ -42,17 +42,12 @@
           <!-- Name -->
           <div class="flex items-center">
             <label class="w-1/3 font-medium">Name:</label>
-            <input
-              type="text"
-              class="flex-1 border p-2 rounded"
-              value="Sommalee Saithong"
-              readonly
-            />
+            <input type="text" class="flex-1 border p-2 rounded" v-model="customerName" />
           </div>
           <!-- Phone Number -->
           <div class="flex items-center">
             <label class="w-1/3 font-medium">Phone Number:</label>
-            <input type="text" class="flex-1 border p-2 rounded" value="020 5577 9941" readonly />
+            <input type="text" class="flex-1 border p-2 rounded" v-model="customerPhone" />
           </div>
           <!-- Customer ID Card -->
           <div class="flex items-center">
@@ -61,6 +56,7 @@
               type="text"
               class="flex-1 border p-2 rounded"
               placeholder="Enter ID card number"
+              v-model="customerCardId"
             />
           </div>
           <!-- Customer Address -->
@@ -70,6 +66,7 @@
               class="flex-1 border p-2 rounded"
               rows="3"
               placeholder="Enter customer address"
+              v-model="customerAddress"
             ></textarea>
           </div>
           <!-- Note -->
@@ -79,6 +76,7 @@
               class="flex-1 border p-2 rounded"
               rows="3"
               placeholder="Enter any notes"
+              v-model="note"
             ></textarea>
           </div>
         </div>
@@ -95,12 +93,13 @@
               type="text"
               class="flex-1 border p-2 rounded"
               placeholder="Enter additional cost"
+              v-model="extraChargeDetails"
             />
           </div>
           <!-- Additional Cost Quantity -->
           <div class="flex items-center">
             <label class="w-1/3 font-medium">Additional Cost Quantity:</label>
-            <input type="number" class="flex-1 border p-2 rounded" value="0" />
+            <input type="number" class="flex-1 border p-2 rounded" v-model="extraChargeAmt" />
           </div>
           <!-- Paid Checkbox -->
           <div class="flex items-center">
@@ -108,15 +107,30 @@
             <input
               type="checkbox"
               class="h-5 w-5 rounded border-gray-300 text-green-600 focus:ring-green-500"
+              v-model="paid"
             />
+          </div>
+          <div class="flex items-center">
+            <label class="w-1/3 font-medium">ຂ່າຍແບບ :</label>
+            <div class="w-2/3 flex gap-4">
+              <select id="status" class="flex-1 border p-2 rounded" v-model="paidChannel">
+                <option value="cash">Cash</option>
+                <option value="bank_transfer">Bank Transfer</option>
+              </select>
+            </div>
           </div>
           <!-- File Upload -->
           <div class="flex items-center">
             <label class="w-1/3 font-medium"></label>
-            <div
-              class="flex-1 border-2 border-dashed border-green-400 p-4 rounded text-center text-gray-500"
-            >
-              Drop here
+            <div class="w-2/3">
+              <DropZone
+                :maxFiles="Number(5)"
+                :uploadOnDrop="false"
+                :multipleUpload="true"
+                :parallelUpload="3"
+                @addedFile="onFileAdd"
+                @removedFile="onFileRemove"
+              />
             </div>
           </div>
         </div>
@@ -124,22 +138,40 @@
 
       <!-- Total Payment -->
       <fieldset class="border border-gray-300 rounded-md p-4 mb-6">
-        <legend class="text-md font-semibold px-2">Total Payment</legend>
-        <div class="flex items-center">
-          <label class="w-1/3 font-medium">Total Payment:</label>
-          <input
-            type="text"
-            class="flex-1 border p-2 rounded"
-            :value="`${calculateNetAmount(showRoomSelected)} ₭`"
-            readonly
-            disabled
-          />
+        <legend class="text-md font-semibold px-2">Summary</legend>
+        <div class="grid grid-cols-1 gap-4">
+          <div class="flex items-center">
+            <label class="w-1/3 font-medium">Status:</label>
+            <div class="w-2/3 flex gap-4">
+              <select id="status" class="flex-1 border p-2 rounded" v-model="bookingStatus">
+                <option value="active">Active</option>
+                <option value="cancel">Cancel</option>
+                <option value="check-in">Check-in</option>
+                <option value="check-out">Check-out</option>
+              </select>
+            </div>
+          </div>
+          <div class="flex items-center">
+            <label class="w-1/3 font-medium">Total Payment:</label>
+            <input
+              type="text"
+              class="flex-1 border p-2 rounded"
+              :value="`${calculateNetAmount(showRoomSelected)} ₭`"
+              readonly
+              disabled
+            />
+          </div>
+          <div class="flex items-center">
+            <label class="w-1/3 font-medium">Create By:</label>
+            <input
+              type="text"
+              class="flex-1 border p-2 rounded"
+              :value="`${pb.authStore.model?.name}`"
+              readonly
+              disabled
+            />
+          </div>
         </div>
-        <!-- Signature -->
-        <!-- <div class="flex items-center mt-4">
-          <label class="w-1/3 font-medium">Signature:</label>
-          <input type="text" class="flex-1 border p-2 rounded" placeholder="Sign here" />
-        </div> -->
       </fieldset>
 
       <!-- Room Details Table -->
@@ -170,7 +202,10 @@
       </div>
 
       <div class="flex justify-end w-50">
-        <button class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded">
+        <button
+          class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded"
+          @click="createBook"
+        >
           ສຮ້າງ
         </button>
       </div>
@@ -194,6 +229,8 @@ import type { RecordModel } from 'pocketbase'
 import { DateTime, Interval } from 'luxon'
 import _ from 'lodash'
 import RoomPick from '@/components/RoomPick.vue'
+import DropZone from 'dropzone-vue'
+import 'dropzone-vue/dist/dropzone-vue.common.css'
 
 const bookings = ref<any>([])
 const startDate = ref(null)
@@ -202,13 +239,100 @@ const selectedRoom = ref<string[]>([])
 const openRoomPick = ref<boolean>(false)
 const availableRoom = ref<RecordModel[]>([])
 const validCreateDate = ref<boolean>(false)
+const customerName = ref(null)
+const customerPhone = ref(null)
+const customerCardId = ref(null)
+const customerAddress = ref(null)
+const note = ref(null)
+const extraChargeDetails = ref(null)
+const extraChargeAmt = ref(null)
+const paid = ref(false)
+const files = ref<any>([])
+const bookingStatus = ref('active')
+const paidChannel = ref(null)
+
+const onFileRemove = async (event: any) => {
+  _.remove(files.value, (i: any) => i?.id == event.id)
+}
+
+const onFileAdd = async (event: any) => {
+  if (!files.value) {
+    files.value = []
+  }
+  files.value.push(event)
+}
+
+const setIfExist = (formData: FormData, key: string, val: any) => {
+  if (val) {
+    formData.append(key, val)
+  }
+}
+
+const createBook = async () => {
+  var price = 0
+  if (startDate.value && endDate.value) {
+    const roomPrice = _.sumBy(showRoomSelected.value, (a) => a.price)
+    price = dayCount(endDate.value, startDate.value) * roomPrice
+    price += extraChargeAmt.value ?? 0
+  } else {
+    return
+  }
+  const formData = new FormData()
+  setIfExist(formData, 'check_in_date', startDate.value)
+  setIfExist(formData, 'check_out_date', endDate.value)
+  setIfExist(formData, 'room', selectedRoom.value)
+
+  setIfExist(formData, 'cus_name', customerName.value)
+  setIfExist(formData, 'cus_phone_no', customerPhone.value)
+  setIfExist(formData, 'cus_id_card', customerCardId.value)
+  setIfExist(formData, 'customer_address', customerAddress.value)
+  setIfExist(formData, 'note', note.value)
+
+  setIfExist(formData, 'extra_charge_details', extraChargeDetails.value)
+  setIfExist(formData, 'extra_charge_amt', extraChargeAmt.value)
+  formData.append('paid', `${paid.value}`)
+  setIfExist(formData, 'paid_channel', paidChannel.value)
+
+  if (files.value?.length > 0) {
+    console.log('file ', files.value)
+    _.forEach(files.value, (f: any) => {
+      formData.append('cus_documents', f.file)
+    })
+  }
+
+  setIfExist(formData, 'status', bookingStatus.value)
+  setIfExist(formData, 'price', price)
+  formData.append('create_by', pb.authStore.model?.name)
+  await pb.collection('bookings').create(formData)
+  clearCreateForm()
+}
+
+const clearCreateForm = () => {
+  startDate.value = null
+  endDate.value = null
+  selectedRoom.value = []
+
+  customerName.value = null
+  customerPhone.value = null
+  customerCardId.value = null
+  customerAddress.value = null
+  note.value = null
+
+  extraChargeDetails.value = null
+  extraChargeAmt.value = null
+  paid.value = false
+  paidChannel.value = null
+  files.value = []
+
+  bookingStatus.value = ''
+}
 
 const getListValJoin = (list: any, key: string) => {
   return _.map(list, (l) => l[key]).join(',')
 }
 
 const calculateNetAmount = (room: any) => {
-  return _.sumBy(room, (r: any) => r.price_net)
+  return _.sumBy(room, (r: any) => r.price_net) + (extraChargeAmt.value ?? 0)
 }
 
 const dayCounted = computed(() => {
