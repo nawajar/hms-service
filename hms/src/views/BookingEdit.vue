@@ -10,12 +10,22 @@
           <!-- Check-in Date -->
           <div class="flex items-center">
             <label class="w-1/3 font-medium">ວິນທີ່ເຊ້າພິກ:</label>
-            <input type="text" class="flex-1 border p-2 rounded" disabled v-model="startDate" />
+            <input
+              type="text"
+              class="flex-1 border p-2 rounded disabled:opacity-35"
+              disabled
+              v-model="startDate"
+            />
           </div>
           <!-- Check-out Date -->
           <div class="flex items-center">
             <label class="w-1/3 font-medium">ວິນທີ່ອອກ:</label>
-            <input type="text" class="flex-1 border p-2 rounded" disabled v-model="endDate" />
+            <input
+              type="text"
+              class="flex-1 border p-2 rounded disabled:opacity-35"
+              disabled
+              v-model="endDate"
+            />
           </div>
           <!-- Room Numbers -->
           <div class="flex items-center">
@@ -129,6 +139,20 @@
               />
             </div>
           </div>
+          <div class="flex items-center">
+            <label class="w-1/3 font-medium flex flex-col"></label>
+            <div class="flex flex-col">
+              <template v-for="f of uploadDoc" :key="f">
+                <a
+                  target="_blank"
+                  :href="fileUrl(f)"
+                  class="text-blue-500 underline overflow-auto line-clamp-1"
+                >
+                  {{ f }}
+                </a>
+              </template>
+            </div>
+          </div>
         </div>
       </fieldset>
 
@@ -167,6 +191,16 @@
               disabled
             />
           </div>
+          <!-- <div class="flex items-center">
+            <label class="w-1/3 font-medium">Update By:</label>
+            <input
+              type="text"
+              class="flex-1 border p-2 rounded"
+              v-model="updateBy"
+              readonly
+              disabled
+            />
+          </div> -->
         </div>
       </fieldset>
 
@@ -196,16 +230,22 @@
           </tbody>
         </table>
       </div>
-
-      <div class="flex justify-end w-50">
+      <div class="flex justify-end w-50 gap-4">
+        <button
+          class="bg-warning hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded"
+          @click="back"
+        >
+          ຍົກເລີກ
+        </button>
         <button
           class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded"
-          @click="createBook"
+          @click="editBook"
         >
-          ສຮ້າງ
+          ແກ້ໄຂການຈອງ
         </button>
       </div>
     </div>
+
     <Teleport to="body">
       <RoomPick
         v-if="availableRoom.length > 0"
@@ -252,6 +292,13 @@ const files = ref<any>([])
 const bookingStatus = ref('active')
 const paidChannel = ref(null)
 const createBy = ref()
+const updateBy = ref()
+const uploadDoc = ref()
+const collectionId = ref()
+
+const back = () => {
+  router.push({ name: 'Booking List' })
+}
 
 const onFileRemove = async (event: any) => {
   _.remove(files.value, (i: any) => i?.id == event.id)
@@ -270,7 +317,8 @@ const setIfExist = (formData: FormData, key: string, val: any) => {
   }
 }
 
-const createBook = async () => {
+const editBook = async () => {
+  const bookId = route.params.id as string
   var price = 0
   if (startDate.value && endDate.value) {
     const roomPrice = _.sumBy(showRoomSelected.value, (a) => a.price)
@@ -298,7 +346,6 @@ const createBook = async () => {
   setIfExist(formData, 'paid_channel', paidChannel.value)
 
   if (files.value?.length > 0) {
-    console.log('file ', files.value)
     _.forEach(files.value, (f: any) => {
       formData.append('cus_documents', f.file)
     })
@@ -306,8 +353,8 @@ const createBook = async () => {
 
   setIfExist(formData, 'status', bookingStatus.value)
   setIfExist(formData, 'price', price)
-  formData.append('create_by', pb.authStore.model?.name)
-  await pb.collection('bookings').create(formData)
+  formData.append('update_by', pb.authStore.model?.name)
+  await pb.collection('bookings').update(bookId, formData)
   clearCreateForm()
 }
 
@@ -365,6 +412,11 @@ const onSelectRoom = (rooms: string[]) => {
 const openSelectRoom = () => {
   selectedRoom.value = []
   openRoomPick.value = !openRoomPick.value
+}
+
+const fileUrl = (fileName: string) => {
+  const bookId = route.params.id as string
+  return `${import.meta.env.API_URL}api/files/${collectionId.value}/${bookId}/${fileName}?token=`
 }
 
 const getBookings = async () => {
@@ -457,8 +509,8 @@ const getBook = async () => {
 }
 
 const patchForm = (book: any) => {
-  startDate.value = book.check_in_date
-  endDate.value = book.check_out_date
+  startDate.value = book.check_in_date.split(' ')[0]
+  endDate.value = book.check_out_date.split(' ')[0]
   selectedRoom.value = book.room
   customerName.value = book.cus_name
   customerPhone.value = book.cus_phone_no
@@ -473,6 +525,9 @@ const patchForm = (book: any) => {
   paidChannel.value = book.paid_channel
   bookingStatus.value = book.status
   createBy.value = book.create_by
+  updateBy.value = book.update_by
+  uploadDoc.value = book.cus_documents
+  collectionId.value = book.collectionId
 }
 
 onMounted(async () => {

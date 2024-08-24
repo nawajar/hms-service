@@ -16,7 +16,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
           Xayluedee Hotel
         </h5>
       </div>
-      <ul class="menu bg-primary-200 min-w-[120px] gap-2">
+      <ul class="menu bg-primary-200 min-w-[140px] gap-2 pr-4">
         <li>
           <RouterLink :to="'/dashboard'" activeClass="border-indigo-500">
             <div class="grid mr-4 place-items-center">
@@ -38,20 +38,30 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
           </RouterLink>
         </li>
         <li>
-          <RouterLink :to="'/booking-create'" activeClass="border-indigo-500">
+          <a>
             <div class="grid mr-4 place-items-center">
-              <font-awesome-icon icon="bars-staggered"></font-awesome-icon>
+              <font-awesome-icon icon="hashtag"></font-awesome-icon>
             </div>
-            ກາຮຂອງ
-          </RouterLink>
-        </li>
-        <li>
-          <RouterLink :to="'/booking-list'" activeClass="border-indigo-500">
-            <div class="grid mr-4 place-items-center">
-              <font-awesome-icon icon="bars-staggered"></font-awesome-icon>
-            </div>
-            ຮາຍກາຮຂອງ
-          </RouterLink>
+            ການຈອງ
+          </a>
+          <ul>
+            <li>
+              <RouterLink :to="'/booking-create'" activeClass="border-indigo-500">
+                <div class="grid mr-4 place-items-center">
+                  <font-awesome-icon icon="right-to-bracket"></font-awesome-icon>
+                </div>
+                ຫ້ອງຈອງ
+              </RouterLink>
+            </li>
+            <li>
+              <RouterLink :to="'/booking-list'" activeClass="border-indigo-500">
+                <div class="grid mr-4 place-items-center">
+                  <font-awesome-icon icon="bars-staggered"></font-awesome-icon>
+                </div>
+                ຮາຍກາຮຂອງ
+              </RouterLink>
+            </li>
+          </ul>
         </li>
 
         <!-- <li>
@@ -64,26 +74,37 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
         </li> -->
 
         <li>
-          <RouterLink :to="'/rooms'">
+          <a>
             <div class="grid mr-4 place-items-center">
-              <font-awesome-icon icon="cube"></font-awesome-icon>
+              <font-awesome-icon icon="hashtag"></font-awesome-icon>
             </div>
-            Rooms
-            <div class="grid ml-auto place-items-center justify-self-end">
-              <div
-                class="relative grid items-center px-2 py-1 font-sans text-xs font-bold uppercase rounded-full select-none whitespace-nowrap bg-blue-gray-500/20 text-blue-gray-900"
-              ></div>
-            </div>
-          </RouterLink>
+            ຫ້ອງ
+          </a>
+          <ul>
+            <li>
+              <RouterLink :to="'/rooms'">
+                <div class="grid mr-4 place-items-center">
+                  <font-awesome-icon icon="cube"></font-awesome-icon>
+                </div>
+                ສະ​ຖາ​ນະ​ພາບ​ຫ້ອງ​
+                <div class="grid ml-auto place-items-center justify-self-end">
+                  <div
+                    class="relative grid items-center px-2 py-1 font-sans text-xs font-bold uppercase rounded-full select-none whitespace-nowrap bg-blue-gray-500/20 text-blue-gray-900"
+                  ></div>
+                </div>
+              </RouterLink>
+            </li>
+            <li>
+              <RouterLink :to="'/rooms-schedule'" activeClass="border-indigo-500">
+                <div class="grid mr-4 place-items-center">
+                  <font-awesome-icon icon="calendar-day"></font-awesome-icon>
+                </div>
+                ຕາ​ຕະ​ລາງ​ຫ້ອງ​
+              </RouterLink>
+            </li>
+          </ul>
         </li>
-        <li>
-          <RouterLink :to="'/rooms-schedule'" activeClass="border-indigo-500">
-            <div class="grid mr-4 place-items-center">
-              <font-awesome-icon icon="calendar-day"></font-awesome-icon>
-            </div>
-            Room Schedule
-          </RouterLink>
-        </li>
+
         <li>
           <RouterLink :to="'/booking-history'" activeClass="border-indigo-500">
             <div class="grid mr-4 place-items-center">

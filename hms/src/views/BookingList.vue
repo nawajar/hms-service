@@ -79,7 +79,7 @@
         </thead>
         <tbody class="divide-y divide-gray-200">
           <template v-for="(booking, idx) in bookingsView" v-bind:key="booking.id">
-            <tr class="hover:bg-gray-100" tabindex="0" @click="goToEdit(booking.id)">
+            <tr class="hover:bg-gray-100 cursor-pointer" tabindex="0" @click="goToEdit(booking.id)">
               <td class="px-6 py-4 text-center text-base text-gray-600">
                 {{ (currentPage - 1) * perPage + (idx + 1) }}
               </td>
