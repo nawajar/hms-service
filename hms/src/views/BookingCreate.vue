@@ -280,7 +280,10 @@ const createBook = async () => {
   const formData = new FormData()
   setIfExist(formData, 'check_in_date', startDate.value)
   setIfExist(formData, 'check_out_date', endDate.value)
-  setIfExist(formData, 'room', selectedRoom.value)
+  console.log(selectedRoom.value)
+  _.forEach(selectedRoom.value, (room) => {
+    setIfExist(formData, 'room', room)
+  })
 
   setIfExist(formData, 'cus_name', customerName.value)
   setIfExist(formData, 'cus_phone_no', customerPhone.value)

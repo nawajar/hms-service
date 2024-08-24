@@ -68,7 +68,7 @@ const login = async () => {
   const authData = await pb.collection('users').authWithPassword(userName.value, password.value)
   console.log('Logged in.', authData)
   router.push({
-    path: '/bookings'
+    path: '/booking-list'
   })
 }
 </script>

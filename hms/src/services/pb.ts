@@ -8,13 +8,11 @@ export function init() {
     const store = useLoaderStore();
     pb.beforeSend = function (url, options) {
         store.show()
-        console.log('send')
         return { url, options }
     };
     
     pb.afterSend = function (response, data) {
         store.hide()
-        console.log('send end')
         return data
     };
 }

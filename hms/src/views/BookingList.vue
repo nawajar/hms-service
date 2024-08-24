@@ -1,42 +1,48 @@
 <template>
   <div class="min-w-[400px] h-full mb-10 rounded overflow-y-scroll relative overflow-x-hidden">
     <div class="flex gap-4 items-center justify-between">
-      <div class="flex gap-4">
+      <!-- <div class="flex gap-4">
         <legend class="text-secondary text-xl">Booking</legend>
         <button @click="refresh" class="hover:bg-neutral rounded-full w-8 h-8">
           <font-awesome-icon icon="arrows-rotate" />
         </button>
-      </div>
+      </div> -->
     </div>
     <div class="mb-4">
       <fieldset class="border border-gray-300 p-4 rounded-lg bg-white shadow-lg">
-        <legend class="text-lg font-semibold text-gray-700 px-2">Search and Filter</legend>
-        <div class="flex flex-wrap items-center space-y-4 md:space-y-0 md:space-x-4">
+        <legend class="text-lg font-semibold text-gray-700 px-2">
+          Booking
+
+          <button @click="refresh" class="hover:bg-neutral rounded-full w-8 h-8">
+            <font-awesome-icon icon="arrows-rotate" />
+          </button>
+        </legend>
+
+        <div class="flex items-center space-y-4 md:space-y-0 md:space-x-4">
           <!-- Search text -->
-          <div class="flex-grow">
+          <div class="flex flex-col w-1/2">
             <label for="search" class="block text-gray-700 text-sm font-medium mb-1">Search</label>
             <input
               type="text"
               id="search"
               name="search"
               placeholder="Search by name or room number"
+              v-model="searchQuery"
+              @input="onInputSearch"
               class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
           </div>
           <!-- Date Filter: From -->
-          <div>
+          <div class="flex flex-col w-1/2">
             <label for="from-date" class="block text-gray-700 text-sm font-medium mb-1"
               >From Date</label
             >
-            <input
-              type="date"
-              id="from-date"
-              name="from-date"
-              class="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-            />
+            <div class="" v-if="filterFromDate">
+              <CustomCalendar v-model="filterFromDate"></CustomCalendar>
+            </div>
           </div>
           <!-- Date Filter: To -->
-          <div>
+          <!-- <div>
             <label for="to-date" class="block text-gray-700 text-sm font-medium mb-1"
               >To Date</label
             >
@@ -46,15 +52,15 @@
               name="to-date"
               class="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
-          </div>
+          </div> -->
           <!-- Filter Button -->
-          <div>
+          <!-- <div>
             <button
               class="mt-6 px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
             >
               Filter
             </button>
-          </div>
+          </div> -->
         </div>
       </fieldset>
     </div>
@@ -122,8 +128,12 @@
                 {{ booking.paid_channel }}
               </td>
               <td class="px-6 py-4 text-base text-gray-600">{{ booking.create_by }}</td>
-              <td class="px-6 py-4 text-base text-gray-600">9/8/24</td>
-              <td class="px-6 py-4 text-base text-gray-600">8/8/24</td>
+              <td class="px-6 py-4 text-base text-gray-600">
+                {{ toThaiFromCheckDate(booking.check_in) }}
+              </td>
+              <td class="px-6 py-4 text-base text-gray-600">
+                {{ toThaiFromCheckDate(booking.check_out) }}
+              </td>
             </tr>
           </template>
 
@@ -200,12 +210,50 @@ import type { RecordModel } from 'pocketbase'
 import { DateTime, Interval } from 'luxon'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import RoomPick from '@/components/RoomPick.vue'
-import _ from 'lodash'
+import _, { debounce } from 'lodash'
 import DropZone from 'dropzone-vue'
 import 'dropzone-vue/dist/dropzone-vue.common.css'
 import CustomCalendar from '@/components/CustomCalendar.vue'
 
 const bookings = ref<any>([])
+const searchQuery = ref('')
+const filterFromDate = ref('')
+const today = new Date()
+
+watch(filterFromDate, (newDate, oldDate) => {
+  if (newDate != oldDate) {
+    onSearch()
+  }
+})
+
+const onInputSearch = debounce(() => {
+  onSearch()
+}, 500)
+
+const onSearch = async () => {
+  const queryText = searchQuery.value
+  const fromDate = filterFromDate.value
+
+  var filters = ''
+  if (queryText) {
+    filters += `room.room_no ?= '${queryText}' || cus_name ~ '${queryText}'`
+  }
+  if (fromDate) {
+    if (filters) {
+      filters += ' && '
+    }
+    filters += `(check_in_date >= '${fromDate} 00:00:00' && check_in_date <= '${fromDate} 23:59:59')`
+  }
+
+  const records = await pb.collection('bookings').getFullList({
+    sort: '-created',
+    filter: filters,
+    expand: 'room',
+    fields: '*'
+  })
+
+  bookings.value = records
+}
 
 const bookingsView = computed(() => {
   var bookingV = bookings.value.map((book: any) => {
@@ -226,19 +274,19 @@ const bookingsView = computed(() => {
 })
 
 const refresh = async () => {
-  getBookings()
+  onSearch()
 }
 
-const getBookings = async () => {
-  const records = await pb.collection('bookings').getFullList({
-    sort: '-created',
-    filter: `status = 'active' || status = 'check-in'`,
-    expand: 'room',
-    fields: '*'
-  })
+// const getBookings = async () => {
+//   const records = await pb.collection('bookings').getFullList({
+//     sort: '-created',
+//     filter: `status = 'active' || status = 'check-in'`,
+//     expand: 'room',
+//     fields: '*'
+//   })
 
-  bookings.value = records
-}
+//   bookings.value = records
+// }
 
 const dayCount = (f: string, t: string) => {
   var s = f.split(' ').join('T')
@@ -257,7 +305,21 @@ function numberWithCommas(x: any) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')
 }
 
+const toThaiFromCheckDate = (date: string) => {
+  var s = date.split(' ').join('T')
+  const dateL = DateTime.fromISO(s)
+  const lDate = dateL.toJSDate()
+
+  const result = lDate.toLocaleDateString('th-TH', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  })
+  return result
+}
+
 onMounted(async () => {
-  getBookings()
+  filterFromDate.value = DateTime.fromJSDate(today).toFormat('yyyy-MM-dd')
+  //getBookings()
 })
 </script>
