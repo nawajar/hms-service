@@ -1,13 +1,6 @@
 <template>
   <div class="min-w-[400px] h-full mb-10 rounded overflow-y-scroll relative overflow-x-hidden">
-    <div class="flex gap-4 items-center justify-between">
-      <!-- <div class="flex gap-4">
-        <legend class="text-secondary text-xl">Booking</legend>
-        <button @click="refresh" class="hover:bg-neutral rounded-full w-8 h-8">
-          <font-awesome-icon icon="arrows-rotate" />
-        </button>
-      </div> -->
-    </div>
+    <div class="flex gap-4 items-center justify-between"></div>
     <div class="mb-4">
       <fieldset class="border border-gray-300 p-4 rounded-lg bg-white shadow-lg">
         <legend class="text-lg font-semibold text-gray-700 px-2">
@@ -41,26 +34,6 @@
               <CustomCalendar v-model="filterFromDate"></CustomCalendar>
             </div>
           </div>
-          <!-- Date Filter: To -->
-          <!-- <div>
-            <label for="to-date" class="block text-gray-700 text-sm font-medium mb-1"
-              >To Date</label
-            >
-            <input
-              type="date"
-              id="to-date"
-              name="to-date"
-              class="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-            />
-          </div> -->
-          <!-- Filter Button -->
-          <!-- <div>
-            <button
-              class="mt-6 px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-            >
-              Filter
-            </button>
-          </div> -->
         </div>
       </fieldset>
     </div>
@@ -107,7 +80,9 @@
         <tbody class="divide-y divide-gray-200">
           <template v-for="(booking, idx) in bookingsView" v-bind:key="booking.id">
             <tr class="hover:bg-gray-100">
-              <td class="px-6 py-4 text-center text-base text-gray-600">{{ idx + 1 }}</td>
+              <td class="px-6 py-4 text-center text-base text-gray-600">
+                {{ (currentPage - 1) * perPage + (idx + 1) }}
+              </td>
               <td class="px-6 py-4 text-base text-gray-600">
                 {{ booking.room_no }}
               </td>
@@ -143,58 +118,27 @@
     </div>
     <div class="flex justify-between items-center mt-6">
       <div class="text-sm text-gray-600">
-        Showing <span class="font-medium">1</span> to <span class="font-medium">10</span> of
-        <span class="font-medium">50</span> results
+        <span class="font-medium"> ໜ້າ {{ bookings?.page }} / {{ bookings?.totalPages }}</span>
+        ຈາກ <span class="font-medium">{{ bookings?.totalItems }}</span> ລາຍການ
       </div>
       <div>
         <nav class="inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
-          <a
+          <button
+            @click="prevPage()"
+            :disabled="bookings.page == 1"
+            class="relative disabled:opacity-25 inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-l-md hover:bg-gray-50"
+          >
+            ໜ້າກ່ອນໜ້ານີ້
+          </button>
+
+          <button
+            @click="nextPage()"
+            :disabled="bookings.page == bookings.totalPages"
             href="#"
-            class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-l-md hover:bg-gray-50"
+            class="relative disabled:opacity-25 inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-r-md hover:bg-gray-50"
           >
-            Previous
-          </a>
-          <a
-            href="#"
-            class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 hover:bg-gray-50"
-          >
-            1
-          </a>
-          <a
-            href="#"
-            class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 hover:bg-gray-50"
-          >
-            2
-          </a>
-          <a
-            href="#"
-            class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 hover:bg-gray-50"
-          >
-            3
-          </a>
-          <span
-            class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300"
-          >
-            ...
-          </span>
-          <a
-            href="#"
-            class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 hover:bg-gray-50"
-          >
-            5
-          </a>
-          <a
-            href="#"
-            class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 hover:bg-gray-50"
-          >
-            6
-          </a>
-          <a
-            href="#"
-            class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-r-md hover:bg-gray-50"
-          >
-            Next
-          </a>
+            ໜ້າຕໍ່ໄປ
+          </button>
         </nav>
       </div>
     </div>
@@ -219,6 +163,18 @@ const bookings = ref<any>([])
 const searchQuery = ref('')
 const filterFromDate = ref('')
 const today = new Date()
+
+const currentPage = ref(1)
+const perPage = ref(10)
+
+const prevPage = () => {
+  currentPage.value = currentPage.value - 1
+  onSearch()
+}
+const nextPage = () => {
+  currentPage.value = currentPage.value + 1
+  onSearch()
+}
 
 watch(filterFromDate, (newDate, oldDate) => {
   if (newDate != oldDate) {
@@ -245,18 +201,17 @@ const onSearch = async () => {
     filters += `(check_in_date >= '${fromDate} 00:00:00' && check_in_date <= '${fromDate} 23:59:59')`
   }
 
-  const records = await pb.collection('bookings').getFullList({
+  const records = await pb.collection('bookings').getList(currentPage.value, perPage.value, {
     sort: '-created',
     filter: filters,
     expand: 'room',
     fields: '*'
   })
-
   bookings.value = records
 }
 
 const bookingsView = computed(() => {
-  var bookingV = bookings.value.map((book: any) => {
+  var bookingV = bookings.value?.items?.map((book: any) => {
     return {
       room_no: getListValJoin(book.expand.room, 'room_no'),
       cus_name: book.cus_name,
@@ -276,17 +231,6 @@ const bookingsView = computed(() => {
 const refresh = async () => {
   onSearch()
 }
-
-// const getBookings = async () => {
-//   const records = await pb.collection('bookings').getFullList({
-//     sort: '-created',
-//     filter: `status = 'active' || status = 'check-in'`,
-//     expand: 'room',
-//     fields: '*'
-//   })
-
-//   bookings.value = records
-// }
 
 const dayCount = (f: string, t: string) => {
   var s = f.split(' ').join('T')
