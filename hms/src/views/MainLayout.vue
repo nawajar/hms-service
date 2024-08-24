@@ -18,7 +18,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
       </div>
       <ul class="menu bg-primary-200 min-w-[120px] gap-2">
         <li>
-          <RouterLink :to="'dashboard'" activeClass="border-indigo-500">
+          <RouterLink :to="'/dashboard'" activeClass="border-indigo-500">
             <div class="grid mr-4 place-items-center">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -38,7 +38,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
           </RouterLink>
         </li>
         <li>
-          <RouterLink :to="'booking-create'" activeClass="border-indigo-500">
+          <RouterLink :to="'/booking-create'" activeClass="border-indigo-500">
             <div class="grid mr-4 place-items-center">
               <font-awesome-icon icon="bars-staggered"></font-awesome-icon>
             </div>
@@ -46,7 +46,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
           </RouterLink>
         </li>
         <li>
-          <RouterLink :to="'booking-list'" activeClass="border-indigo-500">
+          <RouterLink :to="'/booking-list'" activeClass="border-indigo-500">
             <div class="grid mr-4 place-items-center">
               <font-awesome-icon icon="bars-staggered"></font-awesome-icon>
             </div>
@@ -64,7 +64,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
         </li> -->
 
         <li>
-          <RouterLink :to="'rooms'">
+          <RouterLink :to="'/rooms'">
             <div class="grid mr-4 place-items-center">
               <font-awesome-icon icon="cube"></font-awesome-icon>
             </div>
@@ -77,7 +77,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
           </RouterLink>
         </li>
         <li>
-          <RouterLink :to="'rooms-schedule'" activeClass="border-indigo-500">
+          <RouterLink :to="'/rooms-schedule'" activeClass="border-indigo-500">
             <div class="grid mr-4 place-items-center">
               <font-awesome-icon icon="calendar-day"></font-awesome-icon>
             </div>
@@ -85,7 +85,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
           </RouterLink>
         </li>
         <li>
-          <RouterLink :to="'booking-history'" activeClass="border-indigo-500">
+          <RouterLink :to="'/booking-history'" activeClass="border-indigo-500">
             <div class="grid mr-4 place-items-center">
               <font-awesome-icon icon="clock-rotate-left"></font-awesome-icon>
             </div>

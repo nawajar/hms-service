@@ -79,7 +79,7 @@
         </thead>
         <tbody class="divide-y divide-gray-200">
           <template v-for="(booking, idx) in bookingsView" v-bind:key="booking.id">
-            <tr class="hover:bg-gray-100">
+            <tr class="hover:bg-gray-100" tabindex="0" @click="goToEdit(booking.id)">
               <td class="px-6 py-4 text-center text-base text-gray-600">
                 {{ (currentPage - 1) * perPage + (idx + 1) }}
               </td>
@@ -147,17 +147,17 @@
 <script setup lang="ts">
 import { pb } from '@/services/pb'
 import { computed, onMounted, ref, watch } from 'vue'
-import { onClickOutside } from '@vueuse/core'
-import flatPickr from 'vue-flatpickr-component'
 import 'flatpickr/dist/flatpickr.css'
 import type { RecordModel } from 'pocketbase'
-import { DateTime, Interval } from 'luxon'
+import { DateTime } from 'luxon'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import RoomPick from '@/components/RoomPick.vue'
 import _, { debounce } from 'lodash'
-import DropZone from 'dropzone-vue'
 import 'dropzone-vue/dist/dropzone-vue.common.css'
 import CustomCalendar from '@/components/CustomCalendar.vue'
+import { useRoute, useRouter } from 'vue-router'
+
+const router = useRouter()
+const route = useRoute()
 
 const bookings = ref<any>([])
 const searchQuery = ref('')
@@ -166,6 +166,10 @@ const today = new Date()
 
 const currentPage = ref(1)
 const perPage = ref(10)
+
+const goToEdit = (bookId: string) => {
+  router.push({ name: 'Booking Edit', params: { id: bookId } })
+}
 
 const prevPage = () => {
   currentPage.value = currentPage.value - 1
@@ -213,6 +217,7 @@ const onSearch = async () => {
 const bookingsView = computed(() => {
   var bookingV = bookings.value?.items?.map((book: any) => {
     return {
+      id: book.id,
       room_no: getListValJoin(book.expand.room, 'room_no'),
       cus_name: book.cus_name,
       room_price: _.sumBy(book.expand.room, 'price'),
