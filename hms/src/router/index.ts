@@ -4,6 +4,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { pb } from '@/services/pb'
 import type { BaseAuthStore } from 'pocketbase'
 import LayoutVue from '@/views/MainLayout.vue'
+import LayoutVue2 from '@/views/MainLayout2.vue'
 
 const routeGuard = (baseAuth: BaseAuthStore | null, fallBack?: { name: string }) => {
   const canI = baseAuth?.isValid
@@ -25,7 +26,7 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: LayoutVue,
+      component: LayoutVue2,
       children: [
         {
           path: '/dashboard',

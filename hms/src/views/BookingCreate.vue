@@ -1,5 +1,5 @@
 <template>
-  <div class="min-w-[400px] h-full mb-10 rounded overflow-y-scroll relative overflow-x-hidden">
+  <div class="min-w-[400px] h-full mb-10 rounded">
     <div class="w-full mx-auto p-4 bg-white shadow-md rounded-md">
       <h1 class="text-lg font-semibold mb-4 text-center">Booking Information</h1>
 

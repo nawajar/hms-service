@@ -1,5 +1,5 @@
 <template>
-  <div class="min-w-[400px] h-full mb-10 rounded overflow-y-scroll relative overflow-x-hidden">
+  <div class="min-w-[400px] min-h-full mb-10 rounded flex flex-col">
     <div class="flex gap-4 items-center justify-between"></div>
     <div class="mb-4">
       <fieldset class="border border-gray-300 p-4 rounded-lg bg-white shadow-lg">

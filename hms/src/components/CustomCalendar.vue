@@ -78,6 +78,11 @@ onMounted(() => {
     </div>
   </Calendar>
 </template>
+<script lang="ts">
+onMounted(() => {
+  // console.log(calendar)
+})
+</script>
 <style lang="scss" scoped>
 .head {
   display: flex;
