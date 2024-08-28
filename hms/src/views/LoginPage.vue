@@ -44,7 +44,9 @@
           />
         </div>
         <div class="flex items-center justify-between">
-          <button @click="login()" class="btn btn-primary w-full" type="button">Sign In</button>
+          <button @click.prevent="login()" class="btn btn-primary w-full" type="button">
+            Sign In
+          </button>
         </div>
       </form>
     </div>
@@ -67,8 +69,10 @@ const login = async () => {
   }
   const authData = await pb.collection('users').authWithPassword(userName.value, password.value)
   console.log('Logged in.', authData)
-  router.push({
-    path: '/booking-list'
-  })
+  if (authData) {
+    router.push({
+      path: '/booking-list'
+    })
+  }
 }
 </script>
