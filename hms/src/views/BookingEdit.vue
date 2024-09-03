@@ -354,8 +354,24 @@ const editBook = async () => {
   setIfExist(formData, 'status', bookingStatus.value)
   setIfExist(formData, 'price', price)
   formData.append('update_by', pb.authStore.model?.name)
-  await pb.collection('bookings').update(bookId, formData)
+  const res = await pb.collection('bookings').update(bookId, formData)
+  if (res) {
+    if (res.status == 'check-out') {
+      const roomIds = selectedRoom.value
+      await importRecordsInParallel(roomIds, {
+        need_clean: true
+      })
+    }
+  }
   clearCreateForm()
+  router.push({ name: 'Booking List' })
+}
+
+const importRecordsInParallel = async (ids: string[], value: any) => {
+  const promises = ids.map((record: any) => {
+    pb.collection('rooms').update(record, value)
+  })
+  return Promise.all(promises)
 }
 
 const clearCreateForm = () => {

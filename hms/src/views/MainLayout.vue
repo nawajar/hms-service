@@ -105,14 +105,14 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
           </ul>
         </li>
 
-        <li>
+        <!-- <li>
           <RouterLink :to="'/booking-history'" activeClass="border-indigo-500">
             <div class="grid mr-4 place-items-center">
               <font-awesome-icon icon="clock-rotate-left"></font-awesome-icon>
             </div>
             Booking History
           </RouterLink>
-        </li>
+        </li> -->
       </ul>
     </div>
     <div class="w-full min-h-full">

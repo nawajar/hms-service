@@ -108,7 +108,7 @@ const getBookingsToDay = async () => {
   const todayFilter = DateTime.fromJSDate(today)
   const todayFormat = todayFilter.toFormat('yyyy-MM-dd')
   const records = await pb.collection('bookings').getFullList({
-    filter: `check_in_date >= '${todayFormat} 00:00:00' && check_in_date <= '${todayFormat} 23:59:59'`,
+    filter: `check_in_date >= '${todayFormat} 00:00:00' && check_in_date <= '${todayFormat} 23:59:59' `,
     fields: 'id,room,paid,price,extra_charge_amt'
   })
 

@@ -196,7 +196,7 @@ const onSearch = async () => {
 
   var filters = ''
   if (queryText) {
-    filters += `room.room_no ?= '${queryText}' || cus_name ~ '${queryText}'`
+    filters += `(room.room_no ?= '${queryText}' || cus_name ~ '${queryText}')`
   }
   if (fromDate) {
     if (filters) {
