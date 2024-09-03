@@ -231,6 +231,7 @@ import _ from 'lodash'
 import RoomPick from '@/components/RoomPick.vue'
 import DropZone from 'dropzone-vue'
 import 'dropzone-vue/dist/dropzone-vue.common.css'
+import router from '@/router'
 
 const bookings = ref<any>([])
 const startDate = ref(null)
@@ -308,6 +309,7 @@ const createBook = async () => {
   formData.append('create_by', pb.authStore.model?.name)
   await pb.collection('bookings').create(formData)
   clearCreateForm()
+  router.push({ name: 'Booking List' })
 }
 
 const clearCreateForm = () => {
