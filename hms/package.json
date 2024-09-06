@@ -20,18 +20,21 @@
     "@fortawesome/vue-fontawesome": "^3.0.8",
     "@types/lodash": "^4.17.6",
     "@vueuse/core": "^10.11.0",
+    "ace-builds": "^1.36.2",
     "chart.js": "^4.4.3",
     "dropzone-vue": "^0.1.11",
     "flatpickr": "^4.6.13",
     "luxon": "^3.4.4",
     "normal-calendar": "^0.0.4",
+    "pdfmake": "^0.2.12",
     "pinia": "^2.1.7",
     "pocketbase": "^0.21.3",
     "vue": "^3.4.21",
     "vue-chartjs": "^5.3.1",
     "vue-flatpickr-component": "^11.0.5",
     "vue-i18n": "^9.13.1",
-    "vue-router": "^4.3.0"
+    "vue-router": "^4.3.0",
+    "vue3-ace-editor": "^2.2.4"
   },
   "devDependencies": {
     "@import-meta-env/cli": "^0.6.8",
