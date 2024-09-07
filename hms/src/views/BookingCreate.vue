@@ -26,7 +26,7 @@
             <label class="w-1/3 font-medium">Room Numbers:</label>
             <input
               type="text"
-              class="flex-1 border p-2 rounded"
+              class="flex-1 border border-neutral p-2 rounded"
               :value="getListValJoin(showRoomSelected, 'room_no')"
               readonly
               @click="openSelectRoom()"
@@ -42,19 +42,27 @@
           <!-- Name -->
           <div class="flex items-center">
             <label class="w-1/3 font-medium">Name:</label>
-            <input type="text" class="flex-1 border p-2 rounded" v-model="customerName" />
+            <input
+              type="text"
+              class="flex-1 border border-neutral p-2 rounded"
+              v-model="customerName"
+            />
           </div>
           <!-- Phone Number -->
           <div class="flex items-center">
             <label class="w-1/3 font-medium">Phone Number:</label>
-            <input type="text" class="flex-1 border p-2 rounded" v-model="customerPhone" />
+            <input
+              type="text"
+              class="flex-1 border border-neutral p-2 rounded"
+              v-model="customerPhone"
+            />
           </div>
           <!-- Customer ID Card -->
           <div class="flex items-center">
             <label class="w-1/3 font-medium">Customer ID Card:</label>
             <input
               type="text"
-              class="flex-1 border p-2 rounded"
+              class="flex-1 border border-neutral p-2 rounded"
               placeholder="Enter ID card number"
               v-model="customerCardId"
             />
@@ -63,7 +71,7 @@
           <div class="flex items-center">
             <label class="w-1/3 font-medium">Customer Address:</label>
             <textarea
-              class="flex-1 border p-2 rounded"
+              class="flex-1 border border-neutral p-2 rounded"
               rows="3"
               placeholder="Enter customer address"
               v-model="customerAddress"
@@ -73,7 +81,7 @@
           <div class="flex items-center">
             <label class="w-1/3 font-medium">Note:</label>
             <textarea
-              class="flex-1 border p-2 rounded"
+              class="flex-1 border border-neutral p-2 rounded"
               rows="3"
               placeholder="Enter any notes"
               v-model="note"
@@ -83,7 +91,7 @@
       </fieldset>
 
       <!-- Additional Cost Section -->
-      <fieldset class="border border-gray-300 rounded-md p-4 mb-6">
+      <fieldset class="border border-neutral rounded-md p-4 mb-6">
         <legend class="text-md font-semibold px-2">Payment Information</legend>
         <div class="grid grid-cols-1 gap-4">
           <!-- Additional Cost -->
@@ -91,7 +99,7 @@
             <label class="w-1/3 font-medium">Additional Cost:</label>
             <input
               type="text"
-              class="flex-1 border p-2 rounded"
+              class="flex-1 border border-neutral p-2 rounded"
               placeholder="Enter additional cost"
               v-model="extraChargeDetails"
             />
@@ -99,21 +107,29 @@
           <!-- Additional Cost Quantity -->
           <div class="flex items-center">
             <label class="w-1/3 font-medium">Additional Cost Quantity:</label>
-            <input type="number" class="flex-1 border p-2 rounded" v-model="extraChargeAmt" />
+            <input
+              type="number"
+              class="flex-1 border border-neutral p-2 rounded"
+              v-model="extraChargeAmt"
+            />
           </div>
           <!-- Paid Checkbox -->
           <div class="flex items-center">
             <label class="w-1/3 font-medium">Paid <span class="text-sm">(200 ₭)</span>:</label>
             <input
               type="checkbox"
-              class="h-5 w-5 rounded border-gray-300 text-green-600 focus:ring-green-500"
+              class="h-5 w-5 rounded border-neutral text-green-600 focus:ring-green-500"
               v-model="paid"
             />
           </div>
           <div class="flex items-center">
             <label class="w-1/3 font-medium">ຂ່າຍແບບ :</label>
             <div class="w-2/3 flex gap-4">
-              <select id="status" class="flex-1 border p-2 rounded" v-model="paidChannel">
+              <select
+                id="status"
+                class="flex-1 border border-neutral p-2 rounded"
+                v-model="paidChannel"
+              >
                 <option value="cash">Cash</option>
                 <option value="bank_transfer">Bank Transfer</option>
               </select>
@@ -143,7 +159,11 @@
           <div class="flex items-center">
             <label class="w-1/3 font-medium">Status:</label>
             <div class="w-2/3 flex gap-4">
-              <select id="status" class="flex-1 border p-2 rounded" v-model="bookingStatus">
+              <select
+                id="status"
+                class="flex-1 border border-neutral p-2 rounded"
+                v-model="bookingStatus"
+              >
                 <option value="active">Active</option>
                 <option value="cancel">Cancel</option>
                 <option value="check-in">Check-in</option>
@@ -155,7 +175,7 @@
             <label class="w-1/3 font-medium">Total Payment:</label>
             <input
               type="text"
-              class="flex-1 border p-2 rounded"
+              class="flex-1 border border-neutral p-2 rounded"
               :value="`${calculateNetAmount(showRoomSelected)} ₭`"
               readonly
               disabled
@@ -165,7 +185,7 @@
             <label class="w-1/3 font-medium">Create By:</label>
             <input
               type="text"
-              class="flex-1 border p-2 rounded"
+              class="flex-1 border border-neutral p-2 rounded"
               :value="`${pb.authStore.model?.name}`"
               readonly
               disabled
@@ -212,7 +232,7 @@
     </div>
     <Teleport to="body">
       <RoomPick
-        v-if="availableRoom.length > 0"
+        v-if="availableRoom.length > 0 && openRoomPick"
         :show="openRoomPick"
         :availableRoom="availableRoom"
         @onSelect="onSelectRoom"
@@ -281,7 +301,6 @@ const createBook = async () => {
   const formData = new FormData()
   setIfExist(formData, 'check_in_date', startDate.value)
   setIfExist(formData, 'check_out_date', endDate.value)
-  console.log(selectedRoom.value)
   _.forEach(selectedRoom.value, (room) => {
     setIfExist(formData, 'room', room)
   })
@@ -294,11 +313,15 @@ const createBook = async () => {
 
   setIfExist(formData, 'extra_charge_details', extraChargeDetails.value)
   setIfExist(formData, 'extra_charge_amt', extraChargeAmt.value)
-  formData.append('paid', `${paid.value}`)
+  if (paid.value) {
+    const now = DateTime.now().toUTC().toFormat('yyyy-MM-dd hh:mm:ss')
+    formData.append('paid_date', now)
+    formData.append('paid', `${paid.value}`)
+  }
+
   setIfExist(formData, 'paid_channel', paidChannel.value)
 
   if (files.value?.length > 0) {
-    console.log('file ', files.value)
     _.forEach(files.value, (f: any) => {
       formData.append('cus_documents', f.file)
     })
@@ -365,7 +388,7 @@ const onSelectRoom = (rooms: string[]) => {
 
 const openSelectRoom = () => {
   selectedRoom.value = []
-  openRoomPick.value = !openRoomPick.value
+  openRoomPick.value = true
 }
 
 const getBookings = async () => {

@@ -22,7 +22,7 @@
               placeholder="Search by name or room number"
               v-model="searchQuery"
               @input="onInputSearch"
-              class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              class="w-full p-2 border border-neutral rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
           </div>
           <!-- Date Filter: From -->

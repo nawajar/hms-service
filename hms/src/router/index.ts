@@ -80,6 +80,12 @@ const router = createRouter({
           name: 'Booking History', // 'patients'
           component: () => import('@/views/BookingHistory.vue'),
           ...routeGuard(pb.authStore, { name: 'login' })
+        },
+        {
+          path: '/daily-report',
+          name: 'Daily Report', // 'patients'
+          component: () => import('@/views/DailyReport.vue'),
+          ...routeGuard(pb.authStore, { name: 'login' })
         }
       ]
     }

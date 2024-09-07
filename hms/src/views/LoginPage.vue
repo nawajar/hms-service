@@ -70,8 +70,9 @@ const login = async () => {
   const authData = await pb.collection('users').authWithPassword(userName.value, password.value)
   console.log('Logged in.', authData)
   if (authData) {
+    console.log('Valid in.', pb.authStore.isValid)
     router.push({
-      path: '/booking-list'
+      name: 'Booking List'
     })
   }
 }

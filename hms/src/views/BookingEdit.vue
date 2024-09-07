@@ -342,6 +342,12 @@ const editBook = async () => {
 
   setIfExist(formData, 'extra_charge_details', extraChargeDetails.value)
   setIfExist(formData, 'extra_charge_amt', extraChargeAmt.value)
+
+  if (paid.value) {
+    const now = DateTime.now().toUTC().toFormat('yyyy-MM-dd hh:mm:ss')
+    formData.append('paid_date', now)
+  }
+
   formData.append('paid', `${paid.value}`)
   setIfExist(formData, 'paid_channel', paidChannel.value)
 

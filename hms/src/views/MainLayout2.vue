@@ -1,11 +1,11 @@
 <template>
   <div class="w-full flex flex-col h-svh max-h-svh">
-    <div class="h-full fixed left-0 w-[180px]">
+    <div class="h-full fixed left-0">
       <!-- Left Sidebar -->
       <div
         class="grid h-full border-r translate-y-12 bg-gray-50 bg-clip-border text-gray-700 shadow-xl shadow-blue-gray-900/5"
       >
-        <ul class="menu bg-primary-200 min-w-[140px] gap-2 pr-4 font-bold text-base">
+        <ul class="cus-menu flex flex-col bg-primary-200 gap-2 font-bold text-base w-[170px]">
           <li>
             <RouterLink :to="'/dashboard'" activeClass="border-indigo-500">
               <div class="grid mr-4 place-items-center">
@@ -27,81 +27,52 @@
             </RouterLink>
           </li>
           <li>
-            <a>
+            <RouterLink :to="'/booking-create'" activeClass="bg-neutral">
               <div class="grid mr-4 place-items-center">
-                <font-awesome-icon icon="hashtag"></font-awesome-icon>
+                <font-awesome-icon icon="right-to-bracket"></font-awesome-icon>
               </div>
-              ການຈອງ
-            </a>
-            <ul>
-              <li>
-                <RouterLink :to="'/booking-create'" activeClass="border-indigo-500">
-                  <div class="grid mr-4 place-items-center">
-                    <font-awesome-icon icon="right-to-bracket"></font-awesome-icon>
-                  </div>
-                  ຫ້ອງຈອງ
-                </RouterLink>
-              </li>
-              <li>
-                <RouterLink :to="'/booking-list'" activeClass="border-indigo-500">
-                  <div class="grid mr-4 place-items-center">
-                    <font-awesome-icon icon="bars-staggered"></font-awesome-icon>
-                  </div>
-                  ຮາຍກາຮຂອງ
-                </RouterLink>
-              </li>
-            </ul>
-          </li>
-
-          <!-- <li>
-              <RouterLink :to="'bookings'" activeClass="border-indigo-500">
-                <div class="grid mr-4 place-items-center">
-                  <font-awesome-icon icon="bars-staggered"></font-awesome-icon>
-                </div>
-                Booking
-              </RouterLink>
-            </li> -->
-
-          <li>
-            <a>
-              <div class="grid mr-4 place-items-center">
-                <font-awesome-icon icon="hashtag"></font-awesome-icon>
-              </div>
-              ຫ້ອງ
-            </a>
-            <ul>
-              <li>
-                <RouterLink :to="'/rooms'">
-                  <div class="grid mr-4 place-items-center">
-                    <font-awesome-icon icon="cube"></font-awesome-icon>
-                  </div>
-                  ສະ​ຖາ​ນະ​ພາບ​ຫ້ອງ​
-                  <div class="grid ml-auto place-items-center justify-self-end">
-                    <div
-                      class="relative grid items-center px-2 py-1 font-sans text-xs font-bold uppercase rounded-full select-none whitespace-nowrap bg-blue-gray-500/20 text-blue-gray-900"
-                    ></div>
-                  </div>
-                </RouterLink>
-              </li>
-              <li>
-                <RouterLink :to="'/rooms-schedule'" activeClass="border-indigo-500">
-                  <div class="grid mr-4 place-items-center">
-                    <font-awesome-icon icon="calendar-day"></font-awesome-icon>
-                  </div>
-                  ຕາ​ຕະ​ລາງ​ຫ້ອງ​
-                </RouterLink>
-              </li>
-            </ul>
-          </li>
-
-          <!-- <li>
-            <RouterLink :to="'/booking-history'" activeClass="border-indigo-500">
-              <div class="grid mr-4 place-items-center">
-                <font-awesome-icon icon="clock-rotate-left"></font-awesome-icon>
-              </div>
-              Booking History
+              ຫ້ອງຈອງ
             </RouterLink>
-          </li> -->
+          </li>
+          <li>
+            <RouterLink :to="'/booking-list'" activeClass="border-indigo-500">
+              <div class="grid mr-4 place-items-center">
+                <font-awesome-icon icon="bars-staggered"></font-awesome-icon>
+              </div>
+              ຮາຍກາຮຂອງ
+            </RouterLink>
+          </li>
+          <hr class="border-base-300 dark:border-white" />
+          <li>
+            <RouterLink :to="'/rooms'">
+              <div class="grid mr-4 place-items-center">
+                <font-awesome-icon icon="cube"></font-awesome-icon>
+              </div>
+              ສະ​ຖາ​ນະ​ພາບ​ຫ້ອງ​
+              <div class="grid ml-auto place-items-center justify-self-end">
+                <div
+                  class="relative grid items-center px-2 py-1 font-sans text-xs font-bold uppercase rounded-full select-none whitespace-nowrap bg-blue-gray-500/20 text-blue-gray-900"
+                ></div>
+              </div>
+            </RouterLink>
+          </li>
+          <li>
+            <RouterLink :to="'/rooms-schedule'" activeClass="border-indigo-500">
+              <div class="grid mr-4 place-items-center">
+                <font-awesome-icon icon="calendar-day"></font-awesome-icon>
+              </div>
+              ຕາ​ຕະ​ລາງ​ຫ້ອງ​
+            </RouterLink>
+          </li>
+          <hr class="border-base-300 dark:border-white" />
+          <li>
+            <RouterLink :to="'/daily-report'" activeClass="border-indigo-500">
+              <div class="grid mr-4 place-items-center">
+                <font-awesome-icon icon="calendar-day"></font-awesome-icon>
+              </div>
+              ສຮູປປຮະຂຳວິນ
+            </RouterLink>
+          </li>
         </ul>
       </div>
     </div>
@@ -140,3 +111,15 @@ import { RouterLink, RouterView } from 'vue-router'
 import { pb } from '@/services/pb'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 </script>
+<style lang="scss" scoped>
+.cus-menu {
+  @apply p-2;
+}
+.cus-menu li {
+  @apply p-2 hover:bg-neutral rounded;
+}
+
+.cus-menu li > a {
+  @apply flex flex-row gap-2;
+}
+</style>
