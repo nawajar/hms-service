@@ -6,7 +6,7 @@ export function play(docDefinition: any) {
 
 export const exampleContent = `var dd = {
     content: [
-        { text: 'Tables', style: 'header' },
+        { text: 'Tables ຫິວຈາຮາງ', style: 'header' },
         {
             alignment: 'justify',
             columns: [
@@ -15,7 +15,7 @@ export const exampleContent = `var dd = {
                     width: 200,
                 },
                 {
-                    text: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Malit profecta versatur nomine ocurreret multavit, officiis viveremus aeternum superstitio suspicor alia nostram, quando nostros congressus susceperant concederetur leguntur iam, vigiliae democritea tantopere causae, atilii plerumque ipsas potitur pertineant multis rem quaeri pro, legendum didicisse credere ex maluisset per videtis. Cur discordans praetereat aliae ruinae dirigentur orestem eodem, praetermittenda divinum. Collegisti, deteriora malint loquuntur officii cotidie finitas referri doleamus ambigua acute. Adhaesiones ratione beate arbitraretur detractis perdiscere, constituant hostis polyaeno. Diu concederetur.'
+                    text: 'ທດສອບ Lorem ipsum dolor sit amet, consectetur adipisicing elit. Malit profecta versatur nomine ocurreret multavit, officiis viveremus aeternum superstitio suspicor alia nostram, quando nostros congressus susceperant concederetur leguntur iam, vigiliae democritea tantopere causae, atilii plerumque ipsas potitur pertineant multis rem quaeri pro, legendum didicisse credere ex maluisset per videtis. Cur discordans praetereat aliae ruinae dirigentur orestem eodem, praetermittenda divinum. Collegisti, deteriora malint loquuntur officii cotidie finitas referri doleamus ambigua acute. Adhaesiones ratione beate arbitraretur detractis perdiscere, constituant hostis polyaeno. Diu concederetur.'
                 }
             ]
         },
@@ -51,7 +51,7 @@ export const exampleContent = `var dd = {
     },
     ],
     defaultStyle: {
-        font: "IBM",
+        font: "NOTO",
         columnGap: 20,
     },
     styles: {

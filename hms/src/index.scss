@@ -1,0 +1,67 @@
+/* ./src/index.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .no-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+}
+
+@font-face {
+  font-family: 'IBM Plex Sans Thai';
+  font-display: auto;
+  src: url('/font/IBM_Plex_Sans_Thai/IBMPlexSansThai-Regular.ttf') format('truetype');
+}
+
+/* ibm-plex-sans-thai-looped-300 - thai_latin-ext_latin_cyrillic-ext */
+@font-face {
+  font-family: 'IBM Plex Sans Thai Looped';
+  font-style: normal;
+  font-weight: 300;
+  src: url('/font/IBM_Plex_Sans_Thai_Looped/IBM_Plex_Sans_Thai_Looped-300.eot');
+  src:
+    local(''),
+    url('/font/IBM_Plex_Sans_Thai_Looped/IBM_Plex_Sans_Thai_Looped-300.eot?#iefix')
+      format('embedded-opentype'),
+    url('/font/IBM_Plex_Sans_Thai_Looped/IBM_Plex_Sans_Thai_Looped-300.woff2') format('woff2'),
+    url('/font/IBM_Plex_Sans_Thai_Looped/IBM_Plex_Sans_Thai_Looped-300.woff') format('woff'),
+    url('/font/IBM_Plex_Sans_Thai_Looped/IBM_Plex_Sans_Thai_Looped-300.ttf') format('truetype'),
+    url('/font/IBM_Plex_Sans_Thai_Looped/IBM_Plex_Sans_Thai_Looped-300.svg#IBMPlexSansThaiLooped')
+      format('svg');
+}
+
+@font-face {
+  font-family: 'Noto Serif Lao';
+  font-style: normal;
+  font-weight: 100;
+  src: url('/font/Noto_Sans_Lao/static/NotoSansLao-Thin.ttf');
+}
+
+@font-face {
+  font-family: 'Noto Serif Lao';
+  font-style: normal;
+  font-weight: 400;
+  src: url('/font/Noto_Sans_Lao/static/NotoSansLao-Regular.ttf');
+}
+
+@font-face {
+  font-family: 'Noto Serif Lao';
+  font-style: normal;
+  font-weight: 500;
+  src: url('/font/Noto_Sans_Lao/static/NotoSansLao-Bold.ttf');
+}
+
+@layer base {
+  html,
+  body {
+    @apply font-noto h-screen text-[#282728] bg-[##fbfefb];
+  }
+}

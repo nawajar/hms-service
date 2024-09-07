@@ -3,7 +3,7 @@ import { createPinia } from 'pinia'
 
 import App from './App.vue'
 import router from './router'
-import './index.css'
+import './index.scss'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { createI18n } from 'vue-i18n'
 import {

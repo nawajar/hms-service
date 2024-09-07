@@ -34,7 +34,7 @@ onMounted(() => {
     <div class="calendar-container">
       <input
         type="text"
-        class="flex-1 border p-2 rounded z-0"
+        class="flex-1 border p-2 rounded z-0 border-neutral"
         @click="calendar.toggle"
         v-model="pickDate"
       />

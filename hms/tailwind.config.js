@@ -6,7 +6,11 @@ export default {
   content: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
   darkMode: 'class',
   theme: {
-    extend: {}
+    extend: {
+      fontFamily: {
+        noto: ['Noto Serif Lao']
+      }
+    }
   },
   plugins: [daisyui, form],
   daisyui: {
@@ -18,6 +22,11 @@ export default {
           accent: '#fef08a',
           neutral: '#e0f2fe',
           'base-100': '#ffffff',
+
+          'base-200': '#deddd8',
+
+          'base-300': '#bebdb8',
+          'base-content': '#161615',
           info: '#bbf7d0',
           success: '#bef264',
           warning: '#fcd34d',

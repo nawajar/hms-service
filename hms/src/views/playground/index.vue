@@ -16,6 +16,12 @@
           style="height: 500px"
         />
       </div>
+      <div>
+        <p class="text-base">ທດສອບ</p>
+        <p class="font-bold">ທດສອບ</p>
+        <p class="text-xl">ທດສອບ</p>
+        <p class="font-bold">ທດສອບ</p>
+      </div>
     </div>
     <div id="iframeContainer" class="w-1/2">
       <iframe id="pdfview" class="size-full"></iframe>
@@ -50,6 +56,10 @@ export default {
         IBM: {
           normal: `${window.location.origin}/font/IBM_Plex_Sans_Thai/IBMPlexSansThai-Regular.ttf`,
           bold: `${window.location.origin}/font/IBM_Plex_Sans_Thai/IBMPlexSansThai-Bold.ttf`
+        },
+        NOTO: {
+          normal: `${window.location.origin}/font/Noto_Sans_Lao/static/NotoSansLao-Regular.ttf`,
+          bold: `${window.location.origin}/font/Noto_Sans_Lao/static/NotoSansLao-Medium.ttf`
         }
       }
       const pdfDocGenerator = pdfMake.createPdf(docDefinition)
