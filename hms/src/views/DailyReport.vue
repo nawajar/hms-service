@@ -16,7 +16,7 @@
             </div>
           </div>
           <div class="flex flex-col w-1/2 items-end justify-end">
-            <button class="btn btn-primary">ອອກເອກສາຮ</button>
+            <button class="btn btn-primary" @click="exportData()">ອອກເອກສາຮ</button>
           </div>
         </div>
       </fieldset>
@@ -73,14 +73,7 @@
                   </ul>
                 </div>
               </div>
-            </div>
-          </div>
 
-          <!-- Deposit Summary Group -->
-          <div class="bg-white p-3 rounded-md shadow-md">
-            <h2 class="text-xl font-semibold text-gray-700 mb-3">ຍອດຍກມາ</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-              <!-- Bookings with Deposits -->
               <div class="bg-accent bg-opacity-35 p-4 rounded-md shadow-sm space-y-2">
                 <div class="flex items-center space-x-3">
                   <i class="fas fa-exclamation-circle text-warning text-2xl"></i>
@@ -93,6 +86,28 @@
                 <div class="text-sm text-warning">
                   <ul class="space-y-1 pl-7 list-disc">
                     <li><strong>ຍອດລວມ:</strong> ${{ summaryBook?.depositAmt }}</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white p-3 rounded-md shadow-md">
+            <h2 class="text-xl font-semibold text-gray-700 mb-3">ສຮູປຮາຍໄດ້</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+              <!-- Bookings with Deposits -->
+              <div class="bg-info bg-opacity-35 p-4 rounded-md shadow-sm space-y-2">
+                <div class="flex items-center space-x-3">
+                  <i class="fas fa-exclamation-circle text-primary text-2xl"></i>
+                  <div class="flex gap-2">
+                    <h3 class="text-lg font-semibold text-primary">ສຮູປຮາຍໄດ້</h3>
+                    <p class="text-xl font-bold text-primary">{{ summaryBook?.totalReceive }}</p>
+                  </div>
+                </div>
+                <!-- Unpaid Booking Summary Details -->
+                <div class="text-sm text-primary">
+                  <ul class="space-y-1 pl-7 list-disc">
+                    <li><strong>ຍອດລວມ:</strong> ${{ summaryBook?.totalReceiveAmt }}</li>
                   </ul>
                 </div>
               </div>
@@ -254,11 +269,181 @@ import _, { debounce } from 'lodash'
 import 'dropzone-vue/dist/dropzone-vue.common.css'
 import CustomCalendar from '@/components/CustomCalendar.vue'
 import { useRoute, useRouter } from 'vue-router'
+import pdfMake from 'pdfmake'
 
 const today = new Date()
 const todayL = DateTime.fromJSDate(today)
 const filterFromDate = ref('')
 const bookingsToday = ref<any>([])
+
+const generateTableHeader = () => {
+  return [
+    { text: 'ລ/ດ', style: 'headerContent' },
+    { text: 'ເລກຫ້ອງ', style: 'headerContent' },
+    { text: 'ຊື່ຜູ້ເຊົາແຂກ', style: 'headerContent' },
+    { text: 'ຄ່າຫ້ອງ', style: 'headerContent' },
+    { text: 'ວິນ', style: 'headerContent' },
+    { text: 'ຮວມ', style: 'headerContent' },
+    { text: 'ຂ່າຍແລ້ວ / ຍິງ', style: 'headerContent' },
+    { text: 'ຂ່າຍທາງ', style: 'headerContent' },
+    { text: 'ວັນທີມາ', style: 'headerContent' }
+  ]
+}
+
+const generateTableBody = (items: any[]) => {
+  let idx = 1
+  return items.map((item: any) => {
+    return [
+      { style: 'contentBoxTitle', text: idx++ },
+      { style: 'contentBoxTitle', text: `${item.room_no}` },
+      { style: 'contentBoxTitle', text: `${item.cus_name}` },
+      { style: 'contentBoxTitle', text: `${item.room_price}` },
+      { style: 'contentBoxTitle', text: `${item.days}` },
+      { style: 'contentBoxTitle', text: `${item.net_amt}` },
+      { style: 'contentBoxTitle', text: `${item.paid}` },
+      { style: 'contentBoxTitle', text: `${item.paid_channel}` },
+      { style: 'contentBoxTitle', text: toThaiFromCheckDate(item?.check_in) }
+    ]
+  })
+}
+
+const exportData = () => {
+  const date = DateTime.fromFormat(filterFromDate.value, 'yyyy-MM-dd')
+  const dd = {
+    ...docDefinition,
+    content: [
+      { text: `xayluedyhotel`, style: 'titleHeader' },
+      { text: `ຮາຍກາຮວິນທີ່ ${date.toFormat('dd MMM yyyy')}`, style: 'title' },
+      {
+        style: 'tableExample',
+        table: {
+          // widths: ['auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 150],
+          body: [
+            generateTableHeader(),
+            ...generateTableBody(summaryToday.value),
+            [
+              {
+                colSpan: 9,
+                rowSpan: 1,
+                style: 'contextText',
+                text: `ລວມການຈອງ: ${summaryBook.value?.total} ຮາຍກາຮ  ຮວມ ${summaryBook.value?.totalAmt}
+                ການຈອງທີ່ຈ່າຍແລ້ວ: ${summaryBook.value?.paid} ຮາຍກາຮ  ຮວມ ${summaryBook.value?.paidAmt}
+                ການຈອງທີ່ຍັງບໍ່ໄດ້ຈ່າຍ: ${summaryBook.value?.unPaid} ຮາຍກາຮ  ຮວມ ${summaryBook.value?.unPaidAmt}`
+              },
+              ''
+            ]
+          ]
+        }
+      },
+      { text: `ຮາຍກາຮຍກມາ `, style: 'title' },
+      {
+        style: 'tableExample',
+        table: {
+          body: [
+            generateTableHeader(),
+            ...generateTableBody(summaryDepositToday.value),
+            [
+              {
+                colSpan: 9,
+                rowSpan: 1,
+                style: 'contextText',
+                text: `ຮາຍກາຮຍກມາ: ${summaryBook.value?.deposit} ຮາຍກາຮ  ຮວມ ${summaryBook.value?.depositAmt}`
+              },
+              ''
+            ]
+          ]
+        }
+      },
+      { text: `ສຮູປ `, style: 'title' },
+      {
+        style: 'contextText',
+        text: `ຍອດເກ໊ບໄດ້: ${summaryBook.value?.totalReceive} ຮາຍກາຮ  ຮວມ ${summaryBook.value?.totalReceiveAmt}`
+      }
+    ],
+    defaultStyle: {
+      font: 'NOTO',
+      columnGap: 20
+    },
+    styles: {
+      ...styles,
+      coverHeaderLabel: {
+        fontSize: 8,
+        color: '#161615',
+        marginBottom: 6
+      },
+      headerLabel: {
+        fontSize: 6,
+        color: '#161615'
+      },
+      headerContent: {
+        fontSize: 8,
+        bold: true
+      },
+      contentBoxTitle: {
+        fontSize: 9,
+        color: '#a8a29e',
+        alignment: 'center'
+      },
+      contextText: {
+        fontSize: 9,
+        color: '#009fff',
+        bold: true
+      },
+      title: {
+        font: 'NOTO',
+        fontSize: 14,
+        color: '#86efac',
+        bold: true
+      },
+      titleHeader: {
+        font: 'NOTO',
+        fontSize: 16,
+        color: '#a8a29e',
+        bold: true
+      },
+      radiologyLabel: {
+        bold: true
+      }
+    }
+  }
+  pdfMake.fonts = {
+    IBM: {
+      normal: `${window.location.origin}/font/IBM_Plex_Sans_Thai/IBMPlexSansThai-Regular.ttf`,
+      bold: `${window.location.origin}/font/IBM_Plex_Sans_Thai/IBMPlexSansThai-Bold.ttf`
+    },
+    NOTO: {
+      normal: `${window.location.origin}/font/Noto_Sans_Lao/static/NotoSansLao-Regular.ttf`,
+      bold: `${window.location.origin}/font/Noto_Sans_Lao/static/NotoSansLao-Medium.ttf`
+    }
+  }
+  const pdfDocGenerator = pdfMake.createPdf(dd)
+
+  pdfDocGenerator.getDataUrl((dataUrl: any) => {
+    var win = window.open()
+    win?.document.write(
+      '<iframe src="' +
+        dataUrl +
+        '" frameborder="0" style="border:0; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%;"></iframe>'
+    )
+  })
+}
+
+const docDefinition = {
+  pageSize: 'A4',
+  pageMargins: [42, 16, 42, 16]
+  // pageMargins: [31.5, 12, 31.5, 24],
+}
+
+const styles = {
+  bodyLooped: {
+    font: 'K2D',
+    fontSize: 9,
+    lineHeight: 1.4444444444,
+    characterSpacing: 0.18,
+    bold: false,
+    italics: false
+  }
+}
 
 const toThaiFromCheckDate = (date: string) => {
   if (!date) {
@@ -268,7 +453,7 @@ const toThaiFromCheckDate = (date: string) => {
   const dateL = DateTime.fromISO(s)
   const lDate = dateL.toJSDate()
 
-  const result = lDate.toLocaleDateString('th-TH', {
+  const result = lDate.toLocaleDateString('lo-LA', {
     year: 'numeric',
     month: 'long',
     day: 'numeric'
@@ -351,6 +536,9 @@ const summaryBook = computed(() => {
   const deposit = bookingsToday.value.filter((b: any) => !isToday(b.created))
   const depositItem = _.filter(deposit, (b: any) => b.paid == true)
   const depositAmt = _.sumBy(depositItem, (b: any) => b.price)
+
+  const totalReceiveAll = paidItem.length + depositItem.length
+  const totalReceiveAmt = depositAmt + paidAmt
   return {
     total: all.length,
     totalAmt: totalAmt,
@@ -359,7 +547,9 @@ const summaryBook = computed(() => {
     unPaid: unPaidItem.length,
     unPaidAmt: unPaidAmt,
     deposit: depositItem.length,
-    depositAmt: depositAmt
+    depositAmt: depositAmt,
+    totalReceive: totalReceiveAll,
+    totalReceiveAmt: totalReceiveAmt
   }
 })
 
@@ -373,7 +563,7 @@ const getBookingWithDate = async () => {
   const fromDate = filterFromDate.value
   var filters = ''
   if (fromDate) {
-    filters = `(created >= '${fromDate} 00:00:00' && created <= '${fromDate} 23:59:59') 
+    filters = `(created >= '${fromDate} 00:00:00' && created <= '${fromDate} 23:59:59')
     || (paid_date >= '${fromDate} 00:00:00' && paid_date <= '${fromDate} 23:59:59')`
   }
   const records = await pb.collection('bookings').getFullList({
