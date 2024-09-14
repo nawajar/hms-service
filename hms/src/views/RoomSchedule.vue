@@ -1,5 +1,5 @@
 <template>
-  <div class="w-[90%] h-full mb-10 rounded overflow-y-scroll relative overflow-x-scroll p-4">
+  <div class="w-full h-full mb-10 rounded overflow-y-scroll relative overflow-x-scroll p-4">
     <Calendar
       ref="calendarRef"
       #default="{ calendar }"
@@ -9,6 +9,20 @@
       }"
     >
       <div class="calendar-containers">
+        <div class="flex flex-col gap-2">
+          <div class="flex flex-row items-center gap-4">
+            <div class="bg-primary min-w-4 h-4 rounded"></div>
+            ໄດ້ເຊັກອິນ
+          </div>
+          <div class="flex flex-row items-center gap-4">
+            <div class="bg-[#0069ff] min-w-4 h-4 rounded"></div>
+            ເຊັກອິນແລ້ວ
+          </div>
+          <div class="flex flex-row items-center gap-4">
+            <div class="bg-error min-w-4 h-4 rounded"></div>
+            ເຊັກອອກແລ້ວ
+          </div>
+        </div>
         <div v-if="calendar.isOpenCalendar()">
           <div class="head flex items-center p-4 bg-gray-100 rounded-md shadow">
             <div class="text-lg font-semibold">{{ calendar.monthName }} {{ calendar.year }}</div>
@@ -74,22 +88,22 @@
                             : 1
                         "
                         :class="{
-                          'bg-green-500 text-white':
+                          'bg-primary text-white':
                             getRoomSchedule(
                               getRoomNo(room.id),
                               toStringDate(day.year, day.month, day.day)
                             )?.status === 'active',
-                          'bg-red-500 text-white':
+                          'bg-yellow-200 text-white':
                             getRoomSchedule(
                               getRoomNo(room.id),
                               toStringDate(day.year, day.month, day.day)
                             )?.status === 'cancel',
-                          'bg-blue-500 text-white':
+                          'bg-[#0069ff] text-white':
                             getRoomSchedule(
                               getRoomNo(room.id),
                               toStringDate(day.year, day.month, day.day)
                             )?.status === 'check-in',
-                          'bg-red-500 text-black':
+                          'bg-error text-black':
                             getRoomSchedule(
                               getRoomNo(room.id),
                               toStringDate(day.year, day.month, day.day)

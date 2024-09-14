@@ -84,7 +84,7 @@
                 {{ (currentPage - 1) * perPage + (idx + 1) }}
               </td>
               <td class="px-6 py-4 text-base text-gray-600">
-                {{ booking.room_no }}
+                {{ padZero(booking.room_no) }}
               </td>
               <td class="px-6 py-4 text-base text-gray-600">{{ booking.cus_name }}</td>
               <td class="px-6 py-4 text-base text-right text-gray-600">
@@ -202,7 +202,7 @@ const onSearch = async () => {
     if (filters) {
       filters += ' && '
     }
-    filters += `(check_in_date >= '${fromDate} 00:00:00' && check_in_date <= '${fromDate} 23:59:59')`
+    filters += `(created >= '${fromDate} 00:00:00' && created <= '${fromDate} 23:59:59')`
   }
 
   const records = await pb.collection('bookings').getList(currentPage.value, perPage.value, {
@@ -252,6 +252,10 @@ const getListValJoin = (list: any, key: string) => {
 
 function numberWithCommas(x: any) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')
+}
+
+const padZero = (room: any) => {
+  return String(room).padStart(3, '0')
 }
 
 const toThaiFromCheckDate = (date: string) => {

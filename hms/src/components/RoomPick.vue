@@ -1,7 +1,7 @@
 <template>
   <dialog :class="{ 'modal-open': show }" class="modal">
     <div class="modal-box w-11/12 max-w-5xl">
-      <h1 class="text-3xl font-bold mb-8">Select Room</h1>
+      <h1 class="text-3xl font-bold mb-8">ເລືອກຫ້ອງ</h1>
       <div class="flex flex-col gap-4">
         <div v-for="(room, roomType) in roomByType" :key="roomType">
           <label class="font-bold text-xl mb-2 block">{{ roomType }}</label>
@@ -16,7 +16,7 @@
               }"
             >
               <div class="flex items-center gap-2">
-                <span>{{ r.room_no }}</span>
+                <span>{{ padZero(r.room_no) }}</span>
                 <font-awesome-icon
                   class="text-primary"
                   icon="circle-check"
@@ -50,6 +50,10 @@ const props = withDefaults(defineProps<Props>(), {
   show: false,
   availableRoom: []
 })
+
+const padZero = (room: any) => {
+  return String(room).padStart(3, '0')
+}
 
 const selectedRoom = ref<string[]>([])
 

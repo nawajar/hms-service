@@ -228,7 +228,7 @@
                   {{ idx + 1 }}
                 </td>
                 <td class="px-6 py-4 text-base text-gray-600">
-                  {{ booking?.room_no }}
+                  {{ padZero(booking?.room_no) }}
                 </td>
                 <td class="px-6 py-4 text-base text-gray-600">{{ booking.cus_name }}</td>
                 <td class="px-6 py-4 text-base text-right text-gray-600">
@@ -262,19 +262,20 @@
 import { pb } from '@/services/pb'
 import { computed, onMounted, ref, watch } from 'vue'
 import 'flatpickr/dist/flatpickr.css'
-import type { RecordModel } from 'pocketbase'
 import { DateTime } from 'luxon'
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import _, { debounce } from 'lodash'
+import _ from 'lodash'
 import 'dropzone-vue/dist/dropzone-vue.common.css'
 import CustomCalendar from '@/components/CustomCalendar.vue'
-import { useRoute, useRouter } from 'vue-router'
 import pdfMake from 'pdfmake'
 
 const today = new Date()
 const todayL = DateTime.fromJSDate(today)
 const filterFromDate = ref('')
 const bookingsToday = ref<any>([])
+
+const padZero = (room: any) => {
+  return String(room).padStart(3, '0')
+}
 
 const generateTableHeader = () => {
   return [
@@ -295,7 +296,7 @@ const generateTableBody = (items: any[]) => {
   return items.map((item: any) => {
     return [
       { style: 'contentBoxTitle', text: idx++ },
-      { style: 'contentBoxTitle', text: `${item.room_no}` },
+      { style: 'contentBoxTitle', text: `${padZero(item.room_no)}` },
       { style: 'contentBoxTitle', text: `${item.cus_name}` },
       { style: 'contentBoxTitle', text: `${item.room_price}` },
       { style: 'contentBoxTitle', text: `${item.days}` },
@@ -519,7 +520,7 @@ const dayCount = (f: string, t: string) => {
   return diff.days
 }
 const getListValJoin = (list: any, key: string) => {
-  return _.map(list, (l) => l[key]).join(',')
+  return _.map(list, (l) => padZero(l[key])).join(',')
 }
 
 const summaryBook = computed(() => {

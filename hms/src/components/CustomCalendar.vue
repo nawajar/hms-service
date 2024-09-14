@@ -3,6 +3,7 @@ import { Calendar, type Day } from 'normal-calendar'
 import { onMounted, ref } from 'vue'
 import { DateTime } from 'luxon'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { onClickOutside } from '@vueuse/core'
 
 const props = defineProps(['modelValue'])
 const emits = defineEmits(['update:modelValue'])
@@ -10,29 +11,40 @@ const emits = defineEmits(['update:modelValue'])
 const pickDate = ref<any>()
 const holdDayContext = ref<any>()
 const target = ref()
+const inputText = ref()
 const onSelectDay = (day: Day) => {
   holdDayContext.value = day
   const jsD = new Date(day.year, day.month, day.day)
   pickDate.value = DateTime.fromJSDate(jsD).toFormat('yyyy-MM-dd')
   emits('update:modelValue', pickDate.value)
-  target.value.context.toggle()
+  //target.value.context.toggle()
 }
 
 const isThisMonth = (month: number) => {
   return target.value.context.month == month
 }
 
+const isToday = (day: Day) => {
+  const testDay = DateTime.fromJSDate(new Date(day.year, day.month, day.day))
+  return DateTime.now().startOf('day').equals(testDay.startOf('day'))
+}
+
 onMounted(() => {
   pickDate.value = props.modelValue
 })
 
-//onClickOutside(target, (event) => target.value.context)
+onClickOutside(inputText, (event) => {
+  if (target.value.context.isOpenCalendar()) {
+    target.value.context.toggle()
+  }
+})
 </script>
 
 <template>
   <Calendar ref="target" #default="{ calendar }">
     <div class="calendar-container">
       <input
+        ref="inputText"
         type="text"
         class="flex-1 border p-2 rounded z-0 border-neutral"
         @click="calendar.toggle"
@@ -65,7 +77,7 @@ onMounted(() => {
                 class="day text-center"
                 :class="{
                   'opacity-50': !isThisMonth(day.month),
-                  'bg-green-400': day == holdDayContext
+                  'bg-green-400': day == holdDayContext || (isToday(day) && !holdDayContext)
                 }"
                 @click="onSelectDay(day)"
               >
@@ -78,11 +90,7 @@ onMounted(() => {
     </div>
   </Calendar>
 </template>
-<script lang="ts">
-onMounted(() => {
-  // console.log(calendar)
-})
-</script>
+
 <style lang="scss" scoped>
 .head {
   display: flex;

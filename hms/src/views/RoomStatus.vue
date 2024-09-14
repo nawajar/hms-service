@@ -3,12 +3,12 @@
     <div class="container mx-auto p-6">
       <h2 class="text-3xl font-bold mb-8 text-gray-800">สถานะห้อง {{ allRooms.length }} ห้อง</h2>
       <div class="container mx-auto">
-        <div class="mb-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded">
+        <div class="mb-4 p-4 bg-primary border border-neutral text-green-700 rounded">
           <p class="font-semibold">
             ห้องเปิดใช้งาน : <span class="font-bold">{{ readyRoom.length }}</span>
           </p>
         </div>
-        <div class="p-4 bg-red-100 border border-red-400 text-red-700 rounded">
+        <div class="p-4 bg-error border border-neutral text-red-700 rounded">
           <p class="font-semibold">
             ห้องรอทำความสะอาด : <span class="font-bold">{{ needCleanRoom.length }}</span>
           </p>
@@ -34,14 +34,19 @@
             ></div>
 
             <div class="flex items-center justify-between">
-              <h4 class="font-bold">ห้อง {{ r.room_no }}</h4>
+              <h4 class="font-bold">ห้อง {{ padZero(r.room_no) }}</h4>
             </div>
             <button class="absolute right-1 top-2" @click="getBookingOfRoom(r.id)">
               <font-awesome-icon class="text-[#6C946F]" icon="bars-staggered" />
             </button>
             <div class="absolute right-1 bottom-2 dropdown dropdown-end">
               <DropDown
-                :items="['ทำความสะอาดเรียบร้อย', 'ต้องการทำความสะอาด']"
+                :items="[
+                  'ทำความสะอาดเรียบร้อย',
+                  'ต้องการทำความสะอาด',
+                  'ปิดการใช้งาน',
+                  'เปิดการใช้งาน'
+                ]"
                 @clickMenu="markRoomClean($event, r.id)"
               >
                 <template v-slot:default="{ onClick }">
@@ -106,6 +111,10 @@ const needCleanRoom = computed(() => {
   return _.filter(allRooms.value, (r) => r.need_clean)
 })
 
+const padZero = (room: any) => {
+  return String(room).padStart(3, '0')
+}
+
 const readyRoom = computed(() => {
   return _.filter(allRooms.value, (r) => r.active)
 })
@@ -117,11 +126,23 @@ const markRoomClean = async (menuId: number, roomId: string) => {
   if (menuId == 1) {
     await pb.collection('rooms').update(roomId, { need_clean: true })
   }
+  if (menuId == 2) {
+    await pb.collection('rooms').update(roomId, { active: false })
+  }
+  if (menuId == 3) {
+    await pb.collection('rooms').update(roomId, { active: true })
+  }
   await getRooms()
 }
 
 const groupRoom = computed(() => {
-  return _.groupBy(allRooms.value, (r) => r.floor)
+  return _.groupBy(allRooms.value, (r) => {
+    if (r.group_name == 'family') {
+      return 0
+    } else {
+      return r.floor
+    }
+  })
 })
 
 const toDateStr = (s: string) => {
