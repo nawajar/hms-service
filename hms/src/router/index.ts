@@ -8,6 +8,7 @@ import LayoutVue2 from '@/views/MainLayout2.vue'
 
 const routeGuard = (baseAuth: BaseAuthStore | null, fallBack?: { name: string }) => {
   const canI = baseAuth?.isValid
+  console.log('route guard ', canI)
   return {
     beforeEnter: () => canI || fallBack,
     meta: {
@@ -23,11 +24,11 @@ const router = createRouter({
       name: 'login',
       component: () => import('@/views/LoginPage.vue')
     },
-    {
-      path: '/play',
-      name: 'play',
-      component: () => import('@/views/playground/index.vue')
-    },
+    // {
+    //   path: '/play',
+    //   name: 'play',
+    //   component: () => import('@/views/playground/index.vue')
+    // },
     {
       path: '/',
       name: 'home',

@@ -29,7 +29,7 @@
               class="flex-1 border border-neutral p-2 rounded"
               :value="getListValJoin(showRoomSelected, 'room_no')"
               readonly
-              @click="openSelectRoom()"
+              @click.prevent="openSelectRoom()"
             />
           </div>
         </div>
@@ -236,7 +236,7 @@
         :show="openRoomPick"
         :availableRoom="availableRoom"
         @onSelect="onSelectRoom"
-        @close="openRoomPick = !openRoomPick"
+        @close="openRoomPick = false"
       ></RoomPick>
     </Teleport>
   </div>
@@ -332,6 +332,7 @@ const createBook = async () => {
   formData.append('create_by', pb.authStore.model?.name)
   await pb.collection('bookings').create(formData)
   clearCreateForm()
+
   router.push({ name: 'Booking List' })
 }
 
@@ -388,7 +389,9 @@ const onSelectRoom = (rooms: string[]) => {
 
 const openSelectRoom = () => {
   selectedRoom.value = []
-  openRoomPick.value = true
+  if (availableRoom.value?.length > 0) {
+    openRoomPick.value = true
+  }
 }
 
 const getBookings = async () => {

@@ -287,7 +287,8 @@ const generateTableHeader = () => {
     { text: 'ຮວມ', style: 'headerContent' },
     { text: 'ຂ່າຍແລ້ວ / ຍິງ', style: 'headerContent' },
     { text: 'ຂ່າຍທາງ', style: 'headerContent' },
-    { text: 'ວັນທີມາ', style: 'headerContent' }
+    { text: 'ວັນທີມາ', style: 'headerContent' },
+    { text: 'ວັນທີມາສຮ້າງ', style: 'headerContent' }
   ]
 }
 
@@ -303,7 +304,8 @@ const generateTableBody = (items: any[]) => {
       { style: 'contentBoxTitle', text: `${item.net_amt}` },
       { style: 'contentBoxTitle', text: `${item.paid}` },
       { style: 'contentBoxTitle', text: `${item.paid_channel}` },
-      { style: 'contentBoxTitle', text: toThaiFromCheckDate(item?.check_in) }
+      { style: 'contentBoxTitle', text: toThaiFromCheckDate(item?.check_in) },
+      { style: 'contentBoxTitle', text: toThaiFromCheckDate(item?.created) }
     ]
   })
 }
@@ -324,7 +326,7 @@ const exportData = () => {
             ...generateTableBody(summaryToday.value),
             [
               {
-                colSpan: 9,
+                colSpan: 10,
                 rowSpan: 1,
                 style: 'contextText',
                 text: `ລວມການຈອງ: ${summaryBook.value?.total} ຮາຍກາຮ  ຮວມ ${summaryBook.value?.totalAmt}
@@ -345,7 +347,7 @@ const exportData = () => {
             ...generateTableBody(summaryDepositToday.value),
             [
               {
-                colSpan: 9,
+                colSpan: 10,
                 rowSpan: 1,
                 style: 'contextText',
                 text: `ຮາຍກາຮຍກມາ: ${summaryBook.value?.deposit} ຮາຍກາຮ  ຮວມ ${summaryBook.value?.depositAmt}`
@@ -465,7 +467,8 @@ const summaryToday = computed(() => {
   if (!bookingsToday.value || bookingsToday.value.length == 0) {
     return
   }
-  const all = bookingsToday.value.filter((b: any) => isToday(b.created))
+  const filterD = DateTime.fromFormat(filterFromDate.value, 'yyyy-MM-dd')
+  const all = bookingsToday.value.filter((b: any) => isToday(b.created, filterD))
   var bookingV = all?.map((book: any) => {
     return {
       id: book.id,
@@ -478,7 +481,8 @@ const summaryToday = computed(() => {
       paid_channel: book.paid_channel,
       create_by: book.create_by,
       check_in: book.check_in_date,
-      check_out: book.check_out_date
+      check_out: book.check_out_date,
+      created: book.created
     }
   })
   return bookingV
@@ -488,7 +492,8 @@ const summaryDepositToday = computed(() => {
   if (!bookingsToday.value || bookingsToday.value.length == 0) {
     return
   }
-  const all = bookingsToday.value.filter((b: any) => !isToday(b.created))
+  const filterD = DateTime.fromFormat(filterFromDate.value, 'yyyy-MM-dd')
+  const all = bookingsToday.value.filter((b: any) => !isToday(b.created, filterD))
   var bookingV = all?.map((book: any) => {
     return {
       id: book.id,
@@ -501,7 +506,8 @@ const summaryDepositToday = computed(() => {
       paid_channel: book.paid_channel,
       create_by: book.create_by,
       check_in: book.check_in_date,
-      check_out: book.check_out_date
+      check_out: book.check_out_date,
+      created: book.created
     }
   })
   return bookingV
@@ -527,14 +533,15 @@ const summaryBook = computed(() => {
   if (!bookingsToday.value || bookingsToday.value.length == 0) {
     return
   }
-  const all = bookingsToday.value.filter((b: any) => isToday(b.created))
+  const filterD = DateTime.fromFormat(filterFromDate.value, 'yyyy-MM-dd')
+  const all = bookingsToday.value.filter((b: any) => isToday(b.created, filterD))
   const totalAmt = _.sumBy(all, (b: any) => b.price)
   const paidItem = _.filter(all, (b: any) => b.paid)
   const paidAmt = _.sumBy(paidItem, (b: any) => b.price)
   const unPaidItem = _.filter(all, (b: any) => b.paid == false)
   const unPaidAmt = _.sumBy(unPaidItem, (b: any) => b.price)
 
-  const deposit = bookingsToday.value.filter((b: any) => !isToday(b.created))
+  const deposit = bookingsToday.value.filter((b: any) => !isToday(b.created, filterD))
   const depositItem = _.filter(deposit, (b: any) => b.paid == true)
   const depositAmt = _.sumBy(depositItem, (b: any) => b.price)
 
@@ -554,18 +561,18 @@ const summaryBook = computed(() => {
   }
 })
 
-const isToday = (date: string) => {
+const isToday = (date: string, filter: DateTime) => {
   var s = date.split(' ').join('T')
   var created = DateTime.fromISO(s)
-  return created.startOf('day').equals(todayL.startOf('day'))
+  return created.startOf('day').equals(filter.startOf('day'))
 }
 
 const getBookingWithDate = async () => {
   const fromDate = filterFromDate.value
   var filters = ''
   if (fromDate) {
-    filters = `(created >= '${fromDate} 00:00:00' && created <= '${fromDate} 23:59:59')
-    || (paid_date >= '${fromDate} 00:00:00' && paid_date <= '${fromDate} 23:59:59')`
+    filters = `((created >= '${fromDate} 00:00:00' && created <= '${fromDate} 23:59:59')
+    || (paid_date >= '${fromDate} 00:00:00' && paid_date <= '${fromDate} 23:59:59')) && status != 'cancel'`
   }
   const records = await pb.collection('bookings').getFullList({
     sort: '-created',
@@ -576,8 +583,12 @@ const getBookingWithDate = async () => {
   bookingsToday.value = records
 }
 
+watch(filterFromDate, (n, _) => {
+  getBookingWithDate()
+})
+
 onMounted(() => {
   filterFromDate.value = DateTime.fromJSDate(today).toFormat('yyyy-MM-dd')
-  getBookingWithDate()
+  //getBookingWithDate()
 })
 </script>

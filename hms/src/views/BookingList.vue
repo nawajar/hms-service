@@ -10,7 +10,24 @@
             <font-awesome-icon icon="arrows-rotate" />
           </button>
         </legend>
-
+        <div class="flex gap-2">
+          <div class="flex flex-row items-center gap-4">
+            <div class="bg-primary min-w-4 h-4 rounded"></div>
+            ໄດ້ເຊັກອິນ
+          </div>
+          <div class="flex flex-row items-center gap-4">
+            <div class="bg-[#0069ff] min-w-4 h-4 rounded"></div>
+            ເຊັກອິນແລ້ວ
+          </div>
+          <div class="flex flex-row items-center gap-4">
+            <div class="bg-error min-w-4 h-4 rounded"></div>
+            ເຊັກອອກແລ້ວ
+          </div>
+          <div class="flex flex-row items-center gap-4">
+            <div class="bg-warning min-w-4 h-4 rounded"></div>
+            ຍກເລຶກ
+          </div>
+        </div>
         <div class="flex items-center space-y-4 md:space-y-0 md:space-x-4">
           <!-- Search text -->
           <div class="flex flex-col w-1/2">
@@ -80,7 +97,15 @@
         <tbody class="divide-y divide-gray-200">
           <template v-for="(booking, idx) in bookingsView" v-bind:key="booking.id">
             <tr class="hover:bg-gray-100 cursor-pointer" tabindex="0" @click="goToEdit(booking.id)">
-              <td class="px-6 py-4 text-center text-base text-gray-600">
+              <td
+                class="px-6 py-4 text-center text-base text-gray-600"
+                :class="{
+                  'border-l-4 border-primary': booking?.status == 'active',
+                  'border-l-4 border-[#0069ff]': booking?.status == 'check-in',
+                  'border-l-4 border-error': booking?.status == 'check-out',
+                  'border-l-4 border-warning': booking?.status == 'cancel'
+                }"
+              >
                 {{ (currentPage - 1) * perPage + (idx + 1) }}
               </td>
               <td class="px-6 py-4 text-base text-gray-600">
@@ -220,6 +245,7 @@ const bookingsView = computed(() => {
       id: book.id,
       room_no: getListValJoin(book.expand.room, 'room_no'),
       cus_name: book.cus_name,
+      status: book.status,
       room_price: _.sumBy(book.expand.room, 'price'),
       days: dayCount(book.check_out_date, book.check_in_date),
       net_amt: `${numberWithCommas(book.price)} ເພຶ່ມ ${book.extra_charge_amt ?? 0}`,

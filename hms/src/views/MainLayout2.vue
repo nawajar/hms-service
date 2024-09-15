@@ -85,9 +85,17 @@
             <div class="h-12 flex items-center">
               <h1 class="text-center text-xl">Header</h1>
             </div>
-            <div class="font-bold text-base">
-              <font-awesome-icon icon="user" class="text-primary" />
-              {{ pb.authStore.model?.name }}
+            <div class="dropdown dropdown-end">
+              <div tabindex="0" role="button" class="btn m-1">
+                <font-awesome-icon icon="user" class="text-primary" />
+                {{ pb.authStore.model?.name }}
+              </div>
+              <ul
+                tabindex="0"
+                class="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow"
+              >
+                <li><a @click="signout()">Logout</a></li>
+              </ul>
             </div>
           </div>
         </div>
@@ -107,9 +115,14 @@
   </div>
 </template>
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
+import { RouterLink, RouterView, useRouter } from 'vue-router'
 import { pb } from '@/services/pb'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+const router = useRouter()
+const signout = () => {
+  pb.authStore.clear()
+  router.push({ name: 'login' })
+}
 </script>
 <style lang="scss" scoped>
 .cus-menu {
