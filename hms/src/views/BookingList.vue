@@ -75,6 +75,9 @@
               ວິນ
             </th>
             <th class="px-6 py-3 text-gray-700 text-right text-lg font-semibold tracking-wide">
+              เพิ่ม
+            </th>
+            <th class="px-6 py-3 text-gray-700 text-right text-lg font-semibold tracking-wide">
               ຮວມ
             </th>
             <th class="px-6 py-3 text-gray-700 text-left text-lg font-semibold tracking-wide">
@@ -117,6 +120,9 @@
               </td>
               <td class="px-6 py-4 text-base text-right text-gray-600">
                 {{ booking.days }}
+              </td>
+              <td class="px-6 py-4 text-base text-right text-gray-600">
+                {{ booking.extra_charge }}
               </td>
               <td class="px-6 py-4 text-base text-right text-gray-600">
                 {{ booking.net_amt }}
@@ -230,7 +236,7 @@ const onSearch = async () => {
     filters += `(created >= '${fromDate} 00:00:00' && created <= '${fromDate} 23:59:59')`
   }
 
-  const records = await pb.collection('bookings').getList(currentPage.value, perPage.value, {
+  const records = await pb.collection('bookings_view').getList(currentPage.value, perPage.value, {
     sort: '-created',
     filter: filters,
     expand: 'room',
@@ -248,7 +254,8 @@ const bookingsView = computed(() => {
       status: book.status,
       room_price: _.sumBy(book.expand.room, 'price'),
       days: dayCount(book.check_out_date, book.check_in_date),
-      net_amt: `${numberWithCommas(book.price)} ເພຶ່ມ ${book.extra_charge_amt ?? 0}`,
+      extra_charge: book.extra_charge_amt,
+      net_amt: `${numberWithCommas(book.price)} `,
       paid: book.paid ? 'ຂ່າຍແລ້ວ' : 'ຍິງ',
       paid_channel: book.paid_channel,
       create_by: book.create_by,

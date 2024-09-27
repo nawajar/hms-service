@@ -111,6 +111,42 @@
                   </ul>
                 </div>
               </div>
+
+              <div class="bg-accent bg-opacity-35 p-4 rounded-md shadow-sm space-y-2">
+                <div class="flex items-center space-x-3">
+                  <i class="fas fa-exclamation-circle text-base-content text-2xl"></i>
+                  <div class="flex gap-2">
+                    <h3 class="text-lg font-semibold text-base-content">เงินสด</h3>
+                    <p class="text-xl font-bold text-base-content">
+                      {{ summaryBook?.cashReceive }}
+                    </p>
+                  </div>
+                </div>
+                <!-- Unpaid Booking Summary Details -->
+                <div class="text-sm text-base-content">
+                  <ul class="space-y-1 pl-7 list-disc">
+                    <li><strong>ຍອດລວມ:</strong> ${{ summaryBook?.cashAmt }}</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="bg-accent bg-opacity-35 p-4 rounded-md shadow-sm space-y-2">
+                <div class="flex items-center space-x-3">
+                  <i class="fas fa-exclamation-circle text-base-content text-2xl"></i>
+                  <div class="flex gap-2">
+                    <h3 class="text-lg font-semibold text-base-content">ธนาคาร</h3>
+                    <p class="text-xl font-bold text-base-content">
+                      {{ summaryBook?.bankReceive }}
+                    </p>
+                  </div>
+                </div>
+                <!-- Unpaid Booking Summary Details -->
+                <div class="text-sm text-base-content">
+                  <ul class="space-y-1 pl-7 list-disc">
+                    <li><strong>ຍອດລວມ:</strong> ${{ summaryBook?.bankAmt }}</li>
+                  </ul>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -187,6 +223,49 @@
       </div>
 
       <div class="flex flex-col gap-2 bg-white mt-4">
+        <label>ຮາຍກາຮเพิ่มเติม</label>
+        <table class="min-w-full bg-white border border-gray-200 rounded-lg shadow-lg">
+          <thead class="bg-gray-50">
+            <tr>
+              <th class="px-6 py-3 text-gray-700 text-center text-lg font-semibold tracking-wide">
+                ລ/ດ
+              </th>
+              <th class="px-6 py-3 text-gray-700 text-left text-lg font-semibold tracking-wide">
+                ເລກຫ້ອງ
+              </th>
+              <th class="px-6 py-3 text-gray-700 text-left text-lg font-semibold tracking-wide">
+                รายละเอียด
+              </th>
+              <th class="px-6 py-3 text-gray-700 text-left text-lg font-semibold tracking-wide">
+                คชจ เพิ่ม
+              </th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-200">
+            <template
+              v-for="(booking, idx) in summaryToday?.filter((r: any) => r.extra_charge > 0)"
+              v-bind:key="booking.id"
+            >
+              <tr class="hover:bg-gray-100 cursor-pointer" tabindex="0">
+                <td class="px-6 py-4 text-center text-base text-gray-600">
+                  {{ idx + 1 }}
+                </td>
+                <td class="px-6 py-4 text-base text-gray-600">
+                  {{ booking?.room_no }}
+                </td>
+                <td class="px-6 py-4 text-base text-gray-600">
+                  {{ booking.extra_charge_details }}
+                </td>
+                <td class="px-6 py-4 text-base text-start text-gray-600">
+                  {{ booking?.extra_charge }}
+                </td>
+              </tr>
+            </template>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="flex flex-col gap-2 bg-white mt-4">
         <label>ຮາຍກາຮທີ່າຍກມາ</label>
         <table class="min-w-full bg-white border border-gray-200 rounded-lg shadow-lg">
           <thead class="bg-gray-50">
@@ -255,6 +334,49 @@
           </tbody>
         </table>
       </div>
+
+      <div class="flex flex-col gap-2 bg-white mt-4">
+        <label>ຮາຍກາຮเพิ่มเติมที่ยกมา</label>
+        <table class="min-w-full bg-white border border-gray-200 rounded-lg shadow-lg">
+          <thead class="bg-gray-50">
+            <tr>
+              <th class="px-6 py-3 text-gray-700 text-center text-lg font-semibold tracking-wide">
+                ລ/ດ
+              </th>
+              <th class="px-6 py-3 text-gray-700 text-left text-lg font-semibold tracking-wide">
+                ເລກຫ້ອງ
+              </th>
+              <th class="px-6 py-3 text-gray-700 text-left text-lg font-semibold tracking-wide">
+                รายละเอียด
+              </th>
+              <th class="px-6 py-3 text-gray-700 text-left text-lg font-semibold tracking-wide">
+                คชจ เพิ่ม
+              </th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-200">
+            <template
+              v-for="(booking, idx) in summaryDepositToday?.filter((r: any) => r.extra_charge > 0)"
+              v-bind:key="booking.id"
+            >
+              <tr class="hover:bg-gray-100 cursor-pointer" tabindex="0">
+                <td class="px-6 py-4 text-center text-base text-gray-600">
+                  {{ idx + 1 }}
+                </td>
+                <td class="px-6 py-4 text-base text-gray-600">
+                  {{ booking?.room_no }}
+                </td>
+                <td class="px-6 py-4 text-base text-gray-600">
+                  {{ booking.extra_charge_details }}
+                </td>
+                <td class="px-6 py-4 text-base text-start text-gray-600">
+                  {{ booking?.extra_charge }}
+                </td>
+              </tr>
+            </template>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </template>
@@ -310,6 +432,27 @@ const generateTableBody = (items: any[]) => {
   })
 }
 
+const generateTableExtraHeader = () => {
+  return [
+    { text: 'ລ/ດ', style: 'headerContent' },
+    { text: 'ເລກຫ້ອງ', style: 'headerContent' },
+    { text: 'ຮາຍລະເອີຍດ', style: 'headerContent' },
+    { text: 'ເພຶ່ມ', style: 'headerContent' }
+  ]
+}
+
+const generateTableExtraBody = (items: any[]) => {
+  let idx = 1
+  return items.map((item: any) => {
+    return [
+      { style: 'contentBoxTitle', text: idx++ },
+      { style: 'contentBoxTitle', text: `${padZero(item.room_no)}` },
+      { style: 'contentBoxTitle', text: `${item.extra_charge_details}` },
+      { style: 'contentBoxTitle', text: `${item.extra_charge}` }
+    ]
+  })
+}
+
 const exportData = () => {
   const date = DateTime.fromFormat(filterFromDate.value, 'yyyy-MM-dd')
   const dd = {
@@ -321,12 +464,19 @@ const exportData = () => {
         style: 'tableExample',
         table: {
           // widths: ['auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 150],
+          body: [generateTableHeader(), ...generateTableBody(summaryToday.value)]
+        }
+      },
+      {
+        style: 'tableExample',
+        table: {
+          // widths: ['auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 150],
           body: [
-            generateTableHeader(),
-            ...generateTableBody(summaryToday.value),
+            generateTableExtraHeader(),
+            ...generateTableExtraBody(summaryToday.value),
             [
               {
-                colSpan: 10,
+                colSpan: 4,
                 rowSpan: 1,
                 style: 'contextText',
                 text: `ລວມການຈອງ: ${summaryBook.value?.total} ຮາຍກາຮ  ຮວມ ${summaryBook.value?.totalAmt}
@@ -342,12 +492,18 @@ const exportData = () => {
       {
         style: 'tableExample',
         table: {
+          body: [generateTableHeader(), ...generateTableBody(summaryDepositToday.value)]
+        }
+      },
+      {
+        style: 'tableExample',
+        table: {
           body: [
-            generateTableHeader(),
-            ...generateTableBody(summaryDepositToday.value),
+            generateTableExtraHeader(),
+            ...generateTableExtraBody(summaryDepositToday.value),
             [
               {
-                colSpan: 10,
+                colSpan: 4,
                 rowSpan: 1,
                 style: 'contextText',
                 text: `ຮາຍກາຮຍກມາ: ${summaryBook.value?.deposit} ຮາຍກາຮ  ຮວມ ${summaryBook.value?.depositAmt}`
@@ -358,6 +514,15 @@ const exportData = () => {
         }
       },
       { text: `ສຮູປ `, style: 'title' },
+
+      {
+        style: 'contextText',
+        text: `ເງຶນສດ: ${summaryBook.value?.cashReceive} ຮາຍກາຮ  ຮວມ ${summaryBook.value?.cashAmt}`
+      },
+      {
+        style: 'contextText',
+        text: `ທະນາຕາຮ: ${summaryBook.value?.bankReceive} ຮາຍກາຮ  ຮວມ ${summaryBook.value?.bankAmt}`
+      },
       {
         style: 'contextText',
         text: `ຍອດເກ໊ບໄດ້: ${summaryBook.value?.totalReceive} ຮາຍກາຮ  ຮວມ ${summaryBook.value?.totalReceiveAmt}`
@@ -476,7 +641,9 @@ const summaryToday = computed(() => {
       cus_name: book.cus_name,
       room_price: _.sumBy(book.expand.room, 'price'),
       days: dayCount(book.check_out_date, book.check_in_date),
-      net_amt: `${numberWithCommas(book.price)} ເພຶ່ມ ${book.extra_charge_amt ?? 0}`,
+      net_amt: `${numberWithCommas(book.price) - (book.extra_charge_amt ?? 0)} `,
+      extra_charge_details: book.extra_charge_details,
+      extra_charge: book.extra_charge_amt,
       paid: book.paid ? 'ຂ່າຍແລ້ວ' : 'ຍິງ',
       paid_channel: book.paid_channel,
       create_by: book.create_by,
@@ -501,8 +668,10 @@ const summaryDepositToday = computed(() => {
       cus_name: book.cus_name,
       room_price: _.sumBy(book.expand.room, 'price'),
       days: dayCount(book.check_out_date, book.check_in_date),
-      net_amt: `${numberWithCommas(book.price)} ເພຶ່ມ ${book.extra_charge_amt ?? 0}`,
+      net_amt: `${numberWithCommas(book.price) - (book.extra_charge_amt ?? 0)} `,
       paid: book.paid ? 'ຂ່າຍແລ້ວ' : 'ຍິງ',
+      extra_charge_details: book.extra_charge_details,
+      extra_charge: book.extra_charge_amt,
       paid_channel: book.paid_channel,
       create_by: book.create_by,
       check_in: book.check_in_date,
@@ -547,6 +716,24 @@ const summaryBook = computed(() => {
 
   const totalReceiveAll = paidItem.length + depositItem.length
   const totalReceiveAmt = depositAmt + paidAmt
+  const depositCash = _.filter(depositItem, (b: any) => b.paid_channel == 'cash')
+  let cashToday = _.filter(paidItem, (b: any) => b.paid_channel == 'cash')
+
+  if (depositCash && depositCash.length > 0) {
+    cashToday.push(...depositCash)
+  }
+  const cashAmt = _.sumBy(cashToday, (b: any) => b.price)
+
+  // bank
+
+  const depositBank = _.filter(depositItem, (b: any) => b.paid_channel == 'bank_transfer')
+  let bankReceive = _.filter(paidItem, (b: any) => b.paid_channel == 'bank_transfer')
+  console.log(paidItem)
+  if (depositBank && depositBank.length > 0) {
+    bankReceive.push(...depositBank)
+  }
+  const bankAmt = _.sumBy(bankReceive, (b: any) => b.price)
+
   return {
     total: all.length,
     totalAmt: totalAmt,
@@ -557,7 +744,11 @@ const summaryBook = computed(() => {
     deposit: depositItem.length,
     depositAmt: depositAmt,
     totalReceive: totalReceiveAll,
-    totalReceiveAmt: totalReceiveAmt
+    totalReceiveAmt: totalReceiveAmt,
+    cashReceive: cashToday.length,
+    cashAmt: cashAmt,
+    bankReceive: bankReceive.length,
+    bankAmt: bankAmt
   }
 })
 

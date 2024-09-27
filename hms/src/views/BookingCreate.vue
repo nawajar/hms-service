@@ -186,9 +186,7 @@
             <input
               type="text"
               class="flex-1 border border-neutral p-2 rounded"
-              :value="`${pb.authStore.model?.name}`"
-              readonly
-              disabled
+              v-model="staffName"
             />
           </div>
         </div>
@@ -264,6 +262,7 @@ const customerName = ref(null)
 const customerPhone = ref(null)
 const customerCardId = ref(null)
 const customerAddress = ref(null)
+const staffName = ref(null)
 const note = ref(null)
 const extraChargeDetails = ref(null)
 const extraChargeAmt = ref(null)
@@ -329,9 +328,9 @@ const createBook = async () => {
 
   setIfExist(formData, 'status', bookingStatus.value)
   setIfExist(formData, 'price', price)
-  formData.append('create_by', pb.authStore.model?.name)
+  setIfExist(formData, 'create_by', staffName.value)
   await pb.collection('bookings').create(formData)
-  clearCreateForm()
+  //clearCreateForm()
 
   router.push({ name: 'Booking List' })
 }
