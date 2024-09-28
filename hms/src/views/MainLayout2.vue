@@ -66,6 +66,14 @@
           </li>
           <hr class="border-base-300 dark:border-white" />
           <li>
+            <RouterLink :to="'/budget'" activeClass="border-indigo-500">
+              <div class="grid mr-4 place-items-center">
+                <font-awesome-icon icon="calendar-day"></font-awesome-icon>
+              </div>
+              ค่าใช้จ่าย
+            </RouterLink>
+          </li>
+          <li>
             <RouterLink :to="'/daily-report'" activeClass="border-indigo-500">
               <div class="grid mr-4 place-items-center">
                 <font-awesome-icon icon="calendar-day"></font-awesome-icon>

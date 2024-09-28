@@ -87,6 +87,12 @@ const router = createRouter({
           name: 'Daily Report', // 'patients'
           component: () => import('@/views/DailyReport.vue'),
           ...routeGuard(pb.authStore, { name: 'login' })
+        },
+        {
+          path: '/budget',
+          name: 'Budget', // 'patients'
+          component: () => import('@/views/Budget.vue'),
+          ...routeGuard(pb.authStore, { name: 'login' })
         }
       ]
     }

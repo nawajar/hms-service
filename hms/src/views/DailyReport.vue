@@ -89,6 +89,23 @@
                   </ul>
                 </div>
               </div>
+
+              <!-- คชจ -->
+              <div class="bg-base-300 bg-opacity-35 p-4 rounded-md shadow-sm space-y-2">
+                <div class="flex items-center space-x-3">
+                  <i class="fas fa-exclamation-circle text-error text-2xl"></i>
+                  <div class="flex gap-2">
+                    <h3 class="text-lg font-semibold text-error">ค่าใช้จ่าย</h3>
+                    <p class="text-xl font-bold text-error">{{ budgetSummary?.count }}</p>
+                  </div>
+                </div>
+                <!-- Unpaid Booking Summary Details -->
+                <div class="text-sm text-error">
+                  <ul class="space-y-1 pl-7 list-disc">
+                    <li><strong>ຍອດລວມ:</strong> ${{ budgetSummary?.totalAmt }}</li>
+                  </ul>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -391,10 +408,9 @@ import CustomCalendar from '@/components/CustomCalendar.vue'
 import pdfMake from 'pdfmake'
 
 const today = new Date()
-const todayL = DateTime.fromJSDate(today)
 const filterFromDate = ref('')
 const bookingsToday = ref<any>([])
-
+const budgets = ref<any>([])
 const padZero = (room: any) => {
   return String(room).padStart(3, '0')
 }
@@ -416,7 +432,7 @@ const generateTableHeader = () => {
 
 const generateTableBody = (items: any[]) => {
   let idx = 1
-  return items.map((item: any) => {
+  return items?.map((item: any) => {
     return [
       { style: 'contentBoxTitle', text: idx++ },
       { style: 'contentBoxTitle', text: `${padZero(item.room_no)}` },
@@ -443,12 +459,31 @@ const generateTableExtraHeader = () => {
 
 const generateTableExtraBody = (items: any[]) => {
   let idx = 1
-  return items.map((item: any) => {
+  return items?.map((item: any) => {
     return [
       { style: 'contentBoxTitle', text: idx++ },
       { style: 'contentBoxTitle', text: `${padZero(item.room_no)}` },
       { style: 'contentBoxTitle', text: `${item.extra_charge_details}` },
       { style: 'contentBoxTitle', text: `${item.extra_charge}` }
+    ]
+  })
+}
+
+const generateTableBudgetHeader = () => {
+  return [
+    { text: 'ລ/ດ', style: 'headerContent' },
+    { text: 'details', style: 'headerContent' },
+    { text: 'ยอด', style: 'headerContent' }
+  ]
+}
+
+const generateTableBudgetBody = (items: any[]) => {
+  let idx = 1
+  return items?.map((item: any) => {
+    return [
+      { style: 'contentBoxTitle', text: idx++ },
+      { style: 'contentBoxTitle', text: `${item.details}` },
+      { style: 'contentBoxTitle', text: `${padZero(item.amount)}` }
     ]
   })
 }
@@ -463,69 +498,113 @@ const exportData = () => {
       {
         style: 'tableExample',
         table: {
-          // widths: ['auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 150],
-          body: [generateTableHeader(), ...generateTableBody(summaryToday.value)]
+          widths: ['auto', 'auto', 'auto', 'auto', 'auto', '*', '*', '*', '*', '*'],
+          body: [generateTableHeader(), ...(generateTableBody(summaryToday.value) ?? [])]
         }
       },
       {
+        margin: [5, 2, 10, 20],
+        text: ''
+      },
+      { text: `extra `, style: 'title' },
+      {
         style: 'tableExample',
         table: {
-          // widths: ['auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 150],
+          widths: ['*', '*', '*', '*'],
           body: [
             generateTableExtraHeader(),
-            ...generateTableExtraBody(summaryToday.value),
+            ...(generateTableExtraBody(summaryToday.value) ?? []),
             [
               {
                 colSpan: 4,
                 rowSpan: 1,
                 style: 'contextText',
-                text: `ລວມການຈອງ: ${summaryBook.value?.total} ຮາຍກາຮ  ຮວມ ${summaryBook.value?.totalAmt}
-                ການຈອງທີ່ຈ່າຍແລ້ວ: ${summaryBook.value?.paid} ຮາຍກາຮ  ຮວມ ${summaryBook.value?.paidAmt}
-                ການຈອງທີ່ຍັງບໍ່ໄດ້ຈ່າຍ: ${summaryBook.value?.unPaid} ຮາຍກາຮ  ຮວມ ${summaryBook.value?.unPaidAmt}`
+                text: `ລວມການຈອງ: ${safeUndefined(summaryBook.value?.total)} ຮາຍກາຮ  ຮວມ ${safeUndefined(summaryBook.value?.totalAmt)}
+                ການຈອງທີ່ຈ່າຍແລ້ວ: ${safeUndefined(summaryBook.value?.paid)} ຮາຍກາຮ  ຮວມ ${safeUndefined(summaryBook.value?.paidAmt)}
+                ການຈອງທີ່ຍັງບໍ່ໄດ້ຈ່າຍ: ${safeUndefined(summaryBook.value?.unPaid)} ຮາຍກາຮ  ຮວມ ${safeUndefined(summaryBook.value?.unPaidAmt)}`
               },
               ''
             ]
           ]
         }
+      },
+      {
+        margin: [5, 2, 10, 20],
+        text: ''
       },
       { text: `ຮາຍກາຮຍກມາ `, style: 'title' },
       {
         style: 'tableExample',
         table: {
-          body: [generateTableHeader(), ...generateTableBody(summaryDepositToday.value)]
+          widths: ['auto', 'auto', 'auto', 'auto', 'auto', '*', '*', '*', '*', '*'],
+          body: [generateTableHeader(), ...(generateTableBody(summaryDepositToday.value) ?? [])]
         }
       },
       {
+        margin: [5, 2, 10, 20],
+        text: ''
+      },
+      { text: `extra `, style: 'title' },
+      {
         style: 'tableExample',
         table: {
+          widths: ['*', '*', '*', '*'],
           body: [
             generateTableExtraHeader(),
-            ...generateTableExtraBody(summaryDepositToday.value),
+            ...(generateTableExtraBody(summaryDepositToday.value) ?? []),
             [
               {
                 colSpan: 4,
                 rowSpan: 1,
                 style: 'contextText',
-                text: `ຮາຍກາຮຍກມາ: ${summaryBook.value?.deposit} ຮາຍກາຮ  ຮວມ ${summaryBook.value?.depositAmt}`
+                text: `ຮາຍກາຮຍກມາ: ${safeUndefined(summaryBook.value?.deposit)} ຮາຍກາຮ  ຮວມ ${safeUndefined(summaryBook.value?.depositAmt)}`
               },
               ''
             ]
           ]
         }
       },
+      {
+        margin: [5, 2, 10, 20],
+        text: ''
+      },
       { text: `ສຮູປ `, style: 'title' },
 
       {
         style: 'contextText',
-        text: `ເງຶນສດ: ${summaryBook.value?.cashReceive} ຮາຍກາຮ  ຮວມ ${summaryBook.value?.cashAmt}`
+        text: `ເງຶນສດ: ${safeUndefined(summaryBook.value?.cashReceive)} ຮາຍກາຮ  ຮວມ ${safeUndefined(summaryBook.value?.cashAmt)}`
       },
       {
         style: 'contextText',
-        text: `ທະນາຕາຮ: ${summaryBook.value?.bankReceive} ຮາຍກາຮ  ຮວມ ${summaryBook.value?.bankAmt}`
+        text: `ທະນາຕາຮ: ${safeUndefined(summaryBook.value?.bankReceive)} ຮາຍກາຮ  ຮວມ ${safeUndefined(summaryBook.value?.bankAmt)}`
       },
       {
         style: 'contextText',
-        text: `ຍອດເກ໊ບໄດ້: ${summaryBook.value?.totalReceive} ຮາຍກາຮ  ຮວມ ${summaryBook.value?.totalReceiveAmt}`
+        text: `ຍອດເກ໊ບໄດ້: ${safeUndefined(summaryBook.value?.totalReceive)} ຮາຍກາຮ  ຮວມ ${safeUndefined(summaryBook.value?.totalReceiveAmt)}`,
+        pageBreak: 'after'
+      },
+      {
+        margin: [5, 2, 10, 20],
+        text: ''
+      },
+      { text: `Budget`, style: 'title' },
+      {
+        style: 'tableExample',
+        table: {
+          body: [
+            generateTableBudgetHeader(),
+            ...(generateTableBudgetBody(budgets.value) ?? []),
+            [
+              {
+                colSpan: 3,
+                rowSpan: 1,
+                style: 'contextText',
+                text: `Budget : ${safeUndefined(budgetSummary.value?.count)} ຮາຍກາຮ  ຮວມ ${safeUndefined(budgetSummary.value?.totalAmt)}`
+              },
+              ''
+            ]
+          ]
+        }
       }
     ],
     defaultStyle: {
@@ -596,6 +675,12 @@ const exportData = () => {
   })
 }
 
+const safeUndefined = (val: any) => {
+  if (val == undefined) return ''
+
+  return val
+}
+
 const docDefinition = {
   pageSize: 'A4',
   pageMargins: [42, 16, 42, 16]
@@ -604,7 +689,7 @@ const docDefinition = {
 
 const styles = {
   bodyLooped: {
-    font: 'K2D',
+    font: 'NOTO',
     fontSize: 9,
     lineHeight: 1.4444444444,
     characterSpacing: 0.18,
@@ -774,8 +859,34 @@ const getBookingWithDate = async () => {
   bookingsToday.value = records
 }
 
+const budgetSummary = computed(() => {
+  const count = budgets.value?.length
+  const totalAmt = _.sumBy(budgets.value, (b: any) => b.amount)
+  return {
+    count,
+    totalAmt
+  }
+})
+
+const getBudget = async () => {
+  const fromDate = filterFromDate.value
+  var filters = ''
+  if (fromDate) {
+    filters += `(created >= '${fromDate} 00:00:00' && created <= '${fromDate} 23:59:59')`
+  }
+
+  const records = await pb.collection('budgets').getFullList({
+    sort: '-created',
+    filter: filters,
+    fields: '*'
+  })
+
+  budgets.value = records
+}
+
 watch(filterFromDate, (n, _) => {
   getBookingWithDate()
+  getBudget()
 })
 
 onMounted(() => {
