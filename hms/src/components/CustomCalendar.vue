@@ -11,13 +11,13 @@ const emits = defineEmits(['update:modelValue'])
 const pickDate = ref<any>()
 const holdDayContext = ref<any>()
 const target = ref()
-const inputText = ref()
+const calendarCon = ref()
 const onSelectDay = (day: Day) => {
   holdDayContext.value = day
   const jsD = new Date(day.year, day.month, day.day)
   pickDate.value = DateTime.fromJSDate(jsD).toFormat('yyyy-MM-dd')
   emits('update:modelValue', pickDate.value)
-  //target.value.context.toggle()
+  target.value.context.toggle()
 }
 
 const isThisMonth = (month: number) => {
@@ -33,7 +33,7 @@ onMounted(() => {
   pickDate.value = props.modelValue
 })
 
-onClickOutside(inputText, (event) => {
+onClickOutside(calendarCon, (event) => {
   if (target.value.context.isOpenCalendar()) {
     target.value.context.toggle()
   }
@@ -44,13 +44,12 @@ onClickOutside(inputText, (event) => {
   <Calendar ref="target" #default="{ calendar }">
     <div class="calendar-container">
       <input
-        ref="inputText"
         type="text"
         class="flex-1 border p-2 rounded z-0 border-neutral"
         @click="calendar.toggle"
         v-model="pickDate"
       />
-      <div class="absolute w-1/2 z-10" v-if="calendar.isOpenCalendar()">
+      <div ref="calendarCon" class="absolute w-1/2 z-10" v-if="calendar.isOpenCalendar()">
         <div class="flex flex-col gap-2 p-4 bg-white rounded-md border-[1px]">
           <div class="flex justify-between">
             <button @click="calendar.trigger.prevMonth()">

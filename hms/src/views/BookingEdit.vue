@@ -141,15 +141,16 @@
           </div>
           <div class="flex items-center">
             <label class="w-1/3 font-medium flex flex-col"></label>
-            <div class="flex flex-col">
+            <div class="flex gap-2">
               <template v-for="f of uploadDoc" :key="f">
-                <a
-                  target="_blank"
-                  :href="fileUrl(f)"
+                <button
                   class="text-blue-500 underline overflow-auto line-clamp-1"
+                  @click="showImageToggle(fileUrl(f))"
                 >
-                  {{ f }}
-                </a>
+                  <div class="">
+                    <img class="object-cover h-24 w-24" :src="fileUrl(f)" />
+                  </div>
+                </button>
               </template>
             </div>
           </div>
@@ -255,6 +256,20 @@
         @close="openRoomPick = !openRoomPick"
       ></RoomPick>
     </Teleport>
+
+    <dialog :class="{ 'modal-open': showModal }" class="modal">
+      <div class="modal-box max-w-1/2 p-8">
+        <div class="w-full h-full">
+          <img class="object-cover" :src="showImage" />
+        </div>
+
+        <div class="mt-2 flex flex-row-reverse">
+          <button @click="showModal = false" class="text-green-600 bg-warning rounded py-2 px-2">
+            Close
+          </button>
+        </div>
+      </div>
+    </dialog>
   </div>
 </template>
 <script setup lang="ts">
@@ -267,12 +282,12 @@ import _ from 'lodash'
 import RoomPick from '@/components/RoomPick.vue'
 import DropZone from 'dropzone-vue'
 import 'dropzone-vue/dist/dropzone-vue.common.css'
-
 import { useRoute, useRouter } from 'vue-router'
 
+const showModal = ref(false)
 const router = useRouter()
 const route = useRoute()
-
+const showImage = ref('')
 const bookings = ref<any>([])
 const startDate = ref(null)
 const endDate = ref(null)
@@ -295,6 +310,11 @@ const createBy = ref()
 const updateBy = ref()
 const uploadDoc = ref()
 const collectionId = ref()
+
+const showImageToggle = (file: string) => {
+  showImage.value = file
+  showModal.value = true
+}
 
 const back = () => {
   router.push({ name: 'Booking List' })

@@ -3,32 +3,6 @@
     <div class="p-4 bg-blue-100 text-blue-800 rounded-md mb-4">{{ toDayThai }}</div>
     <div class="stats shadow p-4 md:grid md:grid-cols-3 gap-4">
       <div class="stat">
-        <div class="stat-figure text-primary">
-          <font-awesome-icon class="text-4xl" icon="fa-right-to-bracket" />
-        </div>
-        <div class="stat-value text-info">{{ bookingsToday.length }}</div>
-        <div class="stat-title text-info">{{ $t('dashboard.book_today') }}</div>
-        <div class="text-base text-info">{{ $t('dashboard.summary_amt') }} {{ sumPrice }}</div>
-      </div>
-      <div class="stat">
-        <div class="stat-figure text-primary">
-          <font-awesome-icon class="text-4xl text-blue-800" icon="fa-hand-holding-dollar" />
-        </div>
-        <div class="stat-value text-blue-800">{{ bookingPaid.length }}</div>
-        <div class="stat-title text-blue-800">{{ $t('dashboard.paid') }}</div>
-        <div class="stext-base text-blue-800">{{ $t('dashboard.summary_amt') }} {{ sumPaid }}</div>
-      </div>
-
-      <div class="stat">
-        <div class="stat-figure text-primary">
-          <font-awesome-icon class="text-error text-4xl" icon="fa-exclamation" />
-        </div>
-        <div class="stat-value text-error">{{ bookingUnPaid.length }}</div>
-        <div class="stat-title text-error">{{ $t('dashboard.un_paid') }}</div>
-        <div class="text-base text-error">{{ $t('dashboard.summary_amt') }} {{ sumUnPaid }}</div>
-      </div>
-
-      <div class="stat">
         <div class="stat-figure text-secondary">
           <font-awesome-icon class="text-warning text-4xl" icon="fa-check-to-slot" />
         </div>
@@ -60,35 +34,6 @@ const today = new Date()
 const allRooms = ref<any>([])
 const bookingsToday = ref<any>([])
 import _ from 'lodash'
-
-const bookingPaid = computed(() => {
-  return _.filter(bookingsToday.value, (b) => b.paid == true)
-})
-
-const bookingUnPaid = computed(() => {
-  return _.filter(bookingsToday.value, (b) => b.paid == false)
-})
-
-const sumPaid = computed(() => {
-  return _.sumBy(
-    bookingPaid.value,
-    (bp: any) => Number(bp?.price) + Number(bp?.extra_charge_amt ?? 0)
-  )
-})
-
-const sumUnPaid = computed(() => {
-  return _.sumBy(
-    bookingUnPaid.value,
-    (bp: any) => Number(bp?.price) + Number(bp?.extra_charge_amt ?? 0)
-  )
-})
-
-const sumPrice = computed(() => {
-  return _.sumBy(
-    bookingsToday.value,
-    (bp: any) => Number(bp?.price) + Number(bp?.extra_charge_amt ?? 0)
-  )
-})
 
 const toDayThai = computed(() => {
   const result = today.toLocaleDateString('th-TH', {
