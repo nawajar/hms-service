@@ -290,14 +290,17 @@ const setIfExist = (formData: FormData, key: string, val: any) => {
 
 const createBook = async () => {
   var price = 0
+  const formData = new FormData()
+
   if (startDate.value && endDate.value) {
     const roomPrice = _.sumBy(showRoomSelected.value, (a) => a.price)
     price = dayCount(endDate.value, startDate.value) * roomPrice
     price += extraChargeAmt.value ?? 0
+    setIfExist(formData, 'room_price_snapshort', roomPrice)
   } else {
     return
   }
-  const formData = new FormData()
+
   setIfExist(formData, 'check_in_date', startDate.value)
   setIfExist(formData, 'check_out_date', endDate.value)
   _.forEach(selectedRoom.value, (room) => {
@@ -332,7 +335,7 @@ const createBook = async () => {
   await pb.collection('bookings').create(formData)
   //clearCreateForm()
 
-  router.push({ name: 'Booking List' })
+  router.push({ path: '/booking-list' })
 }
 
 const clearCreateForm = () => {

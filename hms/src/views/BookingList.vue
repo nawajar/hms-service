@@ -252,7 +252,7 @@ const bookingsView = computed(() => {
       room_no: getListValJoin(book.expand.room, 'room_no'),
       cus_name: book.cus_name,
       status: book.status,
-      room_price: _.sumBy(book.expand.room, 'price'),
+      room_price: book.room_price_snapshort,
       days: dayCount(book.check_out_date, book.check_in_date),
       extra_charge: book.extra_charge_amt,
       net_amt: `${numberWithCommas(book.price)} `,

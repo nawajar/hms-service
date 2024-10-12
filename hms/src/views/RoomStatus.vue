@@ -45,7 +45,8 @@
                   'ทำความสะอาดเรียบร้อย',
                   'ต้องการทำความสะอาด',
                   'ปิดการใช้งาน',
-                  'เปิดการใช้งาน'
+                  'เปิดการใช้งาน',
+                  'ปรับราคา'
                 ]"
                 @clickMenu="markRoomClean($event, r.id)"
               >
@@ -95,6 +96,27 @@
       </div>
     </div>
   </dialog>
+
+  <dialog :class="{ 'modal-open': openPriceAdjustModal }" class="modal" v-if="openPriceAdjustModal">
+    <div class="modal-box w-11/12 max-w-5xl">
+      <h1 class="text-3xl font-bold mb-8">ปรับราคาห้อง {{ padZero(getRoomNo(adjustRoomId)) }}</h1>
+      <div class="flex items-center">
+        <label class="w-1/3 font-medium">ราคา:</label>
+        <input
+          type="number"
+          class="flex-1 border border-neutral p-2 rounded"
+          v-model="priceAdjust"
+        />
+      </div>
+      <div class="modal-action">
+        <form method="dialog">
+          <!-- if there is a button, it will close the modal -->
+          <button class="btn" @click="adjustPrice">ปรับราคา</button>
+          <button class="btn" @click="openPriceAdjustModal = !openPriceAdjustModal">ปิด</button>
+        </form>
+      </div>
+    </div>
+  </dialog>
 </template>
 <script setup lang="ts">
 import { onMounted, ref, computed } from 'vue'
@@ -106,6 +128,25 @@ import DropDown from '@/components/DropDown.vue'
 const allRooms = ref<any>([])
 const showModal = ref(false)
 const viewRoomBooking = ref<any>(null)
+const openPriceAdjustModal = ref(false)
+const priceAdjust = ref(0)
+const adjustRoomId = ref('')
+
+const getRoomNo = (roomId: string) => {
+  if (!allRooms.value || allRooms.value.length == 0 || !roomId) {
+    return ''
+  }
+  return _.find(allRooms.value, (r) => r.id == roomId)?.room_no
+}
+
+const adjustPrice = async () => {
+  if (!adjustRoomId.value || priceAdjust.value == 0) {
+    return
+  }
+  await pb.collection('rooms').update(adjustRoomId.value, { price: priceAdjust.value })
+  openPriceAdjustModal.value = false
+  await getRooms()
+}
 
 const needCleanRoom = computed(() => {
   return _.filter(allRooms.value, (r) => r.need_clean)
@@ -122,17 +163,29 @@ const readyRoom = computed(() => {
 const markRoomClean = async (menuId: number, roomId: string) => {
   if (menuId == 0) {
     await pb.collection('rooms').update(roomId, { need_clean: false })
+    await getRooms()
   }
   if (menuId == 1) {
     await pb.collection('rooms').update(roomId, { need_clean: true })
+    await getRooms()
   }
   if (menuId == 2) {
     await pb.collection('rooms').update(roomId, { active: false })
+    await getRooms()
   }
   if (menuId == 3) {
     await pb.collection('rooms').update(roomId, { active: true })
+    await getRooms()
   }
-  await getRooms()
+
+  if (menuId == 4) {
+    adjustRoomId.value = ''
+    priceAdjust.value = 0
+
+    openPriceAdjustModal.value = true
+    adjustRoomId.value = roomId
+    //await pb.collection('rooms').update(roomId, { active: true })
+  }
 }
 
 const groupRoom = computed(() => {
