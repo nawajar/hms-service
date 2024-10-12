@@ -36,11 +36,7 @@ const bookingsToday = ref<any>([])
 import _ from 'lodash'
 
 const toDayThai = computed(() => {
-  const result = today.toLocaleDateString('th-TH', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
-  })
+  const result = DateTime.fromJSDate(today).toFormat('dd-MM-yyyy')
   return result
 })
 

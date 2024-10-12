@@ -25,7 +25,9 @@
         </div>
         <div v-if="calendar.isOpenCalendar()">
           <div class="head flex items-center p-4 bg-gray-100 rounded-md shadow">
-            <div class="text-lg font-semibold">{{ calendar.monthName }} {{ calendar.year }}</div>
+            <div class="text-lg font-semibold">
+              {{ String(calendar.month).padStart(2, '0') }}-{{ calendar.year }}
+            </div>
             <div class="flex space-x-2">
               <button
                 @click="prevMonth()"
@@ -232,15 +234,9 @@ const getRoomSchedule = (roomNo: string, day: string) => {
 
 const toThaiFromCheckDate = (date: string) => {
   var s = date.split(' ').join('T')
-  const dateL = DateTime.fromISO(s)
-  const lDate = dateL.toJSDate()
+  const dateL = DateTime.fromISO(s).toFormat('dd-MM-yyyy')
 
-  const result = lDate.toLocaleDateString('th-TH', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
-  })
-  return result
+  return dateL
 }
 
 const roomSchedules = computed(() => {
@@ -297,12 +293,8 @@ const toStringDate = (y: number, m: number, d: number) => {
 
 const toThaiDate = (d: number, m: number, y: number) => {
   const date = new Date(y, m, d)
-  const result = date.toLocaleDateString('th-TH', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
-  })
-  return result
+  const dateL = DateTime.fromJSDate(date).toFormat('dd-MM-yyyy')
+  return dateL
 }
 
 const isThisMonth = (month: number) => {

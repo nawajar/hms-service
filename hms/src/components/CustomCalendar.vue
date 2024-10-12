@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Calendar, type Day } from 'normal-calendar'
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { DateTime } from 'luxon'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { onClickOutside } from '@vueuse/core'
@@ -38,6 +38,13 @@ onClickOutside(calendarCon, (event) => {
     target.value.context.toggle()
   }
 })
+
+const pickVal = computed(() => {
+  if (!pickDate.value) {
+    return ''
+  }
+  return DateTime.fromISO(pickDate.value).toFormat('dd-MM-yyyy')
+})
 </script>
 
 <template>
@@ -47,7 +54,7 @@ onClickOutside(calendarCon, (event) => {
         type="text"
         class="flex-1 border p-2 rounded z-0 border-neutral"
         @click="calendar.toggle"
-        v-model="pickDate"
+        :value="pickVal"
       />
       <div ref="calendarCon" class="absolute w-1/2 z-10" v-if="calendar.isOpenCalendar()">
         <div class="flex flex-col gap-2 p-4 bg-white rounded-md border-[1px]">
@@ -56,7 +63,7 @@ onClickOutside(calendarCon, (event) => {
               <font-awesome-icon class="text-blue-500" icon="fa-chevron-left" />
             </button>
             <div>
-              {{ calendar.monthName }}
+              {{ String(calendar.month + 1).padStart(2, '0') }} -
               {{ calendar.year }}
             </div>
             <button @click="calendar.trigger.nextMonth()">

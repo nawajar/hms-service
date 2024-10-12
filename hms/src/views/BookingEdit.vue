@@ -258,9 +258,9 @@
     </Teleport>
 
     <dialog :class="{ 'modal-open': showModal }" class="modal">
-      <div class="modal-box max-w-1/2 p-8">
+      <div class="w-9/12 p-8">
         <div class="w-full h-full">
-          <img class="object-cover" :src="showImage" />
+          <img class="object-contain" :src="showImage" />
         </div>
 
         <div class="mt-2 flex flex-row-reverse">

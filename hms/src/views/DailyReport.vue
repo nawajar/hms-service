@@ -703,15 +703,9 @@ const toThaiFromCheckDate = (date: string) => {
     return ''
   }
   var s = date.split(' ').join('T')
-  const dateL = DateTime.fromISO(s)
-  const lDate = dateL.toJSDate()
+  const dateL = DateTime.fromISO(s).toFormat('dd-MM-yyyy')
 
-  const result = lDate.toLocaleDateString('lo-LA', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
-  })
-  return result
+  return dateL
 }
 const summaryToday = computed(() => {
   if (!bookingsToday.value || bookingsToday.value.length == 0) {
@@ -872,7 +866,7 @@ const getBudget = async () => {
   const fromDate = filterFromDate.value
   var filters = ''
   if (fromDate) {
-    filters += `(created >= '${fromDate} 00:00:00' && created <= '${fromDate} 23:59:59')`
+    filters += `(budgetDate >= '${fromDate} 00:00:00' && budgetDate <= '${fromDate} 23:59:59')`
   }
 
   const records = await pb.collection('budgets').getFullList({

@@ -134,10 +134,10 @@
                 {{ booking.paid_channel }}
               </td>
               <td class="px-6 py-4 text-base text-gray-600">{{ booking.create_by }}</td>
-              <td class="px-6 py-4 text-base text-gray-600">
+              <td class="px-6 py-4 text-base text-gray-600 whitespace-nowrap">
                 {{ toThaiFromCheckDate(booking.check_in) }}
               </td>
-              <td class="px-6 py-4 text-base text-gray-600">
+              <td class="px-6 py-4 text-base text-gray-600 whitespace-nowrap">
                 {{ toThaiFromCheckDate(booking.check_out) }}
               </td>
             </tr>
@@ -270,6 +270,12 @@ const refresh = async () => {
   onSearch()
 }
 
+const toDateFormat = (f: string) => {
+  var s = f.split(' ').join('T')
+  var dd = DateTime.fromISO(s).toFormat('dd-MM-yyyy')
+  return dd
+}
+
 const dayCount = (f: string, t: string) => {
   var s = f.split(' ').join('T')
   var e = t.split(' ').join('T')
@@ -293,15 +299,8 @@ const padZero = (room: any) => {
 
 const toThaiFromCheckDate = (date: string) => {
   var s = date.split(' ').join('T')
-  const dateL = DateTime.fromISO(s)
-  const lDate = dateL.toJSDate()
-
-  const result = lDate.toLocaleDateString('th-TH', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
-  })
-  return result
+  const dateL = DateTime.fromISO(s).toFormat('dd-MM-yyyy')
+  return dateL
 }
 
 onMounted(async () => {

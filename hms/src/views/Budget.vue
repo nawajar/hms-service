@@ -207,24 +207,11 @@ function numberWithCommas(x: any) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')
 }
 
-const toThaiFromCheckDate = (date: string) => {
-  var s = date.split(' ').join('T')
-  const dateL = DateTime.fromISO(s)
-  const lDate = dateL.toJSDate()
-
-  const result = lDate.toLocaleDateString('th-TH', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
-  })
-  return result
-}
-
 const getBudget = async () => {
   const fromDate = filterFromDate.value
   var filters = ''
   if (fromDate) {
-    filters += `(created >= '${fromDate} 00:00:00' && created <= '${fromDate} 23:59:59')`
+    filters += `(budgetDate >= '${fromDate} 00:00:00' && budgetDate <= '${fromDate} 23:59:59')`
   }
 
   const records = await pb.collection('budgets').getList(currentPage.value, perPage.value, {

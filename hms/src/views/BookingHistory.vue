@@ -451,15 +451,8 @@ const openRoomPick = ref<boolean>(false)
 
 const toThaiFromCheckDate = (date: string) => {
   var s = date.split(' ').join('T')
-  const dateL = DateTime.fromISO(s)
-  const lDate = dateL.toJSDate()
-
-  const result = lDate.toLocaleDateString('th-TH', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
-  })
-  return result
+  const dateL = DateTime.fromISO(s).toFormat('dd-MM-yyyy')
+  return dateL
 }
 
 
