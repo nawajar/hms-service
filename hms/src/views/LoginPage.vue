@@ -20,7 +20,7 @@
         </svg>
         Login
       </div>
-      <form class="w-full">
+      <div class="w-full">
         <div class="mb-4">
           <label class="block text-gray-700 text-sm font-bold mb-2" for="email"> UserName </label>
           <input
@@ -48,7 +48,7 @@
             Sign In
           </button>
         </div>
-      </form>
+      </div>
     </div>
   </div>
 </template>
@@ -72,7 +72,7 @@ const login = async () => {
   if (authData) {
     console.log('Valid in.', pb.authStore.isValid)
     router.push({
-      name: 'Booking List'
+      path: '/'
     })
   }
 }
