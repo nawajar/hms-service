@@ -1,29 +1,29 @@
 <template>
   <div class="min-w-[400px] h-full mb-10 rounded">
     <div class="w-full mx-auto p-4 bg-white shadow-md rounded-md border">
-      <h1 class="text-lg font-semibold mb-4 text-center">Booking Information</h1>
+      <h1 class="text-lg font-semibold mb-4 text-center">ຂໍ້ມູນການຈອງ</h1>
 
       <!-- Room Information Section -->
       <fieldset class="border border-gray-300 rounded-md p-4 mb-6">
-        <legend class="text-md font-semibold px-2">Room Information</legend>
+        <legend class="text-md font-semibold px-2">ຂໍ້ອມູນຫ້ອງ</legend>
         <div class="grid grid-cols-1 gap-4">
           <!-- Check-in Date -->
           <div class="flex items-center">
-            <label class="w-1/3 font-medium">ວິນທີ່ເຊ້າພິກ:</label>
+            <label class="w-1/3 font-medium">ວັນທີ່ເຂົ້າພັກ:</label>
             <div class="w-2/3">
               <CustomCalendar v-model="startDate"></CustomCalendar>
             </div>
           </div>
           <!-- Check-out Date -->
           <div class="flex items-center">
-            <label class="w-1/3 font-medium">ວິນທີ່ອອກ:</label>
+            <label class="w-1/3 font-medium">ວັນທີ່ີ່ອອກ:</label>
             <div class="w-2/3">
               <CustomCalendar v-model="endDate"></CustomCalendar>
             </div>
           </div>
           <!-- Room Numbers -->
           <div class="flex items-center">
-            <label class="w-1/3 font-medium">Room Numbers:</label>
+            <label class="w-1/3 font-medium">ໝາຍເລກຫ້ອງ:</label>
             <input
               type="text"
               class="flex-1 border border-neutral p-2 rounded"
@@ -37,11 +37,11 @@
 
       <!-- Customer Information Section -->
       <fieldset class="border border-gray-300 rounded-md p-4 mb-6">
-        <legend class="text-md font-semibold px-2">Customer Information</legend>
+        <legend class="text-md font-semibold px-2">ຂໍ້ມູລນລູກຄ້າ</legend>
         <div class="grid grid-cols-1 gap-4">
           <!-- Name -->
           <div class="flex items-center">
-            <label class="w-1/3 font-medium">Name:</label>
+            <label class="w-1/3 font-medium">ຊື່:</label>
             <input
               type="text"
               class="flex-1 border border-neutral p-2 rounded"
@@ -50,7 +50,7 @@
           </div>
           <!-- Phone Number -->
           <div class="flex items-center">
-            <label class="w-1/3 font-medium">Phone Number:</label>
+            <label class="w-1/3 font-medium">ເບີໂທ:</label>
             <input
               type="text"
               class="flex-1 border border-neutral p-2 rounded"
@@ -59,31 +59,31 @@
           </div>
           <!-- Customer ID Card -->
           <div class="flex items-center">
-            <label class="w-1/3 font-medium">Customer ID Card:</label>
+            <label class="w-1/3 font-medium">ເລກບັດ ຫຼີ ພັດສະປອດ:</label>
             <input
               type="text"
               class="flex-1 border border-neutral p-2 rounded"
-              placeholder="Enter ID card number"
+              placeholder="ກະລຸນາໃສ່ເລກບັດ ຫຼື ພັດສະປອດ"
               v-model="customerCardId"
             />
           </div>
           <!-- Customer Address -->
           <div class="flex items-center">
-            <label class="w-1/3 font-medium">Customer Address:</label>
+            <label class="w-1/3 font-medium">ທີ່ຢູ່:</label>
             <textarea
               class="flex-1 border border-neutral p-2 rounded"
               rows="3"
-              placeholder="Enter customer address"
+              placeholder="ກະລຸນາ ໃສ່ທີ່ຢູ່"
               v-model="customerAddress"
             ></textarea>
           </div>
           <!-- Note -->
           <div class="flex items-center">
-            <label class="w-1/3 font-medium">Note:</label>
+            <label class="w-1/3 font-medium">ໝາຍເຫດ ເພີ່ມເຕີມ:</label>
             <textarea
               class="flex-1 border border-neutral p-2 rounded"
               rows="3"
-              placeholder="Enter any notes"
+              placeholder="ກະລຸນາໃສ່ໝາຍເຫດເພີ່ມເຕີມ"
               v-model="note"
             ></textarea>
           </div>
@@ -92,21 +92,21 @@
 
       <!-- Additional Cost Section -->
       <fieldset class="border border-neutral rounded-md p-4 mb-6">
-        <legend class="text-md font-semibold px-2">Payment Information</legend>
+        <legend class="text-md font-semibold px-2">ຂໍ້ມູນການຊໍາລະເງິນ</legend>
         <div class="grid grid-cols-1 gap-4">
           <!-- Additional Cost -->
           <div class="flex items-center">
-            <label class="w-1/3 font-medium">Additional Cost:</label>
+            <label class="w-1/3 font-medium">ລາຍລະອຽດຄ່າໃຊ້ຈ່າຍເພີມເຕີມ:</label>
             <input
               type="text"
               class="flex-1 border border-neutral p-2 rounded"
-              placeholder="Enter additional cost"
+              placeholder="ລາຍລະອຽດຄ່າໃຊ້ຈ່າຍເພີມເຕີມ"
               v-model="extraChargeDetails"
             />
           </div>
           <!-- Additional Cost Quantity -->
           <div class="flex items-center">
-            <label class="w-1/3 font-medium">Additional Cost Quantity:</label>
+            <label class="w-1/3 font-medium">ຄ່າໃຊ້ຈ່າຍເພີ່ມເຕີມ ຈໍານວນ :</label>
             <input
               type="number"
               class="flex-1 border border-neutral p-2 rounded"
@@ -115,7 +115,7 @@
           </div>
           <!-- Paid Checkbox -->
           <div class="flex items-center">
-            <label class="w-1/3 font-medium">Paid <span class="text-sm">(200 ₭)</span>:</label>
+            <label class="w-1/3 font-medium">ຈ່າຍແລ້ວ <span class="text-sm">(200 ₭)</span>:</label>
             <input
               type="checkbox"
               class="h-5 w-5 rounded border-neutral text-green-600 focus:ring-green-500"
@@ -123,7 +123,7 @@
             />
           </div>
           <div class="flex items-center">
-            <label class="w-1/3 font-medium">ຂ່າຍແບບ :</label>
+            <label class="w-1/3 font-medium">ຈ່າຍຜ່ານຊ່ອງທາງ :</label>
             <div class="w-2/3 flex gap-4">
               <select
                 id="status"
@@ -140,6 +140,7 @@
             <label class="w-1/3 font-medium"></label>
             <div class="w-2/3">
               <DropZone
+                placeholder="ເລືອກໄຟສ"
                 :maxFiles="Number(5)"
                 :uploadOnDrop="false"
                 :multipleUpload="true"
@@ -154,17 +155,17 @@
 
       <!-- Total Payment -->
       <fieldset class="border border-gray-300 rounded-md p-4 mb-6">
-        <legend class="text-md font-semibold px-2">Summary</legend>
+        <legend class="text-md font-semibold px-2">ສະຫຼຸບ</legend>
         <div class="grid grid-cols-1 gap-4">
           <div class="flex items-center">
-            <label class="w-1/3 font-medium">Status:</label>
+            <label class="w-1/3 font-medium">ສະຖານະ ການຈອງ:</label>
             <div class="w-2/3 flex gap-4">
               <select
                 id="status"
                 class="flex-1 border border-neutral p-2 rounded"
                 v-model="bookingStatus"
               >
-                <option value="active">Active</option>
+                <option value="active">ປົກກະຕິ</option>
                 <option value="cancel">Cancel</option>
                 <option value="check-in">Check-in</option>
                 <option value="check-out">Check-out</option>
@@ -172,7 +173,7 @@
             </div>
           </div>
           <div class="flex items-center">
-            <label class="w-1/3 font-medium">Total Payment:</label>
+            <label class="w-1/3 font-medium">ຍອດຊໍາລະລວມ:</label>
             <input
               type="text"
               class="flex-1 border border-neutral p-2 rounded"
@@ -182,7 +183,7 @@
             />
           </div>
           <div class="flex items-center">
-            <label class="w-1/3 font-medium">Create By:</label>
+            <label class="w-1/3 font-medium">ຊື່ ພະນັກງານ:</label>
             <input
               type="text"
               class="flex-1 border border-neutral p-2 rounded"
@@ -194,15 +195,15 @@
 
       <!-- Room Details Table -->
       <div class="w-full mx-auto p-4 bg-white shadow-md rounded-md mt-6 mb-6">
-        <h2 class="text-lg font-semibold mb-4 text-center">Room Details</h2>
+        <h2 class="text-lg font-semibold mb-4 text-center">ລາຍລະອຽດຫ້ອງ</h2>
         <table class="w-full border-collapse">
           <thead>
             <tr class="bg-gray-100">
-              <th class="border p-2 text-left">Room Type</th>
-              <th class="border p-2 text-left">Room Number</th>
-              <th class="border p-2 text-left">Price (₭)</th>
-              <th class="border p-2 text-left">Days</th>
-              <th class="border p-2 text-left">Price (₭) Net.</th>
+              <th class="border p-2 text-left">ປະເພດຫ້ອງ</th>
+              <th class="border p-2 text-left">ໝາຍເລກຫ້ອງ</th>
+              <th class="border p-2 text-left">ລາຄາ (₭)</th>
+              <th class="border p-2 text-left">ຈໍານວນວັນ</th>
+              <th class="border p-2 text-left">ລາຄາລວມ (₭) Net.</th>
             </tr>
           </thead>
           <tbody>
@@ -224,7 +225,7 @@
           class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded"
           @click="createBook"
         >
-          ສຮ້າງ
+          ສ້າງ
         </button>
       </div>
     </div>
