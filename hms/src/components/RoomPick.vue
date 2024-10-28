@@ -4,7 +4,7 @@
       <h1 class="text-3xl font-bold mb-8">ເລືອກຫ້ອງ</h1>
       <div class="flex flex-col gap-4">
         <div v-for="(room, roomType) in roomByType" :key="roomType">
-          <label class="font-bold text-xl mb-2 block">{{ roomType }}</label>
+          <label class="font-bold text-xl mb-2 block">{{ roomTranslate[roomType] }}</label>
           <div class="flex flex-wrap gap-2">
             <button
               @click="addRoom(r.id)"
@@ -29,8 +29,8 @@
       </div>
       <div class="modal-action">
         <form method="dialog" class="flex gap-2">
-          <button class="btn" @click="closeModal()">Close</button>
-          <button class="btn btn-primary" @click="selectRoom()">Ok</button>
+          <button class="btn" @click="closeModal()">ປິດ</button>
+          <button class="btn btn-primary" @click="selectRoom()">ເລືອກ</button>
         </form>
       </div>
     </div>
@@ -40,6 +40,12 @@
 import { computed, onMounted, ref, watch } from 'vue'
 import _ from 'lodash'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+
+const roomTranslate: any = {
+  single_bed: 'ຕຽງດ່ຽວ',
+  family: 'ຫ້ອງຄອບຄົວ/ພິເສດ',
+  twin_bed: 'ຕຽງຄູ່'
+}
 
 const emit = defineEmits(['close', 'onSelect'])
 interface Props {

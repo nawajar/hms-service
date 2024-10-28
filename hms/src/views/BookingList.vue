@@ -4,7 +4,7 @@
     <div class="mb-4">
       <fieldset class="border border-gray-300 p-4 rounded-lg bg-white shadow-lg">
         <legend class="text-lg font-semibold text-gray-700 px-2">
-          Booking
+          ການຈອງ
 
           <button @click="refresh" class="hover:bg-neutral rounded-full w-8 h-8">
             <font-awesome-icon icon="arrows-rotate" />
@@ -31,12 +31,12 @@
         <div class="flex items-center space-y-4 md:space-y-0 md:space-x-4">
           <!-- Search text -->
           <div class="flex flex-col w-1/2">
-            <label for="search" class="block text-gray-700 text-sm font-medium mb-1">Search</label>
+            <label for="search" class="block text-gray-700 text-sm font-medium mb-1">ຄົ້ນຫາ</label>
             <input
               type="text"
               id="search"
               name="search"
-              placeholder="Search by name or room number"
+              placeholder="ຄົ້ນຫາດ້ວຍຊື່ ຫຼື ໝາຍເລກຫ້ອງ"
               v-model="searchQuery"
               @input="onInputSearch"
               class="w-full p-2 border border-neutral rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
@@ -45,7 +45,7 @@
           <!-- Date Filter: From -->
           <div class="flex flex-col w-1/2">
             <label for="from-date" class="block text-gray-700 text-sm font-medium mb-1"
-              >From Date</label
+              >ວັນທີ່ເຂົ້າພັກ</label
             >
             <div class="" v-if="filterFromDate">
               <CustomCalendar v-model="filterFromDate"></CustomCalendar>

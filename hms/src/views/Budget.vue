@@ -4,7 +4,7 @@
     <div class="mb-4">
       <fieldset class="border border-gray-300 p-4 rounded-lg bg-white shadow-lg">
         <legend class="text-lg font-semibold text-gray-700 px-2">
-          Budget
+          ຄ່າໃຊ້ຈ່າຍ
 
           <button @click="refresh" class="hover:bg-neutral rounded-full w-8 h-8">
             <font-awesome-icon icon="arrows-rotate" />
@@ -14,15 +14,15 @@
         <div class="flex items-center space-y-4 md:space-y-0 md:space-x-4">
           <!-- Search text -->
           <div class="flex flex-col w-1/2">
-            <label for="search" class="block text-gray-700 text-sm font-medium mb-1">สร้าง</label>
+            <label for="search" class="block text-gray-700 text-sm font-medium mb-1">ສ້າງ</label>
             <button @click="showModal = true" class="text-neutral bg-black px-4 py-2 rounded">
-              Create
+              ສ້າງ
             </button>
           </div>
           <!-- Date Filter: From -->
           <div class="flex flex-col w-1/2">
             <label for="from-date" class="block text-gray-700 text-sm font-medium mb-1"
-              >From Date</label
+              >ວັນທີ</label
             >
             <div class="" v-if="filterFromDate">
               <CustomCalendar v-model="filterFromDate"></CustomCalendar>
@@ -40,10 +40,10 @@
               ລ/ດ
             </th>
             <th class="px-6 py-3 text-gray-700 text-left text-lg font-semibold tracking-wide">
-              รายละเอียด
+              ລາຍລະອຽດ
             </th>
             <th class="px-6 py-3 text-gray-700 text-left text-lg font-semibold tracking-wide">
-              ยอด
+              ຍອດ
             </th>
           </tr>
         </thead>
@@ -94,7 +94,7 @@
 
   <dialog :class="{ 'modal-open': showModal }" class="modal">
     <div class="modal-box w-11/12 max-w-5xl">
-      <h1 class="text-3xl font-bold mb-8">Create Budget</h1>
+      <h1 class="text-3xl font-bold mb-8">ສ້າງ ລາຍການຄ່າໃຊ້ຈ່າຍ</h1>
       <div class="grid grid-cols-1">
         <div>
           <h2 class="text-xl font-semibold mb-2"></h2>
@@ -133,8 +133,8 @@
           </div>
           <!-- if there is a button, it will close the modal -->
           <div class="flex gap-2 justify-end">
-            <button class="btn btn-primary" @click="createBudget">Create</button>
-            <button class="btn" @click="showModal = !showModal">Close</button>
+            <button class="btn btn-primary" @click="createBudget">ສ້າງ</button>
+            <button class="btn" @click="showModal = !showModal">ປິດ</button>
           </div>
         </form>
       </div>
@@ -150,7 +150,6 @@ import { DateTime } from 'luxon'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import 'dropzone-vue/dist/dropzone-vue.common.css'
 import CustomCalendar from '@/components/CustomCalendar.vue'
-import { useRoute, useRouter } from 'vue-router'
 
 const budgets = ref<any>([])
 const showModal = ref(false)

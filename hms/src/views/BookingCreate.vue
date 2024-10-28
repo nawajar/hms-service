@@ -166,9 +166,9 @@
                 v-model="bookingStatus"
               >
                 <option value="active">ປົກກະຕິ</option>
-                <option value="cancel">Cancel</option>
-                <option value="check-in">Check-in</option>
-                <option value="check-out">Check-out</option>
+                <option value="cancel">ຍົກເລີກ</option>
+                <option value="check-in">ເຊັກອິນ</option>
+                <option value="check-out">ເຊັກເອົ້າ</option>
               </select>
             </div>
           </div>
