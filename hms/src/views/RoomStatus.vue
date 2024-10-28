@@ -1,22 +1,22 @@
 <template>
   <div class="w-full h-full mb-10 rounded overflow-y-scroll relative overflow-x-hidden">
     <div class="container mx-auto p-6">
-      <h2 class="text-3xl font-bold mb-8 text-gray-800">สถานะห้อง {{ allRooms.length }} ห้อง</h2>
+      <h2 class="text-3xl font-bold mb-8 text-gray-800">ສະຖານະຫ້ອງ {{ allRooms.length }} ห้อง</h2>
       <div class="container mx-auto">
         <div class="mb-4 p-4 bg-primary border border-neutral text-green-700 rounded">
           <p class="font-semibold">
-            ห้องเปิดใช้งาน : <span class="font-bold">{{ readyRoom.length }}</span>
+            ຫ້ອງເປີດໃຊ້ງານ : <span class="font-bold">{{ readyRoom.length }}</span>
           </p>
         </div>
         <div class="p-4 bg-error border border-neutral text-red-700 rounded">
           <p class="font-semibold">
-            ห้องรอทำความสะอาด : <span class="font-bold">{{ needCleanRoom.length }}</span>
+            ຫ້ອງລໍຖ້າທຳຄວາມສະອາດ : <span class="font-bold">{{ needCleanRoom.length }}</span>
           </p>
         </div>
       </div>
       <!-- Floor 1 -->
       <div class="mt-4 mb-12" v-for="(value, name, index) in groupRoom" :key="index">
-        <h3 class="text-2xl font-semibold mb-6 text-gray-700">ชั้น {{ name }}</h3>
+        <h3 class="text-2xl font-semibold mb-6 text-gray-700">{{ name }}</h3>
         <div class="grid grid-cols-6 gap-2">
           <div
             class="p-4 border border-gray-300 text-gray-800 rounded-lg shadow-md relative"
@@ -34,7 +34,7 @@
             ></div>
 
             <div class="flex items-center justify-between">
-              <h4 class="font-bold">ห้อง {{ padZero(r.room_no) }}</h4>
+              <h4 class="font-bold">ຫ້ອງ {{ padZero(r.room_no) }}</h4>
             </div>
             <button class="absolute right-1 top-2" @click="getBookingOfRoom(r.id)">
               <font-awesome-icon class="text-[#6C946F]" icon="bars-staggered" />
@@ -42,11 +42,11 @@
             <div class="absolute right-1 bottom-2 dropdown dropdown-end">
               <DropDown
                 :items="[
-                  'ทำความสะอาดเรียบร้อย',
-                  'ต้องการทำความสะอาด',
-                  'ปิดการใช้งาน',
-                  'เปิดการใช้งาน',
-                  'ปรับราคา'
+                  'ທໍາຄວາມສະອາດຮຽບຮ້ອຍແລ້ວ',
+                  'ລໍຖ້າທໍາຄວາມສະອາດ',
+                  'ປິດການໃຊ້ງານ',
+                  'ເປີດການໃຊ້ງານ',
+                  'ປັບລາຄາ'
                 ]"
                 @clickMenu="markRoomClean($event, r.id)"
               >
@@ -60,18 +60,18 @@
             <div class="flex items-center space-x-2">
               <div class="flex gap-2 items-center" v-if="r.room_type == 'family'">
                 <font-awesome-icon class="text-[#FFDE4D]" icon="crown" />
-                <span class="text-sm">VIP ห้องครอบครัว</span>
+                <span class="text-sm">ຫ້ອງຄອບຄົວ/ພິເສດ</span>
               </div>
               <div class="flex gap-2 items-center" v-if="r.room_type == 'single_bed'">
                 <font-awesome-icon class="text-[#96C9F4]" icon="bed" />
-                <span class="text-sm">เตียงเดี่ยว</span>
+                <span class="text-sm">ຕຽງດ່ຽວ</span>
               </div>
               <div class="flex gap-2 items-center" v-if="r.room_type == 'twin_bed'">
                 <font-awesome-icon class="text-[#FFC7ED]" icon="bed" />
-                <span class="text-sm">เตียงคู่</span>
+                <span class="text-sm">ຕຽງຄູ່</span>
               </div>
             </div>
-            <p class="text-sm">ราคา : ${{ r.price }}</p>
+            <p class="text-sm">ລາຄາ : ${{ r.price }}</p>
           </div>
         </div>
       </div>
@@ -99,9 +99,9 @@
 
   <dialog :class="{ 'modal-open': openPriceAdjustModal }" class="modal" v-if="openPriceAdjustModal">
     <div class="modal-box w-11/12 max-w-5xl">
-      <h1 class="text-3xl font-bold mb-8">ปรับราคาห้อง {{ padZero(getRoomNo(adjustRoomId)) }}</h1>
+      <h1 class="text-3xl font-bold mb-8">ປັບລາຄາຫ້ອງ {{ padZero(getRoomNo(adjustRoomId)) }}</h1>
       <div class="flex items-center">
-        <label class="w-1/3 font-medium">ราคา:</label>
+        <label class="w-1/3 font-medium">ລາຄາ:</label>
         <input
           type="number"
           class="flex-1 border border-neutral p-2 rounded"
@@ -109,11 +109,8 @@
         />
       </div>
       <div class="modal-action">
-        <form method="dialog">
-          <!-- if there is a button, it will close the modal -->
-          <button class="btn" @click="adjustPrice">ปรับราคา</button>
-          <button class="btn" @click="openPriceAdjustModal = !openPriceAdjustModal">ปิด</button>
-        </form>
+        <button class="btn" @click="adjustPrice">ປັບລາຄາ</button>
+        <button class="btn" @click="openPriceAdjustModal = !openPriceAdjustModal">ປຶດ</button>
       </div>
     </div>
   </dialog>

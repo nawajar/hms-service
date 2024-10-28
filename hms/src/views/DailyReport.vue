@@ -3,20 +3,20 @@
     <div class="flex gap-4 items-center justify-between"></div>
     <div class="mb-4 bg-white">
       <fieldset class="border border-gray-300 p-4 rounded-lg bg-white shadow-lg">
-        <legend class="text-lg font-semibold text-gray-700 px-2">ສຮູປປຮະຂຳວິນ</legend>
+        <legend class="text-lg font-semibold text-gray-700 px-2">ສະຫຼຸບປະຈໍາວັນ</legend>
 
         <div class="flex space-y-4 md:space-y-0 md:space-x-4">
           <!-- Date Filter: From -->
           <div class="flex flex-col w-1/2">
             <label for="from-date" class="block text-gray-700 text-sm font-medium mb-1"
-              >From Date</label
+              >ວັນທີ</label
             >
             <div class="" v-if="filterFromDate">
               <CustomCalendar v-model="filterFromDate"></CustomCalendar>
             </div>
           </div>
           <div class="flex flex-col w-1/2 items-end justify-end">
-            <button class="btn btn-primary" @click="exportData()">ອອກເອກສາຮ</button>
+            <button class="btn btn-primary" @click="exportData()">ອອກເອກະສານ</button>
           </div>
         </div>
       </fieldset>
@@ -24,7 +24,7 @@
         <div class="p-4 space-y-4">
           <!-- General Booking Stats Group -->
           <div class="bg-white p-3 rounded-md shadow-md">
-            <h2 class="text-xl font-semibold text-gray-700 mb-3">ສະຫຼຸບປະຈໍາວັນ</h2>
+            <h2 class="text-xl font-semibold text-gray-700 mb-3">ສະຫຼຸຸບປະຈໍາວັນ</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
               <!-- Booking Count -->
               <div class="bg-blue-50 p-4 rounded-md shadow-sm space-y-2">
@@ -95,7 +95,7 @@
                 <div class="flex items-center space-x-3">
                   <i class="fas fa-exclamation-circle text-error text-2xl"></i>
                   <div class="flex gap-2">
-                    <h3 class="text-lg font-semibold text-error">ค่าใช้จ่าย</h3>
+                    <h3 class="text-lg font-semibold text-error">ຄ່າໃຊ້ຈ່າຍ</h3>
                     <p class="text-xl font-bold text-error">{{ budgetSummary?.count }}</p>
                   </div>
                 </div>
@@ -110,14 +110,14 @@
           </div>
 
           <div class="bg-white p-3 rounded-md shadow-md">
-            <h2 class="text-xl font-semibold text-gray-700 mb-3">ສຮູປຮາຍໄດ້</h2>
+            <h2 class="text-xl font-semibold text-gray-700 mb-3">ສະຫຼຸບລາຍໄດ້</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
               <!-- Bookings with Deposits -->
               <div class="bg-info bg-opacity-35 p-4 rounded-md shadow-sm space-y-2">
                 <div class="flex items-center space-x-3">
                   <i class="fas fa-exclamation-circle text-primary text-2xl"></i>
                   <div class="flex gap-2">
-                    <h3 class="text-lg font-semibold text-primary">ສຮູປຮາຍໄດ້</h3>
+                    <h3 class="text-lg font-semibold text-primary">ສະຫຼຸບລາຍໄດ້</h3>
                     <p class="text-xl font-bold text-primary">{{ summaryBook?.totalReceive }}</p>
                   </div>
                 </div>
@@ -133,7 +133,7 @@
                 <div class="flex items-center space-x-3">
                   <i class="fas fa-exclamation-circle text-base-content text-2xl"></i>
                   <div class="flex gap-2">
-                    <h3 class="text-lg font-semibold text-base-content">เงินสด</h3>
+                    <h3 class="text-lg font-semibold text-base-content">ເງິນສົດ</h3>
                     <p class="text-xl font-bold text-base-content">
                       {{ summaryBook?.cashReceive }}
                     </p>
@@ -151,7 +151,7 @@
                 <div class="flex items-center space-x-3">
                   <i class="fas fa-exclamation-circle text-base-content text-2xl"></i>
                   <div class="flex gap-2">
-                    <h3 class="text-lg font-semibold text-base-content">ธนาคาร</h3>
+                    <h3 class="text-lg font-semibold text-base-content">ເງິນໂອນ</h3>
                     <p class="text-xl font-bold text-base-content">
                       {{ summaryBook?.bankReceive }}
                     </p>
@@ -170,37 +170,37 @@
       </div>
 
       <div class="flex flex-col gap-2 bg-white mt-4">
-        <label>ຮາຍກາຮທີ່າຮ້າງວິນນີ້</label>
+        <label>ລາຍການທີ່ສ້າງວັນນີ້</label>
         <table class="min-w-full bg-white border border-gray-200 rounded-lg shadow-lg">
           <thead class="bg-gray-50">
             <tr>
               <th class="px-6 py-3 text-gray-700 text-left text-lg font-semibold tracking-wide">
-                ລ/ດ
+                ລໍາດັບ
               </th>
               <th class="px-6 py-3 text-gray-700 text-left text-lg font-semibold tracking-wide">
-                ເລກຫ້ອງ
+                ເບີຫ້ອງ
               </th>
               <th class="px-6 py-3 text-gray-700 text-left text-lg font-semibold tracking-wide">
-                ຊື່ຜູ້ເຊົາແຂກ
+                ຊື່ລູກຄ້າ
               </th>
               <th class="px-6 py-3 text-gray-700 text-right text-lg font-semibold tracking-wide">
-                ຄ່າຫ້ອງ
+                ລາຄາຫ້ອງ
               </th>
               <th class="px-6 py-3 text-gray-700 text-right text-lg font-semibold tracking-wide">
-                ວິນ
+                ຈໍານວນວັນ
               </th>
               <th class="px-6 py-3 text-gray-700 text-right text-lg font-semibold tracking-wide">
-                ຮວມ
+                ລວມເງິນ
               </th>
               <th class="px-6 py-3 text-gray-700 text-left text-lg font-semibold tracking-wide">
-                ຂ່າຍແລ້ວ / ຍິງ
+                ຈ່າຍແລ້ວ/ຍັງບໍ່ຈ່າຍ
               </th>
               <th class="px-6 py-3 text-gray-700 text-left text-lg font-semibold tracking-wide">
-                ຂ່າຍທາງ
+                ຈ່າຍຜ່ານຊ່ອງທາງ
               </th>
 
               <th class="px-6 py-3 text-gray-700 text-left text-lg font-semibold tracking-wide">
-                ວັນທີມາ
+                ວັນທີເຂົ້າພັກ
               </th>
             </tr>
           </thead>
@@ -240,21 +240,21 @@
       </div>
 
       <div class="flex flex-col gap-2 bg-white mt-4">
-        <label>ຮາຍກາຮเพิ่มเติม</label>
+        <label>ຮາຍກາຮເພຶ່ມ</label>
         <table class="min-w-full bg-white border border-gray-200 rounded-lg shadow-lg">
           <thead class="bg-gray-50">
             <tr>
               <th class="px-6 py-3 text-gray-700 text-center text-lg font-semibold tracking-wide">
-                ລ/ດ
+                ລໍາດັບ
               </th>
               <th class="px-6 py-3 text-gray-700 text-left text-lg font-semibold tracking-wide">
                 ເລກຫ້ອງ
               </th>
               <th class="px-6 py-3 text-gray-700 text-left text-lg font-semibold tracking-wide">
-                รายละเอียด
+                ລາຍລະອຽດ
               </th>
               <th class="px-6 py-3 text-gray-700 text-left text-lg font-semibold tracking-wide">
-                คชจ เพิ่ม
+                ຄ່າໃຊ້ຈ່າຍເພີ່ມເຕີມ
               </th>
             </tr>
           </thead>
@@ -288,32 +288,32 @@
           <thead class="bg-gray-50">
             <tr>
               <th class="px-6 py-3 text-gray-700 text-left text-lg font-semibold tracking-wide">
-                ລ/ດ
+                ລໍາດັບ
               </th>
               <th class="px-6 py-3 text-gray-700 text-left text-lg font-semibold tracking-wide">
-                ເລກຫ້ອງ
+                ເບີຫ້ອງ
               </th>
               <th class="px-6 py-3 text-gray-700 text-left text-lg font-semibold tracking-wide">
-                ຊື່ຜູ້ເຊົາແຂກ
+                ຊື່ລູກຄ້າ
               </th>
               <th class="px-6 py-3 text-gray-700 text-right text-lg font-semibold tracking-wide">
-                ຄ່າຫ້ອງ
+                ລາຄາຫ້ອງ
               </th>
               <th class="px-6 py-3 text-gray-700 text-right text-lg font-semibold tracking-wide">
-                ວິນ
+                ຈໍານວນວັນ
               </th>
               <th class="px-6 py-3 text-gray-700 text-right text-lg font-semibold tracking-wide">
-                ຮວມ
+                ລວມເງິນ
               </th>
               <th class="px-6 py-3 text-gray-700 text-left text-lg font-semibold tracking-wide">
-                ຂ່າຍແລ້ວ / ຍິງ
+                ຈ່າຍແລ້ວ/ຍັງບໍ່ຈ່າຍ
               </th>
               <th class="px-6 py-3 text-gray-700 text-left text-lg font-semibold tracking-wide">
-                ຂ່າຍທາງ
+                ຈ່າຍຜ່ານຊ່ອງທາງ
               </th>
 
               <th class="px-6 py-3 text-gray-700 text-left text-lg font-semibold tracking-wide">
-                ວັນທີມາ
+                ວັນທີເຂົ້າພັກ
               </th>
             </tr>
           </thead>
@@ -353,21 +353,21 @@
       </div>
 
       <div class="flex flex-col gap-2 bg-white mt-4">
-        <label>ຮາຍກາຮเพิ่มเติมที่ยกมา</label>
+        <label>ຮາຍກາຮເພີ່ມທີ່າຍກມາ</label>
         <table class="min-w-full bg-white border border-gray-200 rounded-lg shadow-lg">
           <thead class="bg-gray-50">
             <tr>
               <th class="px-6 py-3 text-gray-700 text-center text-lg font-semibold tracking-wide">
-                ລ/ດ
+                ລໍາດັບ
               </th>
               <th class="px-6 py-3 text-gray-700 text-left text-lg font-semibold tracking-wide">
                 ເລກຫ້ອງ
               </th>
               <th class="px-6 py-3 text-gray-700 text-left text-lg font-semibold tracking-wide">
-                รายละเอียด
+                ລາຍລະອຽດ
               </th>
               <th class="px-6 py-3 text-gray-700 text-left text-lg font-semibold tracking-wide">
-                คชจ เพิ่ม
+                ຄ່າໃຊ້ຈ່າຍເພີ່ມເຕີມ
               </th>
             </tr>
           </thead>
@@ -417,16 +417,16 @@ const padZero = (room: any) => {
 
 const generateTableHeader = () => {
   return [
-    { text: 'ລ/ດ', style: 'headerContent' },
-    { text: 'ເລກຫ້ອງ', style: 'headerContent' },
-    { text: 'ຊື່ຜູ້ເຊົາແຂກ', style: 'headerContent' },
-    { text: 'ຄ່າຫ້ອງ', style: 'headerContent' },
-    { text: 'ວິນ', style: 'headerContent' },
-    { text: 'ຮວມ', style: 'headerContent' },
-    { text: 'ຂ່າຍແລ້ວ / ຍິງ', style: 'headerContent' },
-    { text: 'ຂ່າຍທາງ', style: 'headerContent' },
-    { text: 'ວັນທີມາ', style: 'headerContent' },
-    { text: 'ວັນທີມາສຮ້າງ', style: 'headerContent' }
+    { text: 'ລໍາດັບ', style: 'headerContent' },
+    { text: 'ເບີຫ້ອງ', style: 'headerContent' },
+    { text: 'ຊື່ລູກຄ້າ', style: 'headerContent' },
+    { text: 'ລາຄາຫ້ອງ', style: 'headerContent' },
+    { text: 'ຈໍານວນວັນ', style: 'headerContent' },
+    { text: 'ລວມເງິນ', style: 'headerContent' },
+    { text: 'ຈ່າຍແລ້ວ/ຍັງບໍ່ຈ່າຍ', style: 'headerContent' },
+    { text: 'ຈ່າຍຜ່ານຊ່ອງທາງ', style: 'headerContent' },
+    { text: 'ວັນທີເຂົ້າພັກ', style: 'headerContent' },
+    { text: 'ວັນທີສຮ້າງ', style: 'headerContent' }
   ]
 }
 
@@ -450,10 +450,10 @@ const generateTableBody = (items: any[]) => {
 
 const generateTableExtraHeader = () => {
   return [
-    { text: 'ລ/ດ', style: 'headerContent' },
-    { text: 'ເລກຫ້ອງ', style: 'headerContent' },
-    { text: 'ຮາຍລະເອີຍດ', style: 'headerContent' },
-    { text: 'ເພຶ່ມ', style: 'headerContent' }
+    { text: 'ລໍາດັບ', style: 'headerContent' },
+    { text: 'ເບີຫ້ອງ', style: 'headerContent' },
+    { text: 'ລາຍລະອຽດ', style: 'headerContent' },
+    { text: 'ຄ່າໃຊ້ຈ່າຍເພີ່ມເຕີມ', style: 'headerContent' }
   ]
 }
 
@@ -471,9 +471,9 @@ const generateTableExtraBody = (items: any[]) => {
 
 const generateTableBudgetHeader = () => {
   return [
-    { text: 'ລ/ດ', style: 'headerContent' },
-    { text: 'details', style: 'headerContent' },
-    { text: 'ยอด', style: 'headerContent' }
+    { text: 'ລໍາດັບ', style: 'headerContent' },
+    { text: 'ລາຍລະອຽດ', style: 'headerContent' },
+    { text: 'ຄ່າໃຊ້ຈ່າຍ', style: 'headerContent' }
   ]
 }
 

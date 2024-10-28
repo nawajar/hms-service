@@ -7,7 +7,7 @@
           <font-awesome-icon class="text-warning text-4xl" icon="fa-check-to-slot" />
         </div>
         <div class="stat-value text-warning">{{ availableRoom }}</div>
-        <div class="stat-title text-warning">{{ $t('dashboard.available_room') }}</div>
+        <div class="stat-title text-warning">ຫ້ອງວ່າງ</div>
         <div class="stat-desc"></div>
       </div>
 
@@ -16,7 +16,7 @@
           <font-awesome-icon class="text-error text-4xl" icon="fa-broom" />
         </div>
         <div class="stat-value text-error">{{ needCleanRoom }}</div>
-        <div class="stat-title text-error">{{ $t('dashboard.need_clean_room') }}</div>
+        <div class="stat-title text-error">ຫ້ອງລໍຖ້າທໍາຄວາມສະອາດ</div>
         <div class="stat-desc"></div>
       </div>
     </div>

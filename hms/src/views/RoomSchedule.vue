@@ -12,7 +12,7 @@
         <div class="flex flex-col gap-2">
           <div class="flex flex-row items-center gap-4">
             <div class="bg-primary min-w-4 h-4 rounded"></div>
-            ໄດ້ເຊັກອິນ
+            ຈອງແລ້ວ
           </div>
           <div class="flex flex-row items-center gap-4">
             <div class="bg-[#0069ff] min-w-4 h-4 rounded"></div>
@@ -20,7 +20,7 @@
           </div>
           <div class="flex flex-row items-center gap-4">
             <div class="bg-error min-w-4 h-4 rounded"></div>
-            ເຊັກອອກແລ້ວ
+            ອອກແລ້ວ
           </div>
         </div>
         <div v-if="calendar.isOpenCalendar()">

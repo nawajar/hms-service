@@ -23,7 +23,7 @@
                   ></path>
                 </svg>
               </div>
-              Dashboards
+              ໜ້າຫຼັກ
             </RouterLink>
           </li>
           <li>
@@ -31,7 +31,7 @@
               <div class="grid mr-4 place-items-center">
                 <font-awesome-icon icon="right-to-bracket"></font-awesome-icon>
               </div>
-              ຫ້ອງຈອງ
+              ການຈອງຫ້ອງ
             </RouterLink>
           </li>
           <li>
@@ -39,7 +39,7 @@
               <div class="grid mr-4 place-items-center">
                 <font-awesome-icon icon="bars-staggered"></font-awesome-icon>
               </div>
-              ຮາຍກາຮຂອງ
+              ລາຍການຈອງ
             </RouterLink>
           </li>
           <hr class="border-base-300 dark:border-white" />
@@ -48,7 +48,7 @@
               <div class="grid mr-4 place-items-center">
                 <font-awesome-icon icon="cube"></font-awesome-icon>
               </div>
-              ສະ​ຖາ​ນະ​ພາບ​ຫ້ອງ​
+              ສະຖານະ ຫ້ອງພັກ
               <div class="grid ml-auto place-items-center justify-self-end">
                 <div
                   class="relative grid items-center px-2 py-1 font-sans text-xs font-bold uppercase rounded-full select-none whitespace-nowrap bg-blue-gray-500/20 text-blue-gray-900"
@@ -61,7 +61,7 @@
               <div class="grid mr-4 place-items-center">
                 <font-awesome-icon icon="calendar-day"></font-awesome-icon>
               </div>
-              ຕາ​ຕະ​ລາງ​ຫ້ອງ​
+              ຕາຕະລາງຫ້ອງ
             </RouterLink>
           </li>
           <hr class="border-base-300 dark:border-white" />
@@ -70,7 +70,7 @@
               <div class="grid mr-4 place-items-center">
                 <font-awesome-icon icon="calendar-day"></font-awesome-icon>
               </div>
-              ค่าใช้จ่าย
+              ຄ່າໃຊ້ຈ່າຍ
             </RouterLink>
           </li>
           <li>
@@ -78,7 +78,7 @@
               <div class="grid mr-4 place-items-center">
                 <font-awesome-icon icon="calendar-day"></font-awesome-icon>
               </div>
-              ສຮູປປຮະຂຳວິນ
+              ສະຫຼຸບປະຈໍາວັນ
             </RouterLink>
           </li>
         </ul>
