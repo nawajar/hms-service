@@ -26,6 +26,7 @@ import {
   faEye,
   faHandHoldingDollar,
   faHashtag,
+  faPenToSquare,
   faPhone,
   faRightFromBracket,
   faRightToBracket,
@@ -64,7 +65,8 @@ library.add(
   faXmark,
   faChevronLeft,
   faChevronRight,
-  faHashtag
+  faHashtag,
+  faPenToSquare
 )
 
 const app = createApp(App).component('font-awesome-icon', FontAwesomeIcon)

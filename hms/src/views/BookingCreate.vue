@@ -123,6 +123,15 @@
             />
           </div>
           <div class="flex items-center">
+            <label class="w-1/3 font-medium">ຄ່າມັດຈຳຄີກາດ:</label>
+            <textarea
+              class="flex-1 border border-neutral p-2 rounded"
+              rows="3"
+              placeholder="ຄ່າມັດຈຳຄີກາດ"
+              v-model="keycard"
+            ></textarea>
+          </div>
+          <div class="flex items-center">
             <label class="w-1/3 font-medium">ຈ່າຍຜ່ານຊ່ອງທາງ :</label>
             <div class="w-2/3 flex gap-4">
               <select
@@ -141,6 +150,7 @@
             <div class="w-2/3">
               <DropZone
                 placeholder="ເລືອກໄຟສ"
+                :maxFileSize="10000000"
                 :maxFiles="Number(5)"
                 :uploadOnDrop="false"
                 :multipleUpload="true"
@@ -271,6 +281,7 @@ const paid = ref(false)
 const files = ref<any>([])
 const bookingStatus = ref('active')
 const paidChannel = ref(null)
+const keycard = ref(null)
 
 const onFileRemove = async (event: any) => {
   _.remove(files.value, (i: any) => i?.id == event.id)
@@ -316,6 +327,7 @@ const createBook = async () => {
 
   setIfExist(formData, 'extra_charge_details', extraChargeDetails.value)
   setIfExist(formData, 'extra_charge_amt', extraChargeAmt.value)
+  setIfExist(formData, 'keycard', keycard.value)
   if (paid.value) {
     const now = DateTime.now().toUTC().toFormat('yyyy-MM-dd hh:mm:ss')
     formData.append('paid_date', now)

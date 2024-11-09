@@ -117,6 +117,15 @@
             />
           </div>
           <div class="flex items-center">
+            <label class="w-1/3 font-medium">ຄ່າມັດຈຳຄີກາດ:</label>
+            <textarea
+              class="flex-1 border border-neutral p-2 rounded"
+              rows="3"
+              placeholder="ຄ່າມັດຈຳຄີກາດ"
+              v-model="keycard"
+            ></textarea>
+          </div>
+          <div class="flex items-center">
             <label class="w-1/3 font-medium">ຂ່າຍແບບ :</label>
             <div class="w-2/3 flex gap-4">
               <select id="status" class="flex-1 border p-2 rounded" v-model="paidChannel">
@@ -310,6 +319,7 @@ const createBy = ref()
 const updateBy = ref()
 const uploadDoc = ref()
 const collectionId = ref()
+const keycard = ref()
 
 const showImageToggle = (file: string) => {
   showImage.value = file
@@ -362,13 +372,13 @@ const editBook = async () => {
 
   setIfExist(formData, 'extra_charge_details', extraChargeDetails.value)
   setIfExist(formData, 'extra_charge_amt', extraChargeAmt.value)
-
   if (paid.value) {
     const now = DateTime.now().toUTC().toFormat('yyyy-MM-dd hh:mm:ss')
     formData.append('paid_date', now)
   }
 
   formData.append('paid', `${paid.value}`)
+  setIfExist(formData, 'keycard', keycard.value)
   setIfExist(formData, 'paid_channel', paidChannel.value)
 
   if (files.value?.length > 0) {
@@ -463,7 +473,7 @@ const fileUrl = (fileName: string) => {
 
 const getBookings = async () => {
   const igNoreBook = route.params.id as string
-  console.log('get booking ', igNoreBook)
+  // console.log('get booking ', igNoreBook)
   const records = await pb.collection('bookings').getFullList({
     sort: '-created',
     filter: `(status = 'active' || status = 'check-in') && id != '${igNoreBook}'`,
@@ -563,7 +573,7 @@ const patchForm = (book: any) => {
   extraChargeDetails.value = book.extra_charge_details
   extraChargeAmt.value = book.extra_charge_amt
   paid.value = book.paid
-
+  keycard.value = book.keycard
   paidChannel.value = book.paid_channel
   bookingStatus.value = book.status
   createBy.value = book.create_by

@@ -59,6 +59,7 @@
       <table class="min-w-full bg-white border border-gray-200 rounded-lg shadow-lg">
         <thead class="bg-gray-50">
           <tr>
+            <th class="px-6 py-3 text-gray-700 text-left text-lg font-semibold tracking-wide"></th>
             <th class="px-6 py-3 text-gray-700 text-left text-lg font-semibold tracking-wide">
               ລ/ດ
             </th>
@@ -99,7 +100,7 @@
         </thead>
         <tbody class="divide-y divide-gray-200">
           <template v-for="(booking, idx) in bookingsView" v-bind:key="booking.id">
-            <tr class="hover:bg-gray-100 cursor-pointer" tabindex="0" @click="goToEdit(booking.id)">
+            <tr class="hover:bg-gray-100 cursor-pointer" tabindex="0">
               <td
                 class="px-6 py-4 text-center text-base text-gray-600"
                 :class="{
@@ -109,6 +110,11 @@
                   'border-l-4 border-warning': booking?.status == 'cancel'
                 }"
               >
+                <button @click="goToEdit(booking.id)">
+                  <font-awesome-icon icon="pen-to-square"></font-awesome-icon>
+                </button>
+              </td>
+              <td class="px-6 py-4 text-center text-base text-gray-600">
                 {{ (currentPage - 1) * perPage + (idx + 1) }}
               </td>
               <td class="px-6 py-4 text-base text-gray-600">
