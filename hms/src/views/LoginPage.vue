@@ -72,7 +72,7 @@ const login = async () => {
   if (authData) {
     console.log('Valid in.', pb.authStore.isValid)
     router.push({
-      path: '/'
+      path: '/dashboard'
     })
   }
 }

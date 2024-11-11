@@ -93,6 +93,12 @@ const router = createRouter({
           name: 'Budget', // 'patients'
           component: () => import('@/views/Budget.vue'),
           ...routeGuard(pb.authStore, { name: 'login' })
+        },
+        {
+          path: '/range-report',
+          name: 'Range Report', // 'patients'
+          component: () => import('@/views/RangeReport.vue'),
+          ...routeGuard(pb.authStore, { name: 'login' })
         }
       ]
     }

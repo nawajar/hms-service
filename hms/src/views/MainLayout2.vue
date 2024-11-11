@@ -81,6 +81,14 @@
               ສະຫຼຸບປະຈໍາວັນ
             </RouterLink>
           </li>
+          <li>
+            <RouterLink :to="'/range-report'" activeClass="border-indigo-500">
+              <div class="grid mr-4 place-items-center">
+                <font-awesome-icon icon="calendar-day"></font-awesome-icon>
+              </div>
+              ສະຫລຸບລວມ
+            </RouterLink>
+          </li>
         </ul>
       </div>
     </div>
@@ -91,7 +99,7 @@
           <!-- Header -->
           <div class="w-full flex items-center justify-between">
             <div class="h-12 flex items-center">
-              <h1 class="text-center text-xl">Header</h1>
+              <h1 class="text-center text-xl">Xayluedy Hotel</h1>
             </div>
             <div class="dropdown dropdown-end">
               <div tabindex="0" role="button" class="btn m-1">
