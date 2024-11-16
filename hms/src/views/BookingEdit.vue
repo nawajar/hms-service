@@ -217,15 +217,15 @@
 
       <!-- Room Details Table -->
       <div class="w-full mx-auto p-4 bg-white shadow-md rounded-md mt-6 mb-6">
-        <h2 class="text-lg font-semibold mb-4 text-center">Room Details</h2>
+        <h2 class="text-lg font-semibold mb-4 text-center">ລາຍລະອຽດຫ້ອງ</h2>
         <table class="w-full border-collapse">
           <thead>
             <tr class="bg-gray-100">
-              <th class="border p-2 text-left">Room Type</th>
-              <th class="border p-2 text-left">Room Number</th>
-              <th class="border p-2 text-left">Price (₭)</th>
-              <th class="border p-2 text-left">Days</th>
-              <th class="border p-2 text-left">Price (₭) Net.</th>
+              <th class="border p-2 text-left">ປະເພດຫ້ອງ</th>
+              <th class="border p-2 text-left">ໝາຍເລກຫ້ອງ</th>
+              <th class="border p-2 text-left">ລາຄາ (₭)</th>
+              <th class="border p-2 text-left">ຈໍານວນວັນ</th>
+              <th class="border p-2 text-left">ລາຄາລວມ (₭) Net.</th>
             </tr>
           </thead>
           <tbody>
