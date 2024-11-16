@@ -12,20 +12,24 @@
         </legend>
         <div class="flex gap-2">
           <div class="flex flex-row items-center gap-4">
-            <div class="bg-primary min-w-4 h-4 rounded"></div>
-            ໄດ້ເຊັກອິນ
+            <div class="bg-orange-400 min-w-4 h-4 rounded"></div>
+            ຈອງ
           </div>
           <div class="flex flex-row items-center gap-4">
             <div class="bg-[#0069ff] min-w-4 h-4 rounded"></div>
             ເຊັກອິນແລ້ວ
           </div>
           <div class="flex flex-row items-center gap-4">
-            <div class="bg-error min-w-4 h-4 rounded"></div>
+            <div class="bg-green-300 min-w-4 h-4 rounded"></div>
             ເຊັກອອກແລ້ວ
           </div>
           <div class="flex flex-row items-center gap-4">
-            <div class="bg-warning min-w-4 h-4 rounded"></div>
+            <div class="bg-red-400 min-w-4 h-4 rounded"></div>
             ຍກເລຶກ
+          </div>
+          <div class="flex flex-row items-center gap-4">
+            <div class="bg-yellow-300 min-w-4 h-4 rounded"></div>
+            ເຊັກອິນບາງຫ້ອງ
           </div>
         </div>
         <div class="flex items-center space-y-4 md:space-y-0 md:space-x-4">
@@ -108,10 +112,11 @@
               <td
                 class="px-6 py-4 text-center text-base text-gray-600"
                 :class="{
-                  'border-l-4 border-primary': booking?.status == 'active',
+                  'border-l-4 border-orange-400': booking?.status == 'active',
                   'border-l-4 border-[#0069ff]': booking?.status == 'check-in',
-                  'border-l-4 border-error': booking?.status == 'check-out',
-                  'border-l-4 border-warning': booking?.status == 'cancel'
+                  'border-l-4 border-green-300': booking?.status == 'check-out',
+                  'border-l-4 border-red-400': booking?.status == 'cancel',
+                  'border-l-4 border-yellow-300': booking?.status == 'patial-checkout'
                 }"
               >
                 <button @click="goToEdit(booking.id)">
@@ -137,9 +142,7 @@
               <td class="px-6 py-4 text-base text-right text-gray-600">
                 {{ booking.net_amt }}
               </td>
-              <td class="px-6 py-4 text-base text-right text-gray-600">
-                {{ booking.paid }}
-              </td>
+              <td class="px-6 py-4 text-base text-right text-gray-600">{{ booking.paid }}</td>
               <td class="px-6 py-4 text-base text-right text-gray-600">
                 {{ booking.paid_channel }}
               </td>
@@ -243,11 +246,11 @@ const onSearch = async () => {
     if (filters) {
       filters += ' && '
     }
-    filters += `(created >= '${fromDate} 00:00:00' && created <= '${fromDate} 23:59:59')`
+    filters += `(created >= '${fromDate} 00:00:00' && created <= '${fromDate} 23:59:59') || status = 'check-in'`
   }
 
   const records = await pb.collection('bookings_view').getList(currentPage.value, perPage.value, {
-    sort: 'created',
+    sort: 'check_in_date,cus_name',
     filter: filters,
     expand: 'room',
     fields: '*'
@@ -266,7 +269,7 @@ const bookingsView = computed(() => {
       days: dayCount(book.check_out_date, book.check_in_date),
       extra_charge: book.extra_charge_amt,
       net_amt: `${numberWithCommas(book.price)} `,
-      paid: book.paid ? 'ຂ່າຍແລ້ວ' : 'ຍິງ',
+      paid: book.paid ? 'ຂາຍແລ້ວ' : 'ຄ້າງຈາຍ',
       paid_channel: book.paid_channel,
       create_by: book.create_by,
       check_in: book.check_in_date,

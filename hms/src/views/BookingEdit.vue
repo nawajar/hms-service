@@ -175,10 +175,11 @@
             <label class="w-1/3 font-medium">ສະຖານະ ການຈອງ:</label>
             <div class="w-2/3 flex gap-4">
               <select id="status" class="flex-1 border p-2 rounded" v-model="bookingStatus">
-                <option value="active">ປົກກະຕິ</option>
-                <option value="cancel">ຍົກເລີກ</option>
+                <option value="active">ຈອງ</option>
                 <option value="check-in">ເຊັກອິນ</option>
                 <option value="check-out">ເຊັກເອົ້າ</option>
+                <option value="patial-checkout">ເຊັກອິນບາງຫ້ອງ</option>
+                <option value="cancel">ຍົກເລີກ</option>
               </select>
             </div>
           </div>

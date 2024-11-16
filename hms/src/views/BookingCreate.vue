@@ -175,10 +175,11 @@
                 class="flex-1 border border-neutral p-2 rounded"
                 v-model="bookingStatus"
               >
-                <option value="active">ປົກກະຕິ</option>
-                <option value="cancel">ຍົກເລີກ</option>
+                <option value="active">ຈອງ</option>
                 <option value="check-in">ເຊັກອິນ</option>
                 <option value="check-out">ເຊັກເອົ້າ</option>
+                <option value="patial-checkout">ເຊັກອິນບາງຫ້ອງ</option>
+                <option value="cancel">ຍົກເລີກ</option>
               </select>
             </div>
           </div>
