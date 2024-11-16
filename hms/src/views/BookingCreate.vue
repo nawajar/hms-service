@@ -151,7 +151,7 @@
               <DropZone
                 placeholder="ເລືອກໄຟສ"
                 :maxFileSize="10000000"
-                :maxFiles="Number(5)"
+                :maxFiles="Number(10)"
                 :uploadOnDrop="false"
                 :multipleUpload="true"
                 :parallelUpload="3"

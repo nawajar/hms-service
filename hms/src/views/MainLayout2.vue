@@ -5,7 +5,7 @@
       <div
         class="grid h-full border-r translate-y-12 bg-gray-50 bg-clip-border text-gray-700 shadow-xl shadow-blue-gray-900/5"
       >
-        <ul class="cus-menu flex flex-col bg-primary-200 gap-2 font-bold text-base w-[170px]">
+        <ul class="cus-menu flex flex-col bg-primary-200 gap-2 font-bold text-xl w-[170px]">
           <li>
             <RouterLink :to="'/dashboard'" activeClass="border-indigo-500">
               <div class="grid mr-4 place-items-center">
@@ -39,7 +39,7 @@
               <div class="grid mr-4 place-items-center">
                 <font-awesome-icon icon="bars-staggered"></font-awesome-icon>
               </div>
-              ລາຍການຈອງ
+              ลูกค้าเข้าพัก
             </RouterLink>
           </li>
           <hr class="border-base-300 dark:border-white" />

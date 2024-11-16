@@ -100,7 +100,11 @@
         </thead>
         <tbody class="divide-y divide-gray-200">
           <template v-for="(booking, idx) in bookingsView" v-bind:key="booking.id">
-            <tr class="hover:bg-gray-100 cursor-pointer" tabindex="0">
+            <tr
+              class="hover:bg-gray-100 cursor-pointer font-bold"
+              tabindex="0"
+              :class="{ 'bg-blue-200': booking.isCheckToday }"
+            >
               <td
                 class="px-6 py-4 text-center text-base text-gray-600"
                 :class="{
@@ -243,7 +247,7 @@ const onSearch = async () => {
   }
 
   const records = await pb.collection('bookings_view').getList(currentPage.value, perPage.value, {
-    sort: '-created',
+    sort: 'created',
     filter: filters,
     expand: 'room',
     fields: '*'
@@ -266,11 +270,18 @@ const bookingsView = computed(() => {
       paid_channel: book.paid_channel,
       create_by: book.create_by,
       check_in: book.check_in_date,
-      check_out: book.check_out_date
+      check_out: book.check_out_date,
+      isCheckToday: isToday(book.check_in_date, DateTime.now())
     }
   })
   return bookingV
 })
+
+const isToday = (date: string, filter: DateTime) => {
+  var s = date.split(' ').join('T')
+  var created = DateTime.fromISO(s)
+  return created.startOf('day').equals(filter.startOf('day'))
+}
 
 const refresh = async () => {
   onSearch()

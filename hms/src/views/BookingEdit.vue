@@ -29,7 +29,7 @@
           </div>
           <!-- Room Numbers -->
           <div class="flex items-center">
-            <label class="w-1/3 font-medium">Room Numbers:</label>
+            <label class="w-1/3 font-medium">ໝາຍເລກຫ້ອງ:</label>
             <input
               type="text"
               class="flex-1 border p-2 rounded"
@@ -43,21 +43,21 @@
 
       <!-- Customer Information Section -->
       <fieldset class="border border-gray-300 rounded-md p-4 mb-6">
-        <legend class="text-md font-semibold px-2">Customer Information</legend>
+        <legend class="text-md font-semibold px-2">ຂໍ້ມູລນລູກຄ້າ</legend>
         <div class="grid grid-cols-1 gap-4">
           <!-- Name -->
           <div class="flex items-center">
-            <label class="w-1/3 font-medium">Name:</label>
+            <label class="w-1/3 font-medium">ຊື່:</label>
             <input type="text" class="flex-1 border p-2 rounded" v-model="customerName" />
           </div>
           <!-- Phone Number -->
           <div class="flex items-center">
-            <label class="w-1/3 font-medium">Phone Number:</label>
+            <label class="w-1/3 font-medium">ເບີໂທ:</label>
             <input type="text" class="flex-1 border p-2 rounded" v-model="customerPhone" />
           </div>
           <!-- Customer ID Card -->
           <div class="flex items-center">
-            <label class="w-1/3 font-medium">Customer ID Card:</label>
+            <label class="w-1/3 font-medium">ເລກບັດ ຫຼີ ພັດສະປອດ:</label>
             <input
               type="text"
               class="flex-1 border p-2 rounded"
@@ -67,7 +67,7 @@
           </div>
           <!-- Customer Address -->
           <div class="flex items-center">
-            <label class="w-1/3 font-medium">Customer Address:</label>
+            <label class="w-1/3 font-medium">ທີ່ຢູ່:</label>
             <textarea
               class="flex-1 border p-2 rounded"
               rows="3"
@@ -77,7 +77,7 @@
           </div>
           <!-- Note -->
           <div class="flex items-center">
-            <label class="w-1/3 font-medium">Note:</label>
+            <label class="w-1/3 font-medium">ໝາຍເຫດ ເພີ່ມເຕີມ:</label>
             <textarea
               class="flex-1 border p-2 rounded"
               rows="3"
@@ -90,11 +90,11 @@
 
       <!-- Additional Cost Section -->
       <fieldset class="border border-gray-300 rounded-md p-4 mb-6">
-        <legend class="text-md font-semibold px-2">Payment Information</legend>
+        <legend class="text-md font-semibold px-2">ຂໍ້ມູນການຊໍາລະເງິນ</legend>
         <div class="grid grid-cols-1 gap-4">
           <!-- Additional Cost -->
           <div class="flex items-center">
-            <label class="w-1/3 font-medium">Additional Cost:</label>
+            <label class="w-1/3 font-medium">ລາຍລະອຽດຄ່າໃຊ້ຈ່າຍເພີມເຕີມ:</label>
             <input
               type="text"
               class="flex-1 border p-2 rounded"
@@ -104,12 +104,12 @@
           </div>
           <!-- Additional Cost Quantity -->
           <div class="flex items-center">
-            <label class="w-1/3 font-medium">Additional Cost Quantity:</label>
+            <label class="w-1/3 font-medium">ຄ່າໃຊ້ຈ່າຍເພີ່ມເຕີມ ຈໍານວນ :</label>
             <input type="number" class="flex-1 border p-2 rounded" v-model="extraChargeAmt" />
           </div>
           <!-- Paid Checkbox -->
           <div class="flex items-center">
-            <label class="w-1/3 font-medium">Paid <span class="text-sm">(200 ₭)</span>:</label>
+            <label class="w-1/3 font-medium">ຈ່າຍແລ້ວ <span class="text-sm">(200 ₭)</span>:</label>
             <input
               type="checkbox"
               class="h-5 w-5 rounded border-gray-300 text-green-600 focus:ring-green-500"
@@ -126,7 +126,7 @@
             ></textarea>
           </div>
           <div class="flex items-center">
-            <label class="w-1/3 font-medium">ຂ່າຍແບບ :</label>
+            <label class="w-1/3 font-medium">ຈ່າຍຜ່ານຊ່ອງທາງ :</label>
             <div class="w-2/3 flex gap-4">
               <select id="status" class="flex-1 border p-2 rounded" v-model="paidChannel">
                 <option value="cash">Cash</option>
@@ -139,7 +139,8 @@
             <label class="w-1/3 font-medium"></label>
             <div class="w-2/3">
               <DropZone
-                :maxFiles="Number(5)"
+                :maxFileSize="10000000"
+                :maxFiles="Number(10)"
                 :uploadOnDrop="false"
                 :multipleUpload="true"
                 :parallelUpload="3"
@@ -168,21 +169,21 @@
 
       <!-- Total Payment -->
       <fieldset class="border border-gray-300 rounded-md p-4 mb-6">
-        <legend class="text-md font-semibold px-2">Summary</legend>
+        <legend class="text-md font-semibold px-2">ສະຫຼຸບ</legend>
         <div class="grid grid-cols-1 gap-4">
           <div class="flex items-center">
-            <label class="w-1/3 font-medium">Status:</label>
+            <label class="w-1/3 font-medium">ສະຖານະ ການຈອງ:</label>
             <div class="w-2/3 flex gap-4">
               <select id="status" class="flex-1 border p-2 rounded" v-model="bookingStatus">
-                <option value="active">Active</option>
-                <option value="cancel">Cancel</option>
-                <option value="check-in">Check-in</option>
-                <option value="check-out">Check-out</option>
+                <option value="active">ປົກກະຕິ</option>
+                <option value="cancel">ຍົກເລີກ</option>
+                <option value="check-in">ເຊັກອິນ</option>
+                <option value="check-out">ເຊັກເອົ້າ</option>
               </select>
             </div>
           </div>
           <div class="flex items-center">
-            <label class="w-1/3 font-medium">Total Payment:</label>
+            <label class="w-1/3 font-medium">ຍອດຊໍາລະລວມ:</label>
             <input
               type="text"
               class="flex-1 border p-2 rounded"
@@ -192,7 +193,7 @@
             />
           </div>
           <div class="flex items-center">
-            <label class="w-1/3 font-medium">Create By:</label>
+            <label class="w-1/3 font-medium">ຊື່ ພະນັກງານ:</label>
             <input
               type="text"
               class="flex-1 border p-2 rounded"
@@ -267,12 +268,10 @@
     </Teleport>
 
     <dialog :class="{ 'modal-open': showModal }" class="modal">
-      <div class="w-9/12 p-8">
-        <div class="w-full h-full">
-          <img class="object-contain" :src="showImage" />
-        </div>
+      <div class="relative flex items-center justify-center h-screen">
+        <img class="object-contain" :src="showImage" />
 
-        <div class="mt-2 flex flex-row-reverse">
+        <div class="absolute top-0 right-0 mt-2 flex flex-row-reverse">
           <button @click="showModal = false" class="text-green-600 bg-warning rounded py-2 px-2">
             Close
           </button>
