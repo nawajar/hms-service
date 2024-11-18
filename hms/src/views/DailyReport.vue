@@ -30,10 +30,10 @@
               <div class="bg-blue-50 p-4 rounded-md shadow-sm space-y-2">
                 <i class="fas fa-calendar-check text-blue-600 text-2xl"></i>
                 <div class="flex gap-2">
-                  <h3 class="text-lg font-semibold text-blue-600">ລວມການຈອງ</h3>
-                  <p class="text-xl font-bold text-blue-800">{{ summaryBook?.total }}</p>
+                  <h3 class="text-lg font-semibold text-black">ລວມການຈອງ</h3>
+                  <p class="text-xl font-bold text-black">{{ summaryBook?.total }}</p>
                 </div>
-                <div class="text-sm text-blue-800">
+                <div class="text-sm text-black">
                   <ul class="space-y-1 pl-7 list-disc">
                     <li><strong>ຍອດລວມ: </strong> ${{ summaryBook?.totalAmt }}</li>
                   </ul>
@@ -45,12 +45,12 @@
                 <div class="flex items-center space-x-3">
                   <i class="fas fa-dollar-sign text-green-600 text-2xl"></i>
                   <div class="flex gap-2">
-                    <h3 class="text-lg font-semibold text-green-600">ການຈອງທີ່ຈ່າຍແລ້ວ</h3>
-                    <p class="text-xl font-bold text-green-800">{{ summaryBook?.paid }}</p>
+                    <h3 class="text-lg font-semibold text-black">ການຈອງທີ່ຈ່າຍແລ້ວ</h3>
+                    <p class="text-xl font-semibold text-black">{{ summaryBook?.paid }}</p>
                   </div>
                 </div>
                 <!-- Paid Booking Summary Details -->
-                <div class="text-sm text-green-700">
+                <div class="text-sm text-black">
                   <ul class="space-y-1 pl-7 list-disc">
                     <li><strong>ຍອດລວມ:</strong> ${{ summaryBook?.paidAmt }}</li>
                   </ul>
@@ -60,14 +60,14 @@
               <!-- Booking Unpaid Count with Summary -->
               <div class="bg-red-50 p-4 rounded-md shadow-sm space-y-2">
                 <div class="flex items-center space-x-3">
-                  <i class="fas fa-exclamation-circle text-red-600 text-2xl"></i>
+                  <i class="fas fa-exclamation-circle text-black text-2xl"></i>
                   <div class="flex gap-2">
-                    <h3 class="text-lg font-semibold text-red-600">ການຈອງທີ່ຍັງບໍ່ໄດ້ຈ່າຍ</h3>
-                    <p class="text-xl font-bold text-red-800">{{ summaryBook?.unPaid }}</p>
+                    <h3 class="text-lg font-semibold text-black">ການຈອງທີ່ຍັງບໍ່ໄດ້ຈ່າຍ</h3>
+                    <p class="text-xl font-semibold text-black">{{ summaryBook?.unPaid }}</p>
                   </div>
                 </div>
                 <!-- Unpaid Booking Summary Details -->
-                <div class="text-sm text-red-700">
+                <div class="text-sm text-black">
                   <ul class="space-y-1 pl-7 list-disc">
                     <li><strong>ຍອດລວມ:</strong> ${{ summaryBook?.unPaidAmt }}</li>
                   </ul>
@@ -78,12 +78,12 @@
                 <div class="flex items-center space-x-3">
                   <i class="fas fa-exclamation-circle text-warning text-2xl"></i>
                   <div class="flex gap-2">
-                    <h3 class="text-lg font-semibold text-warning">ຮາຍກາຮຍກມາ</h3>
-                    <p class="text-xl font-bold text-warning">{{ summaryBook?.deposit }}</p>
+                    <h3 class="text-lg font-semibold text-black">ຊຳລະຫນີ້ຄ້າງ</h3>
+                    <p class="text-xl font-bold text-black">{{ summaryBook?.deposit }}</p>
                   </div>
                 </div>
                 <!-- Unpaid Booking Summary Details -->
-                <div class="text-sm text-warning">
+                <div class="text-sm text-black">
                   <ul class="space-y-1 pl-7 list-disc">
                     <li><strong>ຍອດລວມ:</strong> ${{ summaryBook?.depositAmt }}</li>
                   </ul>
@@ -95,12 +95,12 @@
                 <div class="flex items-center space-x-3">
                   <i class="fas fa-exclamation-circle text-error text-2xl"></i>
                   <div class="flex gap-2">
-                    <h3 class="text-lg font-semibold text-error">ຄ່າໃຊ້ຈ່າຍ</h3>
-                    <p class="text-xl font-bold text-error">{{ budgetSummary?.count }}</p>
+                    <h3 class="text-lg font-semibold text-black">ລາຍຈ່າຍ</h3>
+                    <p class="text-xl font-bold text-black">{{ budgetSummary?.count }}</p>
                   </div>
                 </div>
                 <!-- Unpaid Booking Summary Details -->
-                <div class="text-sm text-error">
+                <div class="text-sm text-black">
                   <ul class="space-y-1 pl-7 list-disc">
                     <li><strong>ຍອດລວມ:</strong> ${{ budgetSummary?.totalAmt }}</li>
                   </ul>
@@ -117,12 +117,12 @@
                 <div class="flex items-center space-x-3">
                   <i class="fas fa-exclamation-circle text-primary text-2xl"></i>
                   <div class="flex gap-2">
-                    <h3 class="text-lg font-semibold text-primary">ສະຫຼຸບລາຍໄດ້</h3>
-                    <p class="text-xl font-bold text-primary">{{ summaryBook?.totalReceive }}</p>
+                    <h3 class="text-lg font-semibold text-black">ສະຫຼຸບລາຍໄດ້</h3>
+                    <p class="text-xl font-bold text-black">{{ summaryBook?.totalReceive }}</p>
                   </div>
                 </div>
                 <!-- Unpaid Booking Summary Details -->
-                <div class="text-sm text-primary">
+                <div class="text-sm text-black">
                   <ul class="space-y-1 pl-7 list-disc">
                     <li><strong>ຍອດລວມ:</strong> ${{ summaryBook?.totalReceiveAmt }}</li>
                   </ul>
@@ -133,14 +133,14 @@
                 <div class="flex items-center space-x-3">
                   <i class="fas fa-exclamation-circle text-base-content text-2xl"></i>
                   <div class="flex gap-2">
-                    <h3 class="text-lg font-semibold text-base-content">ເງິນສົດ</h3>
-                    <p class="text-xl font-bold text-base-content">
+                    <h3 class="text-lg font-semibold text-black">ເງິນສົດ</h3>
+                    <p class="text-xl font-bold text-black">
                       {{ summaryBook?.cashReceive }}
                     </p>
                   </div>
                 </div>
                 <!-- Unpaid Booking Summary Details -->
-                <div class="text-sm text-base-content">
+                <div class="text-sm text-black">
                   <ul class="space-y-1 pl-7 list-disc">
                     <li><strong>ຍອດລວມ:</strong> ${{ summaryBook?.cashAmt }}</li>
                   </ul>
@@ -164,15 +164,33 @@
                   </ul>
                 </div>
               </div>
+
+              <div class="bg-accent bg-opacity-35 p-4 rounded-md shadow-sm space-y-2">
+                <div class="flex items-center space-x-3">
+                  <i class="fas fa-exclamation-circle text-base-content text-2xl"></i>
+                  <div class="flex gap-2">
+                    <h3 class="text-lg font-semibold text-base-content">ລວມລາຍຈ່າຍເພີ່ມເຕີມ</h3>
+                    <p class="text-xl font-bold text-base-content"></p>
+                  </div>
+                </div>
+                <!-- Unpaid Booking Summary Details -->
+                <div class="text-sm text-base-content">
+                  <ul class="space-y-1 pl-7 list-disc">
+                    <li><strong>ຍອດລວມ:</strong> ${{ summaryBook?.extraPaidTotalAmt }}</li>
+                  </ul>
+                </div>
+              </div>
+
+              <!-- extraTotalAmt -->
             </div>
           </div>
         </div>
       </div>
 
       <div class="flex flex-col gap-2 bg-white mt-4">
-        <label>ລາຍການທີ່ສ້າງວັນນີ້</label>
+        <label class="font-bold text-xl">ລາຍການວັນນີ້</label>
         <table class="min-w-full bg-white border border-gray-200 rounded-lg shadow-lg">
-          <thead class="bg-gray-50">
+          <thead class="bg-blue-200">
             <tr>
               <th class="px-6 py-3 text-gray-700 text-left text-lg font-semibold tracking-wide">
                 ລໍາດັບ
@@ -240,9 +258,9 @@
       </div>
 
       <div class="flex flex-col gap-2 bg-white mt-4">
-        <label>ຮາຍກາຮເພຶ່ມ</label>
+        <label class="font-bold text-xl">ລາຍການຈ່າຍເພີ່ມເຕີມ</label>
         <table class="min-w-full bg-white border border-gray-200 rounded-lg shadow-lg">
-          <thead class="bg-gray-50">
+          <thead class="bg-blue-200">
             <tr>
               <th class="px-6 py-3 text-gray-700 text-center text-lg font-semibold tracking-wide">
                 ລໍາດັບ
@@ -283,9 +301,9 @@
       </div>
 
       <div class="flex flex-col gap-2 bg-white mt-4">
-        <label>ຮາຍກາຮທີ່າຍກມາ</label>
+        <label class="font-bold text-xl">ຊຳລະຫນີ້ຄ້າງ</label>
         <table class="min-w-full bg-white border border-gray-200 rounded-lg shadow-lg">
-          <thead class="bg-gray-50">
+          <thead class="bg-blue-200">
             <tr>
               <th class="px-6 py-3 text-gray-700 text-left text-lg font-semibold tracking-wide">
                 ລໍາດັບ
@@ -353,7 +371,7 @@
       </div>
 
       <div class="flex flex-col gap-2 bg-white mt-4">
-        <label>ຮາຍກາຮເພີ່ມທີ່າຍກມາ</label>
+        <label class="font-bold text-xl">ລາຍການຈ່າຍເພີ່ມເຕີມ</label>
         <table class="min-w-full bg-white border border-gray-200 rounded-lg shadow-lg">
           <thead class="bg-gray-50">
             <tr>
@@ -493,8 +511,7 @@ const exportData = () => {
   const dd = {
     ...docDefinition,
     content: [
-      { text: `xayluedyhotel`, style: 'titleHeader' },
-      { text: `ຮາຍກາຮວິນທີ່ ${date.toFormat('dd MMM yyyy')}`, style: 'title' },
+      { text: `ບັນຊີປະຈຳວັນທີ່ ${date.toFormat('dd/MM/yyyy')}`, style: 'title' },
       {
         style: 'tableExample',
         table: {
@@ -506,33 +523,19 @@ const exportData = () => {
         margin: [5, 2, 10, 20],
         text: ''
       },
-      { text: `extra `, style: 'title' },
+      { text: `ລາຍການຈ່າຍເພີ່ມເຕີມ`, style: 'title' },
       {
         style: 'tableExample',
         table: {
           widths: ['*', '*', '*', '*'],
-          body: [
-            generateTableExtraHeader(),
-            ...(generateTableExtraBody(summaryToday.value) ?? []),
-            [
-              {
-                colSpan: 4,
-                rowSpan: 1,
-                style: 'contextText',
-                text: `ລວມການຈອງ: ${safeUndefined(summaryBook.value?.total)} ຮາຍກາຮ  ຮວມ ${safeUndefined(summaryBook.value?.totalAmt)}
-                ການຈອງທີ່ຈ່າຍແລ້ວ: ${safeUndefined(summaryBook.value?.paid)} ຮາຍກາຮ  ຮວມ ${safeUndefined(summaryBook.value?.paidAmt)}
-                ການຈອງທີ່ຍັງບໍ່ໄດ້ຈ່າຍ: ${safeUndefined(summaryBook.value?.unPaid)} ຮາຍກາຮ  ຮວມ ${safeUndefined(summaryBook.value?.unPaidAmt)}`
-              },
-              ''
-            ]
-          ]
+          body: [generateTableExtraHeader(), ...(generateTableExtraBody(summaryToday.value) ?? [])]
         }
       },
       {
         margin: [5, 2, 10, 20],
         text: ''
       },
-      { text: `ຮາຍກາຮຍກມາ `, style: 'title' },
+      { text: `ຊຳລະຫນີ້ຄ້າງ `, style: 'title' },
       {
         style: 'tableExample',
         table: {
@@ -544,7 +547,7 @@ const exportData = () => {
         margin: [5, 2, 10, 20],
         text: ''
       },
-      { text: `extra `, style: 'title' },
+      { text: `ລາຍການຈ່າຍເພີ່ມເຕີມ`, style: 'title' },
       {
         style: 'tableExample',
         table: {
@@ -557,7 +560,7 @@ const exportData = () => {
                 colSpan: 4,
                 rowSpan: 1,
                 style: 'contextText',
-                text: `ຮາຍກາຮຍກມາ: ${safeUndefined(summaryBook.value?.deposit)} ຮາຍກາຮ  ຮວມ ${safeUndefined(summaryBook.value?.depositAmt)}`
+                text: `ຊຳລະຫນີ້ຄ້າງ: ${safeUndefined(summaryBook.value?.deposit)} ຮາຍກາຮ  ຮວມ ${safeUndefined(summaryBook.value?.depositAmt)}`
               },
               ''
             ]
@@ -568,26 +571,43 @@ const exportData = () => {
         margin: [5, 2, 10, 20],
         text: ''
       },
-      { text: `ສຮູປ `, style: 'title' },
 
+      { text: `ສຮູປ `, style: 'contextTextLarge', pageBreak: 'before' },
       {
-        style: 'contextText',
-        text: `ເງຶນສດ: ${safeUndefined(summaryBook.value?.cashReceive)} ຮາຍກາຮ  ຮວມ ${safeUndefined(summaryBook.value?.cashAmt)}`
+        style: 'contextTextLargeXL',
+        text: ` ຈຳນວນ: ${safeUndefined(summaryBook.value?.total)} ລາຍການ`
       },
       {
-        style: 'contextText',
-        text: `ທະນາຕາຮ: ${safeUndefined(summaryBook.value?.bankReceive)} ຮາຍກາຮ  ຮວມ ${safeUndefined(summaryBook.value?.bankAmt)}`
+        colSpan: 4,
+        rowSpan: 1,
+        style: 'contextTextLarge',
+        text: `ລວມຍອດຂາຍ ${summaryBook?.value?.roomAllCount} ຫ້ອງ , ເປັນເງິນ ${safeUndefined(summaryBook.value?.totalAmt)} ກີບ
+               ເງິນສົດ: ${safeUndefined(summaryBook.value?.paidRoomCount)} ຫ້ອງ ,  ເປັນເງິນ ${safeUndefined(summaryBook.value?.paidAmt)} ກີບ
+                      - ເງຶນສດ (cash): ${safeUndefined(summaryBook.value?.cashReceiveRoomCount)} ຫ້ອງ , ເປັນເງິນ ${safeUndefined(summaryBook.value?.cashAmt)} ກີບ
+                      - ທະນາຕາຮ (bank_transfer): ${safeUndefined(summaryBook.value?.bankReceiveRoomCount)} ຫ້ອງ , ເປັນເງິນ ${safeUndefined(summaryBook.value?.bankAmt)} ກີບ
+               ຕິດຫນີ້ ${safeUndefined(summaryBook.value?.unPaidRoomCount)} ຫ້ອງ , ເປັນເງິນ  ${safeUndefined(summaryBook.value?.unPaidAmt)} ກີບ
+               ລາຍການຈ່າຍເພິ່ມເຕິມ , ເປັນເງິນ  ${safeUndefined(summaryBook.value?.extraPaidTotalAmt)} ກີບ
+             `
       },
       {
-        style: 'contextText',
-        text: `ຍອດເກ໊ບໄດ້: ${safeUndefined(summaryBook.value?.totalReceive)} ຮາຍກາຮ  ຮວມ ${safeUndefined(summaryBook.value?.totalReceiveAmt)}`,
-        pageBreak: 'after'
+        style: 'contextTextLargeXL',
+        text: `ລວມຍອດລາຍຮັບທັ້ງຫມົດ , ເປັນເງິນ  ${safeUndefined((summaryBook.value?.paidAmt ?? 0) + (summaryBook.value?.extraPaidTotalAmt ?? 0))} ກີບ`
       },
+
+      // {
+      //   style: 'contextTextLarge',
+      //   text: `ທະນາຕາຮ (bank_transfer): ${safeUndefined(summaryBook.value?.bankReceiveRoomCount)} ຫ້ອງ , ເປັນເງິນ ${safeUndefined(summaryBook.value?.bankAmt)} ກີບ`
+      // },
+      // {
+      //   style: 'contextTextLarge',
+      //   text: `ຍອດເກ໊ບໄດ້: ${safeUndefined(summaryBook.value?.totalReceive)} ຮາຍກາຮ  ຮວມ ${safeUndefined(summaryBook.value?.totalReceiveAmt)}`,
+      //   pageBreak: 'after'
+      // },
       {
         margin: [5, 2, 10, 20],
         text: ''
       },
-      { text: `Budget`, style: 'title' },
+      { text: `ລາຍຈ່າຍ`, style: 'contextTextLarge' },
       {
         style: 'tableExample',
         table: {
@@ -624,7 +644,18 @@ const exportData = () => {
       },
       headerContent: {
         fontSize: 8,
-        bold: true
+        bold: true,
+        fillColor: '#F0E68C'
+      },
+      contextTextLarge: {
+        fontSize: 12,
+        bold: true,
+        fillColor: '#000'
+      },
+      contextTextLargeXL: {
+        fontSize: 15,
+        bold: true,
+        fillColor: '#000'
       },
       contentBoxTitle: {
         fontSize: 9,
@@ -638,8 +669,8 @@ const exportData = () => {
       },
       title: {
         font: 'NOTO',
-        fontSize: 14,
-        color: '#86efac',
+        fontSize: 19,
+        color: '#000',
         bold: true
       },
       titleHeader: {
@@ -723,8 +754,8 @@ const summaryToday = computed(() => {
       net_amt: `${numberWithCommas(book.price) - (book.extra_charge_amt ?? 0)} `,
       extra_charge_details: book.extra_charge_details,
       extra_charge: book.extra_charge_amt,
-      paid: book.paid ? 'ຂ່າຍແລ້ວ' : 'ຍິງ',
-      paid_channel: book.paid_channel,
+      paid: book.paid ? 'ຈ່າຍແລ້ວ' : 'ຍັງຄ້າງ',
+      paid_channel: getPayTranslate(book.paid_channel),
       create_by: book.create_by,
       check_in: book.check_in_date,
       check_out: book.check_out_date,
@@ -733,6 +764,16 @@ const summaryToday = computed(() => {
   })
   return bookingV
 })
+
+const getPayTranslate = (chan: string) => {
+  if (chan == 'cash') {
+    return 'ເງຶນສດ'
+  }
+  if (chan == 'bank_transfer') {
+    return 'ໂອນຈ່າຍ'
+  }
+  return ''
+}
 
 const summaryDepositToday = computed(() => {
   if (!bookingsToday.value || bookingsToday.value.length == 0) {
@@ -748,7 +789,7 @@ const summaryDepositToday = computed(() => {
       room_price: book.room_price_snapshort,
       days: dayCount(book.check_out_date, book.check_in_date),
       net_amt: `${numberWithCommas(book.price) - (book.extra_charge_amt ?? 0)} `,
-      paid: book.paid ? 'ຂ່າຍແລ້ວ' : 'ຍິງ',
+      paid: book.paid ? 'ຈ່າຍແລ້ວ' : 'ຍັງຄ້າງ',
       extra_charge_details: book.extra_charge_details,
       extra_charge: book.extra_charge_amt,
       paid_channel: book.paid_channel,
@@ -783,10 +824,33 @@ const summaryBook = computed(() => {
   }
   const filterD = DateTime.fromFormat(filterFromDate.value, 'yyyy-MM-dd')
   const all = bookingsToday.value.filter((b: any) => isToday(b.created, filterD))
+  const roomAllCount = _.reduce(
+    all,
+    (a, c) => {
+      return a + c.room.length
+    },
+    0
+  )
   const totalAmt = _.sumBy(all, (b: any) => b.price)
   const paidItem = _.filter(all, (b: any) => b.paid)
+
+  const paidRoomCount = _.reduce(
+    paidItem,
+    (a, c) => {
+      return a + c.room.length
+    },
+    0
+  )
   const paidAmt = _.sumBy(paidItem, (b: any) => b.price)
+  const extraPaidTotalAmt = _.sumBy(paidItem, (b: any) => b.extra_charge_amt)
   const unPaidItem = _.filter(all, (b: any) => b.paid == false)
+  const unPaidRoomCount = _.reduce(
+    unPaidItem,
+    (a, c) => {
+      return a + c.room.length
+    },
+    0
+  )
   const unPaidAmt = _.sumBy(unPaidItem, (b: any) => b.price)
 
   const deposit = bookingsToday.value.filter((b: any) => !isToday(b.created, filterD))
@@ -801,33 +865,57 @@ const summaryBook = computed(() => {
   if (depositCash && depositCash.length > 0) {
     cashToday.push(...depositCash)
   }
+
+  const cashReceiveRoomCount = _.reduce(
+    cashToday,
+    (a, c) => {
+      return a + c.room.length
+    },
+    0
+  )
   const cashAmt = _.sumBy(cashToday, (b: any) => b.price)
+  const extraCashTodayAmt = _.sumBy(cashToday, (b: any) => b.extra_charge_amt)
 
   // bank
 
   const depositBank = _.filter(depositItem, (b: any) => b.paid_channel == 'bank_transfer')
   let bankReceive = _.filter(paidItem, (b: any) => b.paid_channel == 'bank_transfer')
-  console.log(paidItem)
+
   if (depositBank && depositBank.length > 0) {
     bankReceive.push(...depositBank)
   }
+
+  const bankReceiveRoomCount = _.reduce(
+    bankReceive,
+    (a, c) => {
+      return a + c.room.length
+    },
+    0
+  )
+  const extraBankTodayAmt = _.sumBy(bankReceive, (b: any) => b.extra_charge_amt)
   const bankAmt = _.sumBy(bankReceive, (b: any) => b.price)
 
   return {
+    roomAllCount: roomAllCount,
+    extraPaidTotalAmt: extraPaidTotalAmt,
     total: all.length,
     totalAmt: totalAmt,
     paid: paidItem.length,
-    paidAmt: paidAmt,
+    paidRoomCount: paidRoomCount,
+    paidAmt: paidAmt - extraPaidTotalAmt,
     unPaid: unPaidItem.length,
+    unPaidRoomCount: unPaidRoomCount,
     unPaidAmt: unPaidAmt,
     deposit: depositItem.length,
     depositAmt: depositAmt,
     totalReceive: totalReceiveAll,
     totalReceiveAmt: totalReceiveAmt,
     cashReceive: cashToday.length,
-    cashAmt: cashAmt,
+    cashReceiveRoomCount: cashReceiveRoomCount,
+    cashAmt: cashAmt - extraCashTodayAmt,
     bankReceive: bankReceive.length,
-    bankAmt: bankAmt
+    bankReceiveRoomCount: bankReceiveRoomCount,
+    bankAmt: bankAmt - extraBankTodayAmt
   }
 })
 

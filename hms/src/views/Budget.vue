@@ -4,7 +4,7 @@
     <div class="mb-4">
       <fieldset class="border border-gray-300 p-4 rounded-lg bg-white shadow-lg">
         <legend class="text-lg font-semibold text-gray-700 px-2">
-          ຄ່າໃຊ້ຈ່າຍ
+          ລາຍຈ່າຍ
 
           <button @click="refresh" class="hover:bg-neutral rounded-full w-8 h-8">
             <font-awesome-icon icon="arrows-rotate" />

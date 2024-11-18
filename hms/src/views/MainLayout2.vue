@@ -70,7 +70,7 @@
               <div class="grid mr-4 place-items-center">
                 <font-awesome-icon icon="calendar-day"></font-awesome-icon>
               </div>
-              ຄ່າໃຊ້ຈ່າຍ
+              ລາຍຈ່າຍ
             </RouterLink>
           </li>
           <li>

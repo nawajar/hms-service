@@ -5,18 +5,24 @@
       <div class="flex flex-col gap-4">
         <div v-for="(room, roomType) in roomByType" :key="roomType">
           <label class="font-bold text-xl mb-2 block">{{ roomTranslate[roomType] }}</label>
-          <div class="flex flex-wrap gap-2">
+          <div class="flex flex-wrap gap-2 font-extrabold">
             <button
               @click="addRoom(r.id)"
               v-for="(r, i) of room"
               :key="i"
               :class="{
-                'bg-green-200 p-4 rounded-lg flex items-center justify-between': true,
-                'border-2 border-blue-500': isSelected(r.id)
+                'p-4 rounded-lg flex items-center justify-between': true,
+                'border-2 border-blue-500': isSelected(r.id),
+                'bg-orange-400': r.color == 'bg-orange-400',
+                'bg-emerald-600': r.color == 'bg-emerald-600',
+                'bg-green-300': r.color == 'bg-green-300',
+                'bg-yellow-300': r.color == 'bg-yellow-300',
+                'bg-stone-400': r.color == 'bg-stone-400',
+                'bg-pink-400': r.color == 'bg-pink-400'
               }"
             >
               <div class="flex items-center gap-2">
-                <span>{{ padZero(r.room_no) }}</span>
+                <span>{{ padZero(r.room_no) }} </span>
                 <font-awesome-icon
                   class="text-primary"
                   icon="circle-check"

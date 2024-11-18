@@ -67,9 +67,7 @@
             <th class="px-6 py-3 text-gray-700 text-left text-lg font-semibold tracking-wide">
               ລ/ດ
             </th>
-            <th class="px-6 py-3 text-gray-700 text-left text-lg font-semibold tracking-wide">
-              ເລກຫ້ອງ
-            </th>
+            <th class="px-6 py-3 text-gray-700 text-left text-lg font-semibold">ເລກຫ້ອງ</th>
             <th class="px-6 py-3 text-gray-700 text-left text-lg font-semibold tracking-wide">
               ຊື່ຜູ້ເຊົາແຂກ
             </th>
@@ -136,15 +134,24 @@
               <td class="px-6 py-4 text-base text-right text-gray-600">
                 {{ booking.days }}
               </td>
-              <td class="px-6 py-4 text-base text-right text-gray-600">
+              <td
+                class="px-6 py-4 text-base text-right text-gray-600"
+                :class="{ 'text-blue-400': booking.paidFlag, 'text-red-400': !booking.paidFlag }"
+              >
                 {{ booking.extra_charge }}
               </td>
               <td class="px-6 py-4 text-base text-right text-gray-600">
                 {{ booking.net_amt }}
               </td>
               <td class="px-6 py-4 text-base text-right text-gray-600">{{ booking.paid }}</td>
-              <td class="px-6 py-4 text-base text-right text-gray-600">
-                {{ booking.paid_channel }}
+              <td
+                class="px-6 py-4 text-base text-right text-gray-600"
+                :class="{
+                  'text-red-500': booking.paid_chanel_o == 'bank_transfer',
+                  'text-blue-400': booking.paid_chanel_o == 'cash'
+                }"
+              >
+                {{ booking.paid_channel }} {{ booking.paid_chanel_o }}
               </td>
               <td class="px-6 py-4 text-base text-gray-600">{{ booking.create_by }}</td>
               <td class="px-6 py-4 text-base text-gray-600 whitespace-nowrap">
@@ -269,8 +276,10 @@ const bookingsView = computed(() => {
       days: dayCount(book.check_out_date, book.check_in_date),
       extra_charge: book.extra_charge_amt,
       net_amt: `${numberWithCommas(book.price)} `,
-      paid: book.paid ? 'ຂາຍແລ້ວ' : 'ຄ້າງຈາຍ',
-      paid_channel: book.paid_channel,
+      paid: book.paid ? 'ຈ່າຍແລ້ວ' : 'ຍັງຄ້າງ',
+      paidFlag: book.paid,
+      paid_chanel_o: book.paid_channel,
+      paid_channel: getPayTranslate(book.paid_channel),
       create_by: book.create_by,
       check_in: book.check_in_date,
       check_out: book.check_out_date,
@@ -279,6 +288,16 @@ const bookingsView = computed(() => {
   })
   return bookingV
 })
+
+const getPayTranslate = (chan: string) => {
+  if (chan == 'cash') {
+    return 'ເງຶນສດ'
+  }
+  if (chan == 'bank_transfer') {
+    return 'ໂອນຈ່າຍ'
+  }
+  return ''
+}
 
 const isToday = (date: string, filter: DateTime) => {
   var s = date.split(' ').join('T')
