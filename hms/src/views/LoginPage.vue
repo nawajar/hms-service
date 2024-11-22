@@ -71,9 +71,11 @@ const login = async () => {
   console.log('Logged in.', authData)
   if (authData) {
     console.log('Valid in.', pb.authStore.isValid)
-    router.push({
-      path: '/dashboard'
-    })
+    setTimeout(() => {
+      router.push({
+        path: '/dashboard'
+      })
+    }, 0)
   }
 }
 </script>
