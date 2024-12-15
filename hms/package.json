@@ -27,7 +27,7 @@
     "luxon": "^3.4.4",
     "normal-calendar": "^0.0.4",
     "pdfmake": "^0.2.12",
-    "pinia": "^2.1.7",
+    "pinia": "^2.3.0",
     "pocketbase": "^0.21.3",
     "vue": "^3.4.21",
     "vue-chartjs": "^5.3.1",

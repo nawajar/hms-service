@@ -4,24 +4,26 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { pb } from '@/services/pb'
 import type { BaseAuthStore } from 'pocketbase'
 import LayoutVue2 from '@/views/MainLayout2.vue'
+import { useAuthStore } from '@/stores/auth'
 
-const routeGuard = (baseAuth: BaseAuthStore | null, fallBack?: { name: string }) => {
-  const canI = baseAuth?.isValid
-  console.log('route guard ', canI)
-  return {
-    beforeEnter: () => canI || fallBack,
-    meta: {
-      canI
-    }
-  }
-}
+// const routeGuard = (baseAuth: BaseAuthStore | null, fallBack?: { name: string }) => {
+//   const canI =true;
+//   console.log('route guard ', canI)
+//   return {
+//     beforeEnter: () => canI || fallBack,
+//     meta: {
+//       canI
+//     }
+//   }
+// }
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/login',
       name: 'login',
-      component: () => import('@/views/LoginPage.vue')
+      component: () => import('@/views/LoginPage.vue'),
+      meta: { requiresAuth: false },
     },
     // {
     //   path: '/play',
@@ -37,71 +39,80 @@ const router = createRouter({
           path: '/dashboard',
           name: 'DashBoard', // 'patients'
           component: HomeVueVue,
-          ...routeGuard(pb.authStore, { name: 'login' })
+          meta: { requiresAuth: true },
         },
         {
           path: '/booking-create',
           name: 'Booking Create', // 'patients'
           component: () => import('@/views/BookingCreate.vue'),
-          ...routeGuard(pb.authStore, { name: 'login' })
+          meta: { requiresAuth: true },
         },
         {
           path: '/booking-list',
           name: 'Booking List', // 'patients'
           component: () => import('@/views/BookingList.vue'),
-          ...routeGuard(pb.authStore, { name: 'login' })
+          meta: { requiresAuth: true },
         },
         {
           path: '/booking-edit/:id',
           name: 'Booking Edit', // 'patients'
           component: () => import('@/views/BookingEdit.vue'),
-          ...routeGuard(pb.authStore, { name: 'login' })
+          meta: { requiresAuth: true },
         },
         // {
         //   path: '/bookings',
         //   name: 'Booking', // 'patients'
         //   component: () => import('@/views/BookingRoom.vue'),
-        //   ...routeGuard(pb.authStore, { name: 'login' })
+        //   meta: { requiresAuth: true },
         // },
         {
           path: '/rooms',
           name: 'Rooms', // 'patients'
           component: () => import('@/views/RoomStatus.vue'),
-          ...routeGuard(pb.authStore, { name: 'login' })
+          meta: { requiresAuth: true },
         },
         {
           path: '/rooms-schedule',
           name: 'Rooms Schedule', // 'patients'
           component: () => import('@/views/RoomSchedule.vue'),
-          ...routeGuard(pb.authStore, { name: 'login' })
+          meta: { requiresAuth: true },
         },
         {
           path: '/booking-history',
           name: 'Booking History', // 'patients'
           component: () => import('@/views/BookingHistory.vue'),
-          ...routeGuard(pb.authStore, { name: 'login' })
+          meta: { requiresAuth: true },
         },
         {
           path: '/daily-report',
           name: 'Daily Report', // 'patients'
           component: () => import('@/views/DailyReport.vue'),
-          ...routeGuard(pb.authStore, { name: 'login' })
+          meta: { requiresAuth: true },
         },
         {
           path: '/budget',
           name: 'Budget', // 'patients'
           component: () => import('@/views/Budget.vue'),
-          ...routeGuard(pb.authStore, { name: 'login' })
+          meta: { requiresAuth: true },
         },
         {
           path: '/range-report',
           name: 'Range Report', // 'patients'
           component: () => import('@/views/RangeReport.vue'),
-          ...routeGuard(pb.authStore, { name: 'login' })
+          meta: { requiresAuth: true },
         }
       ]
     }
   ]
 })
+router.beforeEach((to) => {
+  // ✅ This will work because the router starts its navigation after
+  // the router is installed and pinia will be installed too
+  const authStore = useAuthStore();
+  console.log("before route ", authStore.isLogin);
+
+  if (to.meta.requiresAuth && !authStore.isLogin) return '/login'
+})
 
 export default router
+

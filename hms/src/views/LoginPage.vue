@@ -55,10 +55,11 @@
 <script setup lang="ts">
 import { pb } from '@/services/pb'
 import { ref } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
-
+import { useRouter } from 'vue-router'
+import { useAuthStore } from '@/stores/auth'
 const router = useRouter()
-const route = useRoute()
+
+const loginStore = useAuthStore()
 
 const userName = ref('')
 const password = ref('')
@@ -70,12 +71,10 @@ const login = async () => {
   const authData = await pb.collection('users').authWithPassword(userName.value, password.value)
   console.log('Logged in.', authData)
   if (authData) {
-    console.log('Valid in.', pb.authStore.isValid)
-    setTimeout(() => {
-      router.push({
-        path: '/dashboard'
-      })
-    }, 0)
+    loginStore.loggedIn()
+    router.push({
+      path: '/dashboard'
+    })
   }
 }
 </script>

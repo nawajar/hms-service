@@ -134,9 +134,13 @@
 import { RouterLink, RouterView, useRouter } from 'vue-router'
 import { pb } from '@/services/pb'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { useAuthStore } from '@/stores/auth'
 const router = useRouter()
+
+const loginStore = useAuthStore()
 const signout = () => {
   pb.authStore.clear()
+  loginStore.loggedOut()
   router.push({ name: 'login' })
 }
 </script>
