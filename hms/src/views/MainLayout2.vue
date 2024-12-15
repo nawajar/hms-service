@@ -116,11 +116,9 @@
           </div>
         </div>
 
-        <div class="pl-[180px] h-full">
+        <div class="pl-[180px] h-full w-full overflow-hidden">
           <!-- Content -->
-          <div class="p-10 z-10 h-full">
-            <RouterView></RouterView>
-          </div>
+          <RouterView></RouterView>
         </div>
 
         <div class="w-full">

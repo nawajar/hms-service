@@ -109,9 +109,11 @@ router.beforeEach((to) => {
   // ✅ This will work because the router starts its navigation after
   // the router is installed and pinia will be installed too
   const authStore = useAuthStore();
-  console.log("before route ", authStore.isLogin);
-
-  if (to.meta.requiresAuth && !authStore.isLogin) return '/login'
+  console.log("before route ", authStore.isLogin , pb.authStore.isValid);
+  if(pb.authStore.isValid && !authStore.isLogin) {
+    authStore.loggedIn()    
+  }
+  if (to.meta.requiresAuth && (!authStore.isLogin)) return '/login'
 })
 
 export default router

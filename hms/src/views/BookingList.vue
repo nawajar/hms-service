@@ -1,5 +1,5 @@
 <template>
-  <div class="min-w-[400px] min-h-full mb-10 rounded flex flex-col">
+  <div class="min-w-[400px] min-h-full mb-10 rounded flex flex-col w-full px-10">
     <div class="flex gap-4 items-center justify-between"></div>
     <div class="mb-4">
       <fieldset class="border border-gray-300 p-4 rounded-lg bg-white shadow-lg">
@@ -59,7 +59,7 @@
       </fieldset>
     </div>
 
-    <div class="">
+    <div class="overflow-x-auto">
       <table class="min-w-full bg-white border border-gray-200 rounded-lg shadow-lg">
         <thead class="bg-gray-50">
           <tr>
@@ -162,11 +162,10 @@
               </td>
             </tr>
           </template>
-
-          <!-- Add more rows as needed based on the image -->
         </tbody>
       </table>
     </div>
+
     <div class="flex justify-between items-center mt-6">
       <div class="text-sm text-gray-600">
         <span class="font-medium"> ໜ້າ {{ bookings?.page }} / {{ bookings?.totalPages }}</span>
