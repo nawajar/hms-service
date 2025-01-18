@@ -30,7 +30,8 @@ export default {
           info: '#bbf7d0',
           success: '#bef264',
           warning: '#fcd34d',
-          error: '#fca5a5'
+          error: '#fca5a5',
+          cream: 'F4D793'
         },
         screens: {
           tablet: '640px',

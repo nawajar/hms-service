@@ -3,7 +3,7 @@
     <div class="h-full fixed left-0">
       <!-- Left Sidebar -->
       <div
-        class="grid h-full border-r translate-y-12 bg-gray-50 bg-clip-border text-gray-700 shadow-xl shadow-blue-gray-900/5"
+        class="grid h-full border-r translate-y-12 bg-[#F4D793] bg-clip-border text-gray-700 shadow-xl shadow-blue-gray-900/5"
       >
         <ul class="cus-menu flex flex-col bg-primary-200 gap-2 font-bold text-xl w-[170px]">
           <li>

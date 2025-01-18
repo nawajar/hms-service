@@ -207,7 +207,6 @@ import CustomCalendar from '@/components/CustomCalendar.vue'
 import { useRoute, useRouter } from 'vue-router'
 
 const router = useRouter()
-const route = useRoute()
 
 const bookings = ref<any>([])
 const searchQuery = ref('')

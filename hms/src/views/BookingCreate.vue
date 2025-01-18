@@ -1,10 +1,10 @@
 <template>
   <div class="w-full min-w-[400px] h-full mb-10 rounded overflow-y-scroll">
-    <div class="w-full mx-auto p-4 bg-white shadow-md rounded-md border">
-      <h1 class="text-lg font-semibold mb-4 text-center">ຂໍ້ມູນການຈອງ</h1>
+    <div class="w-full mx-auto p-4 bg-[#A9B2C3] shadow-md rounded-md border">
+      <h1 class="text-2xl font-semibold mb-4 text-center">ຂໍ້ມູນການຈອງ</h1>
 
       <!-- Room Information Section -->
-      <fieldset class="border border-gray-300 rounded-md p-4 mb-6">
+      <fieldset class="border-4 border-primary rounded-md p-4 mb-6 text-xl">
         <legend class="text-md font-semibold px-2">ຂໍ້ອມູນຫ້ອງ</legend>
         <div class="grid grid-cols-1 gap-4">
           <!-- Check-in Date -->
@@ -36,7 +36,7 @@
       </fieldset>
 
       <!-- Customer Information Section -->
-      <fieldset class="border border-gray-300 rounded-md p-4 mb-6">
+      <fieldset class="border-4 border-[#A94A4A] rounded-md p-4 mb-6 text-xl">
         <legend class="text-md font-semibold px-2">ຂໍ້ມູລນລູກຄ້າ</legend>
         <div class="grid grid-cols-1 gap-4">
           <!-- Name -->
@@ -91,7 +91,7 @@
       </fieldset>
 
       <!-- Additional Cost Section -->
-      <fieldset class="border border-neutral rounded-md p-4 mb-6">
+      <fieldset class="border-4 border-warning rounded-md p-4 mb-6 text-xl">
         <legend class="text-md font-semibold px-2">ຂໍ້ມູນການຊໍາລະເງິນ</legend>
         <div class="grid grid-cols-1 gap-4">
           <!-- Additional Cost -->
@@ -164,7 +164,7 @@
       </fieldset>
 
       <!-- Total Payment -->
-      <fieldset class="border border-gray-300 rounded-md p-4 mb-6">
+      <fieldset class="border-4 border-info rounded-md p-4 mb-6 text-xl">
         <legend class="text-md font-semibold px-2">ສະຫຼຸບ</legend>
         <div class="grid grid-cols-1 gap-4">
           <div class="flex items-center">
@@ -205,7 +205,7 @@
       </fieldset>
 
       <!-- Room Details Table -->
-      <div class="w-full mx-auto p-4 bg-white shadow-md rounded-md mt-6 mb-6">
+      <div class="w-full mx-auto p-4 bg-white shadow-md rounded-md mt-6 mb-6 text-xl">
         <h2 class="text-lg font-semibold mb-4 text-center">ລາຍລະອຽດຫ້ອງ</h2>
         <table class="w-full border-collapse">
           <thead>
