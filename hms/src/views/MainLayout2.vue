@@ -3,11 +3,11 @@
     <div class="h-full fixed left-0">
       <!-- Left Sidebar -->
       <div
-        class="grid h-full border-r translate-y-12 bg-[#F4D793] bg-clip-border text-gray-700 shadow-xl shadow-blue-gray-900/5"
+        class="grid h-full border-r translate-y-12 bg-[#009a7d] bg-clip-border text-gray-700 shadow-xl shadow-blue-gray-900/5"
       >
         <ul class="cus-menu flex flex-col bg-primary-200 gap-2 font-bold text-xl w-[170px]">
           <li>
-            <RouterLink :to="'/dashboard'" activeClass="border-indigo-500">
+            <RouterLink :to="'/dashboard'" activeClass="bg-[#E9EED9] rounded">
               <div class="grid mr-4 place-items-center">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -26,23 +26,25 @@
               ໜ້າຫຼັກ
             </RouterLink>
           </li>
+          <hr class="border-2 border-[#2A3663] dark:border-white" />
           <li>
-            <RouterLink :to="'/booking-create'" activeClass="bg-neutral">
+            <RouterLink :to="'/booking-create'" activeClass="bg-[#E9EED9] rounded">
               <div class="grid mr-4 place-items-center">
                 <font-awesome-icon icon="right-to-bracket"></font-awesome-icon>
               </div>
               ການຈອງຫ້ອງ
             </RouterLink>
           </li>
+          <hr class="border-2 border-[#2A3663] dark:border-white" />
           <li>
-            <RouterLink :to="'/booking-list'" activeClass="border-indigo-500">
+            <RouterLink :to="'/booking-list'" activeClass="bg-[#E9EED9] rounded">
               <div class="grid mr-4 place-items-center">
                 <font-awesome-icon icon="bars-staggered"></font-awesome-icon>
               </div>
               ลูกค้าเข้าพัก
             </RouterLink>
           </li>
-          <hr class="border-base-300 dark:border-white" />
+          <hr class="border-2 border-[#2A3663] dark:border-white" />
           <li>
             <RouterLink :to="'/rooms'">
               <div class="grid mr-4 place-items-center">
@@ -56,33 +58,36 @@
               </div>
             </RouterLink>
           </li>
+          <hr class="border-2 border-[#2A3663] dark:border-white" />
           <li>
-            <RouterLink :to="'/rooms-schedule'" activeClass="border-indigo-500">
+            <RouterLink :to="'/rooms-schedule'" activeClass="bg-[#E9EED9] rounded">
               <div class="grid mr-4 place-items-center">
                 <font-awesome-icon icon="calendar-day"></font-awesome-icon>
               </div>
               ຕາຕະລາງຫ້ອງ
             </RouterLink>
           </li>
-          <hr class="border-base-300 dark:border-white" />
+          <hr class="border-2 border-[#2A3663] dark:border-white" />
           <li>
-            <RouterLink :to="'/budget'" activeClass="border-indigo-500">
+            <RouterLink :to="'/budget'" activeClass="bg-[#E9EED9] rounded">
               <div class="grid mr-4 place-items-center">
                 <font-awesome-icon icon="calendar-day"></font-awesome-icon>
               </div>
               ລາຍຈ່າຍ
             </RouterLink>
           </li>
+          <hr class="border-2 border-[#2A3663] dark:border-white" />
           <li>
-            <RouterLink :to="'/daily-report'" activeClass="border-indigo-500">
+            <RouterLink :to="'/daily-report'" activeClass="bg-[#E9EED9] rounded">
               <div class="grid mr-4 place-items-center">
                 <font-awesome-icon icon="calendar-day"></font-awesome-icon>
               </div>
               ສະຫຼຸບປະຈໍາວັນ
             </RouterLink>
           </li>
+          <hr class="border-2 border-[#2A3663] dark:border-white" />
           <li>
-            <RouterLink :to="'/range-report'" activeClass="border-indigo-500">
+            <RouterLink :to="'/range-report'" activeClass="bg-[#E9EED9] rounded">
               <div class="grid mr-4 place-items-center">
                 <font-awesome-icon icon="calendar-day"></font-awesome-icon>
               </div>
@@ -147,10 +152,14 @@ const signout = () => {
   @apply p-2;
 }
 .cus-menu li {
-  @apply p-2 hover:bg-neutral rounded;
+  @apply p-2 hover:bg-[#E9EED9] rounded;
 }
 
 .cus-menu li > a {
   @apply flex flex-row gap-2;
+}
+
+ul > li > a.router-link-exact-active {
+  @apply bg-[#E9EED9];
 }
 </style>

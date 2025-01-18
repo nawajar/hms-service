@@ -1,10 +1,10 @@
 <template>
   <div class="min-w-[400px] h-full mb-10 rounded overflow-y-scroll relative overflow-x-hidden">
-    <div class="w-full mx-auto p-4 bg-white shadow-md rounded-md">
-      <h1 class="text-lg font-semibold mb-4 text-center">ແກ້ໄຂການຈອງ</h1>
+    <div class="w-full mx-auto p-4 bg-[#A9B2C3] shadow-md rounded-md">
+      <h1 class="text-2xl font-semibold mb-4 text-center">ແກ້ໄຂການຈອງ</h1>
 
       <!-- Room Information Section -->
-      <fieldset class="border border-gray-300 rounded-md p-4 mb-6">
+      <fieldset class="border-4 border-primary rounded-md p-4 mb-6 text-xl">
         <legend class="text-md font-semibold px-2">Room Information</legend>
         <div class="grid grid-cols-1 gap-4">
           <!-- Check-in Date -->
@@ -42,7 +42,7 @@
       </fieldset>
 
       <!-- Customer Information Section -->
-      <fieldset class="border border-gray-300 rounded-md p-4 mb-6">
+      <fieldset class="border-4 border-[#A94A4A] rounded-md p-4 mb-6 text-xl">
         <legend class="text-md font-semibold px-2">ຂໍ້ມູລນລູກຄ້າ</legend>
         <div class="grid grid-cols-1 gap-4">
           <!-- Name -->
@@ -58,12 +58,40 @@
           <!-- Customer ID Card -->
           <div class="flex items-center">
             <label class="w-1/3 font-medium">ເລກບັດ ຫຼີ ພັດສະປອດ:</label>
-            <input
+            <!-- <input
               type="text"
               class="flex-1 border p-2 rounded"
               placeholder="Enter ID card number"
               v-model="customerCardId"
-            />
+            /> -->
+            <div class="flex-1">
+              <DropZone
+                :dropzoneMessageClassName="'dropzoneMessageClassName'"
+                :key="'fileId'"
+                :maxFileSize="10000000"
+                :maxFiles="Number(10)"
+                :uploadOnDrop="false"
+                :multipleUpload="true"
+                :parallelUpload="3"
+                @addedFile="onFileAddIdCard"
+                @removedFile="onFileRemoveIdCard"
+              />
+            </div>
+          </div>
+          <div class="flex items-center">
+            <label class="w-1/3 font-medium flex flex-col"></label>
+            <div class="flex gap-2">
+              <template v-for="f of uploadIdCardDoc" :key="f">
+                <button
+                  class="text-blue-500 underline overflow-auto line-clamp-1"
+                  @click="showImageToggle(fileUrl(f))"
+                >
+                  <div class="">
+                    <img class="object-cover h-24 w-24" :src="fileUrl(f)" />
+                  </div>
+                </button>
+              </template>
+            </div>
           </div>
           <!-- Customer Address -->
           <div class="flex items-center">
@@ -89,7 +117,7 @@
       </fieldset>
 
       <!-- Additional Cost Section -->
-      <fieldset class="border border-gray-300 rounded-md p-4 mb-6">
+      <fieldset class="border-4 border-warning rounded-md p-4 mb-6 text-xl">
         <legend class="text-md font-semibold px-2">ຂໍ້ມູນການຊໍາລະເງິນ</legend>
         <div class="grid grid-cols-1 gap-4">
           <!-- Additional Cost -->
@@ -139,6 +167,8 @@
             <label class="w-1/3 font-medium"></label>
             <div class="w-2/3">
               <DropZone
+                :dropzoneMessageClassName="'dropzoneMessageClassName'"
+                :key="'fileDoc'"
                 :maxFileSize="10000000"
                 :maxFiles="Number(10)"
                 :uploadOnDrop="false"
@@ -168,7 +198,7 @@
       </fieldset>
 
       <!-- Total Payment -->
-      <fieldset class="border border-gray-300 rounded-md p-4 mb-6">
+      <fieldset class="border-4 border-info rounded-md p-4 mb-6 text-xl">
         <legend class="text-md font-semibold px-2">ສະຫຼຸບ</legend>
         <div class="grid grid-cols-1 gap-4">
           <div class="flex items-center">
@@ -217,11 +247,11 @@
       </fieldset>
 
       <!-- Room Details Table -->
-      <div class="w-full mx-auto p-4 bg-white shadow-md rounded-md mt-6 mb-6">
+      <div class="w-full mx-auto p-4 bg-[#D24545] shadow-md rounded-md mt-6 mb-6">
         <h2 class="text-lg font-semibold mb-4 text-center">ລາຍລະອຽດຫ້ອງ</h2>
         <table class="w-full border-collapse">
           <thead>
-            <tr class="bg-gray-100">
+            <tr class="bg-[#FFCF81]">
               <th class="border p-2 text-left">ປະເພດຫ້ອງ</th>
               <th class="border p-2 text-left">ໝາຍເລກຫ້ອງ</th>
               <th class="border p-2 text-left">ລາຄາ (₭)</th>
@@ -229,14 +259,14 @@
               <th class="border p-2 text-left">ລາຄາລວມ (₭) Net.</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody class="text-2xl font-bold text-[#FEFAE0]">
             <template v-for="room of showRoomSelected" :key="room">
               <tr>
-                <td class="border p-2">{{ room.room_type }}</td>
+                <td class="border p-2">{{ roomTranslate[room.room_type] }}</td>
                 <td class="border p-2">{{ room.room_no }}</td>
-                <td class="border p-2">{{ room.price }}</td>
+                <td class="border p-2">{{ numberWithCommas(room.price) }}</td>
                 <td class="border p-2">{{ dayCounted }}</td>
-                <td class="border p-2">{{ room.price_net }}</td>
+                <td class="border p-2">{{ numberWithCommas(room.price_net) }}</td>
               </tr>
             </template>
           </tbody>
@@ -268,7 +298,7 @@
       ></RoomPick>
     </Teleport>
 
-    <dialog :class="{ 'modal-open': showModal }" class="modal">
+    <!-- <dialog :class="{ 'modal-open': showModal }" class="modal">
       <div class="relative flex items-center justify-center h-screen">
         <img class="object-contain" :src="showImage" />
 
@@ -278,13 +308,29 @@
           </button>
         </div>
       </div>
+    </dialog> -->
+
+    <dialog
+      :class="{ 'modal-open': showModal }"
+      class="modal fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
+    >
+      <div class="relative bg-white rounded-lg p-4 max-w-3xl w-full">
+        <div class="flex justify-end">
+          <button @click="showModal = false" class="text-green-600 bg-warning rounded py-2 px-2">
+            Close
+          </button>
+        </div>
+        <div class="flex items-center justify-center h-full">
+          <img class="max-h-[80vh] max-w-full object-contain" :src="showImage" />
+        </div>
+      </div>
     </dialog>
   </div>
 </template>
 <script setup lang="ts">
 import { pb } from '@/services/pb'
 import { computed, onMounted, ref, watch } from 'vue'
-import CustomCalendar from '@/components/CustomCalendar.vue'
+
 import type { RecordModel } from 'pocketbase'
 import { DateTime, Interval } from 'luxon'
 import _ from 'lodash'
@@ -313,13 +359,25 @@ const extraChargeDetails = ref(null)
 const extraChargeAmt = ref(null)
 const paid = ref(false)
 const files = ref<any>([])
+const filesIdCard = ref<any>([])
 const bookingStatus = ref('active')
 const paidChannel = ref(null)
 const createBy = ref()
 const updateBy = ref()
 const uploadDoc = ref()
+const uploadIdCardDoc = ref()
 const collectionId = ref()
 const keycard = ref()
+
+const roomTranslate: any = {
+  single_bed: 'ຕຽງດ່ຽວ',
+  family: 'ຫ້ອງຄອບຄົວ/ພິເສດ',
+  twin_bed: 'ຕຽງຄູ່'
+}
+
+function numberWithCommas(x: any) {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')
+}
 
 const showImageToggle = (file: string) => {
   showImage.value = file
@@ -328,6 +386,17 @@ const showImageToggle = (file: string) => {
 
 const back = () => {
   router.push({ name: 'Booking List' })
+}
+
+const onFileRemoveIdCard = async (event: any) => {
+  _.remove(filesIdCard.value, (i: any) => i?.id == event.id)
+}
+
+const onFileAddIdCard = async (event: any) => {
+  if (!filesIdCard.value) {
+    filesIdCard.value = []
+  }
+  filesIdCard.value.push(event)
 }
 
 const onFileRemove = async (event: any) => {
@@ -366,7 +435,7 @@ const editBook = async () => {
 
   setIfExist(formData, 'cus_name', customerName.value)
   setIfExist(formData, 'cus_phone_no', customerPhone.value)
-  setIfExist(formData, 'cus_id_card', customerCardId.value)
+  //setIfExist(formData, 'cus_id_card', customerCardId.value)
   setIfExist(formData, 'customer_address', customerAddress.value)
   setIfExist(formData, 'note', note.value)
 
@@ -380,6 +449,12 @@ const editBook = async () => {
   formData.append('paid', `${paid.value}`)
   setIfExist(formData, 'keycard', keycard.value)
   setIfExist(formData, 'paid_channel', paidChannel.value)
+
+  if (filesIdCard.value?.length > 0) {
+    _.forEach(filesIdCard.value, (f: any) => {
+      formData.append('cus_id_card', f.file)
+    })
+  }
 
   if (files.value?.length > 0) {
     _.forEach(files.value, (f: any) => {
@@ -566,7 +641,8 @@ const patchForm = (book: any) => {
   selectedRoom.value = book.room
   customerName.value = book.cus_name
   customerPhone.value = book.cus_phone_no
-  customerCardId.value = book.cus_id_card
+  //customerCardId.value = book.cus_id_card
+  uploadIdCardDoc.value = book.cus_id_card
   customerAddress.value = book.customer_address
 
   note.value = book.note
@@ -587,3 +663,9 @@ onMounted(async () => {
   getBook()
 })
 </script>
+<style lang="scss" scoped>
+.dropzoneMessageClassName {
+  background-color: pink;
+  content: '';
+}
+</style>

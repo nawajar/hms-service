@@ -457,7 +457,7 @@ const toThaiFromCheckDate = (date: string) => {
 
 
 function numberWithCommas(x: any) {
-  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')
 }
 
 const getListValJoin = (list: any, key: string) => {

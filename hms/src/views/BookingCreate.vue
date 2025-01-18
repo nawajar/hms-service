@@ -60,12 +60,26 @@
           <!-- Customer ID Card -->
           <div class="flex items-center">
             <label class="w-1/3 font-medium">ເລກບັດ ຫຼີ ພັດສະປອດ:</label>
-            <input
+            <div class="flex-1">
+              <DropZone
+                :key="'fileId'"
+                :dropzoneMessageClassName="'dropzoneMessageClassName'"
+                placeholder="ເລືອກໄຟສ"
+                :maxFileSize="10000000"
+                :maxFiles="Number(10)"
+                :uploadOnDrop="false"
+                :multipleUpload="true"
+                :parallelUpload="3"
+                @addedFile="onFileAddIdCard"
+                @removedFile="onFileRemoveIdCard"
+              />
+            </div>
+            <!-- <input
               type="text"
               class="flex-1 border border-neutral p-2 rounded"
               placeholder="ກະລຸນາໃສ່ເລກບັດ ຫຼື ພັດສະປອດ"
               v-model="customerCardId"
-            />
+            /> -->
           </div>
           <!-- Customer Address -->
           <div class="flex items-center">
@@ -139,26 +153,26 @@
                 class="flex-1 border border-neutral p-2 rounded"
                 v-model="paidChannel"
               >
-                <option value="cash">Cash</option>
-                <option value="bank_transfer">Bank Transfer</option>
+                <option value="cash">ເງຶນສດ</option>
+                <option value="bank_transfer">ໂອນຈ່າຍ</option>
               </select>
             </div>
           </div>
           <!-- File Upload -->
           <div class="flex items-center">
             <label class="w-1/3 font-medium"></label>
-            <div class="w-2/3">
-              <DropZone
-                placeholder="ເລືອກໄຟສ"
-                :maxFileSize="10000000"
-                :maxFiles="Number(10)"
-                :uploadOnDrop="false"
-                :multipleUpload="true"
-                :parallelUpload="3"
-                @addedFile="onFileAdd"
-                @removedFile="onFileRemove"
-              />
-            </div>
+            <DropZone
+              class="flex-1"
+              :ref="dropDoc"
+              :dropzoneMessageClassName="'dropzoneMessageClassName'"
+              :maxFileSize="10000000"
+              :maxFiles="Number(10)"
+              :uploadOnDrop="false"
+              :multipleUpload="true"
+              :parallelUpload="3"
+              @addedFile="onFileAdd"
+              @removedFile="onFileRemove"
+            />
           </div>
         </div>
       </fieldset>
@@ -188,7 +202,7 @@
             <input
               type="text"
               class="flex-1 border border-neutral p-2 rounded"
-              :value="`${calculateNetAmount(showRoomSelected)} ₭`"
+              :value="`${numberWithCommas(calculateNetAmount(showRoomSelected))} ₭`"
               readonly
               disabled
             />
@@ -205,11 +219,11 @@
       </fieldset>
 
       <!-- Room Details Table -->
-      <div class="w-full mx-auto p-4 bg-white shadow-md rounded-md mt-6 mb-6 text-xl">
+      <div class="w-full mx-auto p-4 bg-[#D24545] shadow-md rounded-md mt-6 mb-6 text-xl">
         <h2 class="text-lg font-semibold mb-4 text-center">ລາຍລະອຽດຫ້ອງ</h2>
         <table class="w-full border-collapse">
           <thead>
-            <tr class="bg-gray-100">
+            <tr class="bg-[#FFCF81]">
               <th class="border p-2 text-left">ປະເພດຫ້ອງ</th>
               <th class="border p-2 text-left">ໝາຍເລກຫ້ອງ</th>
               <th class="border p-2 text-left">ລາຄາ (₭)</th>
@@ -217,14 +231,14 @@
               <th class="border p-2 text-left">ລາຄາລວມ (₭) Net.</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody class="text-2xl font-bold text-[#FEFAE0]">
             <template v-for="room of showRoomSelected" :key="room">
               <tr>
-                <td class="border p-2">{{ room.room_type }}</td>
+                <td class="border p-2">{{ roomTranslate[room.room_type] }}</td>
                 <td class="border p-2">{{ room.room_no }}</td>
-                <td class="border p-2">{{ room.price }}</td>
+                <td class="border p-2">{{ numberWithCommas(room.price) }}</td>
                 <td class="border p-2">{{ dayCounted }}</td>
-                <td class="border p-2">{{ room.price_net }}</td>
+                <td class="border p-2">{{ numberWithCommas(room.price_net) }}</td>
               </tr>
             </template>
           </tbody>
@@ -280,9 +294,28 @@ const extraChargeDetails = ref(null)
 const extraChargeAmt = ref(null)
 const paid = ref(false)
 const files = ref<any>([])
+const cusIdFiles = ref<any>([])
 const bookingStatus = ref('active')
 const paidChannel = ref(null)
 const keycard = ref(null)
+const dropDoc = ref()
+
+const roomTranslate: any = {
+  single_bed: 'ຕຽງດ່ຽວ',
+  family: 'ຫ້ອງຄອບຄົວ/ພິເສດ',
+  twin_bed: 'ຕຽງຄູ່'
+}
+
+const onFileRemoveIdCard = async (event: any) => {
+  _.remove(cusIdFiles.value, (i: any) => i?.id == event.id)
+}
+
+const onFileAddIdCard = async (event: any) => {
+  if (!cusIdFiles.value) {
+    cusIdFiles.value = []
+  }
+  cusIdFiles.value.push(event)
+}
 
 const onFileRemove = async (event: any) => {
   _.remove(files.value, (i: any) => i?.id == event.id)
@@ -322,7 +355,7 @@ const createBook = async () => {
 
   setIfExist(formData, 'cus_name', customerName.value)
   setIfExist(formData, 'cus_phone_no', customerPhone.value)
-  setIfExist(formData, 'cus_id_card', customerCardId.value)
+  //setIfExist(formData, 'cus_id_card', customerCardId.value)
   setIfExist(formData, 'customer_address', customerAddress.value)
   setIfExist(formData, 'note', note.value)
 
@@ -336,6 +369,12 @@ const createBook = async () => {
   }
 
   setIfExist(formData, 'paid_channel', paidChannel.value)
+
+  if (cusIdFiles.value?.length > 0) {
+    _.forEach(cusIdFiles.value, (f: any) => {
+      formData.append('cus_id_card', f.file)
+    })
+  }
 
   if (files.value?.length > 0) {
     _.forEach(files.value, (f: any) => {
@@ -378,6 +417,10 @@ const getListValJoin = (list: any, key: string) => {
 
 const calculateNetAmount = (room: any) => {
   return _.sumBy(room, (r: any) => r.price_net) + (extraChargeAmt.value ?? 0)
+}
+
+function numberWithCommas(x: any) {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')
 }
 
 const dayCounted = computed(() => {
@@ -495,3 +538,9 @@ onMounted(async () => {
   getBookings()
 })
 </script>
+<style lang="scss" scoped>
+.dropzoneMessageClassName {
+  background-color: pink;
+  content: '';
+}
+</style>
