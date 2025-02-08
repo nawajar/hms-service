@@ -95,13 +95,18 @@
           </div>
           <!-- Customer Address -->
           <div class="flex items-center">
-            <label class="w-1/3 font-medium">ທີ່ຢູ່:</label>
-            <textarea
+            <label class="w-1/3 font-medium">ເລກທະບຽນລົດ:</label>
+            <input
+              type="text"
+              class="flex-1 border border-neutral p-2 rounded"
+              v-model="carLicensePlate"
+            />
+            <!-- <textarea
               class="flex-1 border p-2 rounded"
               rows="3"
               placeholder="Enter customer address"
-              v-model="customerAddress"
-            ></textarea>
+              v-model="carLicensePlate"
+            ></textarea> -->
           </div>
           <!-- Note -->
           <div class="flex items-center">
@@ -354,6 +359,7 @@ const customerName = ref(null)
 const customerPhone = ref(null)
 const customerCardId = ref(null)
 const customerAddress = ref(null)
+const carLicensePlate = ref(null)
 const note = ref(null)
 const extraChargeDetails = ref(null)
 const extraChargeAmt = ref(null)
@@ -436,7 +442,8 @@ const editBook = async () => {
   setIfExist(formData, 'cus_name', customerName.value)
   setIfExist(formData, 'cus_phone_no', customerPhone.value)
   //setIfExist(formData, 'cus_id_card', customerCardId.value)
-  setIfExist(formData, 'customer_address', customerAddress.value)
+  //setIfExist(formData, 'customer_address', customerAddress.value)
+  setIfExist(formData, 'car_license_plate', carLicensePlate.value)
   setIfExist(formData, 'note', note.value)
 
   setIfExist(formData, 'extra_charge_details', extraChargeDetails.value)
@@ -493,7 +500,7 @@ const clearCreateForm = () => {
   customerName.value = null
   customerPhone.value = null
   customerCardId.value = null
-  customerAddress.value = null
+  //customerAddress.value = null
   note.value = null
 
   extraChargeDetails.value = null
@@ -643,7 +650,8 @@ const patchForm = (book: any) => {
   customerPhone.value = book.cus_phone_no
   //customerCardId.value = book.cus_id_card
   uploadIdCardDoc.value = book.cus_id_card
-  customerAddress.value = book.customer_address
+  //customerAddress.value = book.customer_address
+  carLicensePlate.value = book.car_license_plate
 
   note.value = book.note
   extraChargeDetails.value = book.extra_charge_details

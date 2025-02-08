@@ -15,8 +15,22 @@
         </div>
       </div>
       <!-- Floor 1 -->
+      <!-- {{ groupRoom }} -->
       <div class="mt-4 mb-12" v-for="(value, name, index) in groupRoom" :key="index">
-        <h3 class="text-2xl font-semibold mb-6 text-gray-700">{{ name }}</h3>
+        <!-- <h3 class="text-2xl font-semibold mb-6 text-gray-700">{{ value[0].group_name }}</h3> -->
+        <div class="flex gap-2 items-center mb-4" v-if="value[0].group_name == 'family'">
+          <font-awesome-icon class="text-[#FFDE4D]" icon="crown" />
+          <h3 class="text-2xl font-semibold text-gray-700">ຫ້ອງຄອບຄົວ/ພິເສດ</h3>
+        </div>
+        <div class="flex gap-2 items-center mb-4" v-if="value[0].group_name == 'single'">
+          <font-awesome-icon class="text-[#96C9F4]" icon="bed" />
+          <h3 class="text-2xl font-semibold text-gray-700">ຕຽງດ່ຽວ</h3>
+        </div>
+        <div class="flex gap-2 items-center mb-4" v-if="value[0].group_name == 'twin'">
+          <font-awesome-icon class="text-[#FFC7ED]" icon="bed" />
+          <h3 class="text-2xl font-semibold text-gray-700">ຕຽງຄູ່</h3>
+        </div>
+
         <div class="grid grid-cols-6 gap-2">
           <div
             class="p-4 border border-gray-300 text-gray-800 rounded-lg shadow-md relative"
@@ -71,7 +85,7 @@
                 <span class="text-sm">ຕຽງຄູ່</span>
               </div>
             </div>
-            <p class="text-sm">ລາຄາ : ${{ r.price }}</p>
+            <p class="text-sm">ລາຄາ : {{ numberWithCommas(r.price) }} ₭</p>
           </div>
         </div>
       </div>
@@ -187,11 +201,7 @@ const markRoomClean = async (menuId: number, roomId: string) => {
 
 const groupRoom = computed(() => {
   return _.groupBy(allRooms.value, (r) => {
-    if (r.group_name == 'family') {
-      return 0
-    } else {
-      return r.floor
-    }
+    return r.group_name
   })
 })
 
@@ -219,6 +229,11 @@ const getBookingOfRoom = async (roomId: string) => {
     viewRoomBooking.value = resultList.items
   }
 }
+
+function numberWithCommas(x: any) {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')
+}
+
 onMounted(async () => {
   getRooms()
 })
