@@ -250,14 +250,14 @@
         </table>
       </div>
 
-      <div class="flex justify-end w-50">
-        <button
-          class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded"
-          @click="createBook"
-        >
-          ສ້າງ
-        </button>
-      </div>
+      <button
+        class="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 px-4 rounded transition-all duration-200"
+        :class="{ 'opacity-50 cursor-not-allowed': !isFormValid }"
+        :disabled="!isFormValid"
+        @click="createBook"
+      >
+        ສ້າງ
+      </button>
     </div>
     <Teleport to="body">
       <RoomPick
@@ -339,6 +339,18 @@ const setIfExist = (formData: FormData, key: string, val: any) => {
     formData.append(key, val)
   }
 }
+
+const isFormValid = computed(() => {
+  return (
+    startDate.value &&
+    endDate.value &&
+    selectedRoom.value.length > 0 &&
+    customerName.value &&
+    customerPhone.value &&
+    carLicensePlate.value &&
+    staffName.value
+  )
+})
 
 const createBook = async () => {
   var price = 0

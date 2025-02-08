@@ -64,49 +64,51 @@
         <thead class="bg-gray-50">
           <tr>
             <th class="px-6 py-3 text-gray-700 text-left text-lg font-semibold tracking-wide"></th>
-            <th class="px-6 py-3 text-gray-700 text-left text-lg font-semibold tracking-wide">
+            <th class="px-6 py-3 text-gray-700 text-center text-lg font-semibold tracking-wide">
               ລ/ດ
             </th>
             <th class="px-6 py-3 text-gray-700 text-left text-lg font-semibold">ເລກຫ້ອງ</th>
             <th class="px-6 py-3 text-gray-700 text-left text-lg font-semibold tracking-wide">
               ຊື່ຜູ້ເຊົາແຂກ
             </th>
-            <th class="px-6 py-3 text-gray-700 text-right text-lg font-semibold tracking-wide">
-              ຄ່າຫ້ອງ
-            </th>
-            <th class="px-6 py-3 text-gray-700 text-right text-lg font-semibold tracking-wide">
-              ວິນ
-            </th>
-            <th class="px-6 py-3 text-gray-700 text-right text-lg font-semibold tracking-wide">
-              เพิ่ม
-            </th>
-            <th class="px-6 py-3 text-gray-700 text-right text-lg font-semibold tracking-wide">
-              ຮວມ
-            </th>
             <th class="px-6 py-3 text-gray-700 text-left text-lg font-semibold tracking-wide">
-              ຂ່າຍແລ້ວ / ຍິງ
-            </th>
-            <th class="px-6 py-3 text-gray-700 text-left text-lg font-semibold tracking-wide">
-              ຂ່າຍທາງ
-            </th>
-            <th class="px-6 py-3 text-gray-700 text-left text-lg font-semibold tracking-wide">
-              ພນິກງານ
-            </th>
-            <th class="px-6 py-3 text-gray-700 text-left text-lg font-semibold tracking-wide">
-              ວັນທີມາ
+              ວັນທີ່ເຂົ້າພັກ
             </th>
             <th class="px-6 py-3 text-gray-700 text-left text-lg font-semibold tracking-wide">
               ວັນທີໄປ
             </th>
+            <th class="px-6 py-3 text-gray-700 text-right text-lg font-semibold tracking-wide">
+              ຈໍານວນວັນ
+            </th>
+            <th class="px-6 py-3 text-gray-700 text-right text-lg font-semibold tracking-wide">
+              ຄ່າຫ້ອງ
+            </th>
+
+            <th class="px-6 py-3 text-gray-700 text-right text-lg font-semibold tracking-wide">
+              ລາຍຈ່າຍເພີ່ມເຕີມ
+            </th>
+
+            <th class="px-6 py-3 text-gray-700 text-right text-lg font-semibold tracking-wide">
+              ຈໍານວນເງິນທັງໝົດ
+            </th>
+
+            <th class="px-6 py-3 text-gray-700 text-left text-lg font-semibold tracking-wide">
+              ຂ່າຍແລ້ວ / ຍິງ
+            </th>
+            <th class="px-6 py-3 text-gray-700 text-left text-lg font-semibold tracking-wide">
+              ເງິນສົດ / ໂອນເງິນ
+            </th>
+
+            <th class="px-6 py-3 text-gray-700 text-left text-lg font-semibold tracking-wide">
+              ພະນິກງານ
+            </th>
           </tr>
         </thead>
+
         <tbody class="divide-y divide-gray-200">
           <template v-for="(booking, idx) in bookingsView" v-bind:key="booking.id">
-            <tr
-              class="hover:bg-gray-100 cursor-pointer font-bold"
-              tabindex="0"
-              :class="{ 'bg-blue-200': booking.isCheckToday }"
-            >
+            <tr tabindex="0" :class="{ 'bg-blue-200': booking.isCheckToday }">
+              <!-- Left Border (Status Indicator) -->
               <td
                 class="px-6 py-4 text-center text-base text-gray-600"
                 :class="{
@@ -121,29 +123,64 @@
                   <font-awesome-icon icon="pen-to-square"></font-awesome-icon>
                 </button>
               </td>
+
+              <!-- Booking No -->
               <td class="px-6 py-4 text-center text-base text-gray-600">
                 {{ (currentPage - 1) * perPage + (idx + 1) }}
               </td>
+
+              <!-- Room Number -->
               <td class="px-6 py-4 text-base text-gray-600">
                 {{ padZero(booking.room_no) }}
               </td>
+
+              <!-- Customer Name -->
               <td class="px-6 py-4 text-base text-gray-600">{{ booking.cus_name }}</td>
-              <td class="px-6 py-4 text-base text-right text-gray-600">
-                {{ booking.room_price }}
+
+              <!-- Check-in Date (Moved after Customer Name) -->
+              <td class="px-6 py-4 text-base text-gray-600 whitespace-nowrap">
+                {{ toThaiFromCheckDate(booking.check_in) }}
               </td>
+
+              <!-- Check-out Date (Moved after Check-in Date) -->
+              <td class="px-6 py-4 text-base text-gray-600 whitespace-nowrap">
+                {{ toThaiFromCheckDate(booking.check_out) }}
+              </td>
+
+              <!-- Number of Days -->
               <td class="px-6 py-4 text-base text-right text-gray-600">
                 {{ booking.days }}
               </td>
+
+              <!-- Room Price -->
+              <td class="px-6 py-4 text-base text-right text-gray-600">
+                {{ booking.room_price }}
+              </td>
+
+              <!-- Additional Charges -->
               <td
                 class="px-6 py-4 text-base text-right text-gray-600"
                 :class="{ 'text-blue-400': booking.paidFlag, 'text-red-400': !booking.paidFlag }"
               >
                 {{ booking.extra_charge }}
               </td>
+
+              <!-- Total Price -->
               <td class="px-6 py-4 text-base text-right text-gray-600">
                 {{ booking.net_amt }}
               </td>
-              <td class="px-6 py-4 text-base text-right text-gray-600">{{ booking.paid }}</td>
+
+              <!-- Payment Status -->
+              <td
+                class="px-6 py-4 text-base text-right"
+                :class="{
+                  'bg-red-500 text-white': !booking.paid // Red background if not paid
+                }"
+              >
+                {{ booking.paid ? 'ຈ່າຍແລ້ວ' : 'ຍັງຄ້າງ' }}
+              </td>
+
+              <!-- Payment Method -->
               <td
                 class="px-6 py-4 text-base text-right text-gray-600"
                 :class="{
@@ -151,15 +188,11 @@
                   'text-blue-400': booking.paid_chanel_o == 'cash'
                 }"
               >
-                {{ booking.paid_channel }} {{ booking.paid_chanel_o }}
+                {{ booking.paid_channel }}
               </td>
+
+              <!-- Booked By -->
               <td class="px-6 py-4 text-base text-gray-600">{{ booking.create_by }}</td>
-              <td class="px-6 py-4 text-base text-gray-600 whitespace-nowrap">
-                {{ toThaiFromCheckDate(booking.check_in) }}
-              </td>
-              <td class="px-6 py-4 text-base text-gray-600 whitespace-nowrap">
-                {{ toThaiFromCheckDate(booking.check_out) }}
-              </td>
             </tr>
           </template>
         </tbody>
@@ -251,7 +284,7 @@ const onSearch = async () => {
     if (filters) {
       filters += ' && '
     }
-    filters += `(created >= '${fromDate} 00:00:00' && created <= '${fromDate} 23:59:59') || status = 'check-in'`
+    filters += `(created >= '${fromDate} 00:00:00' && created <= '${fromDate} 23:59:59' &&  status != 'cancel')`
   }
 
   const records = await pb.collection('bookings_view').getList(currentPage.value, perPage.value, {
@@ -269,12 +302,13 @@ const bookingsView = computed(() => {
       id: book.id,
       room_no: getListValJoin(book.expand.room, 'room_no'),
       cus_name: book.cus_name,
+
       status: book.status,
       room_price: book.room_price_snapshort,
       days: dayCount(book.check_out_date, book.check_in_date),
       extra_charge: book.extra_charge_amt,
       net_amt: `${numberWithCommas(book.price)} `,
-      paid: book.paid ? 'ຈ່າຍແລ້ວ' : 'ຍັງຄ້າງ',
+      paid: book.paid, //? 'ຈ່າຍແລ້ວ' : 'ຍັງຄ້າງ'
       paidFlag: book.paid,
       paid_chanel_o: book.paid_channel,
       paid_channel: getPayTranslate(book.paid_channel),
