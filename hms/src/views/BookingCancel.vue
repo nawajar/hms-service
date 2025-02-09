@@ -4,48 +4,14 @@
     <div class="mb-4">
       <fieldset class="border border-gray-300 p-4 rounded-lg bg-white shadow-lg">
         <legend class="text-lg font-semibold text-gray-700 px-2">
-          ການຈອງ
+          ລາຍການຍົກເລີກ
 
           <button @click="refresh" class="hover:bg-neutral rounded-full w-8 h-8">
             <font-awesome-icon icon="arrows-rotate" />
           </button>
         </legend>
-        <div class="flex gap-2">
-          <div class="flex flex-row items-center gap-4">
-            <div class="bg-orange-400 min-w-4 h-4 rounded"></div>
-            ຈອງ
-          </div>
-          <div class="flex flex-row items-center gap-4">
-            <div class="bg-[#0069ff] min-w-4 h-4 rounded"></div>
-            ເຊັກອິນແລ້ວ
-          </div>
-          <div class="flex flex-row items-center gap-4">
-            <div class="bg-green-300 min-w-4 h-4 rounded"></div>
-            ເຊັກອອກແລ້ວ
-          </div>
-          <div class="flex flex-row items-center gap-4">
-            <div class="bg-red-400 min-w-4 h-4 rounded"></div>
-            ຍກເລຶກ
-          </div>
-          <div class="flex flex-row items-center gap-4">
-            <div class="bg-yellow-300 min-w-4 h-4 rounded"></div>
-            ເຊັກອິນບາງຫ້ອງ
-          </div>
-        </div>
+
         <div class="flex items-center space-y-4 md:space-y-0 md:space-x-4">
-          <!-- Search text -->
-          <div class="flex flex-col w-1/2">
-            <label for="search" class="block text-gray-700 text-sm font-medium mb-1">ຄົ້ນຫາ</label>
-            <input
-              type="text"
-              id="search"
-              name="search"
-              placeholder="ຄົ້ນຫາດ້ວຍຊື່ ຫຼື ໝາຍເລກຫ້ອງ"
-              v-model="searchQuery"
-              @input="onInputSearch"
-              class="w-full p-2 border border-neutral rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-            />
-          </div>
           <!-- Date Filter: From -->
           <div class="flex flex-col w-1/2">
             <label for="from-date" class="block text-gray-700 text-sm font-medium mb-1"
@@ -65,7 +31,7 @@
           <tr>
             <th class="px-6 py-3 text-gray-700 text-left text-lg font-semibold tracking-wide"></th>
             <th class="px-6 py-3 text-gray-700 text-center text-lg font-semibold tracking-wide">
-              ລ/ດ
+              ເວລາຍົກເລີກ
             </th>
             <th class="px-6 py-3 text-gray-700 text-left text-lg font-semibold">ເລກຫ້ອງ</th>
             <th class="px-6 py-3 text-gray-700 text-left text-lg font-semibold tracking-wide">
@@ -118,15 +84,13 @@
                   'border-l-4 border-red-400': booking?.status == 'cancel',
                   'border-l-4 border-yellow-300': booking?.status == 'patial-checkout'
                 }"
-              >
-                <button @click="goToEdit(booking.id)">
-                  <font-awesome-icon icon="pen-to-square"></font-awesome-icon>
-                </button>
-              </td>
+              ></td>
 
               <!-- Booking No -->
-              <td class="px-6 py-4 text-center text-base text-gray-600">
-                {{ (currentPage - 1) * perPage + (idx + 1) }}
+              <td
+                class="px-6 py-4 text-center text-base text-gray-600 whitespace-nowrap overflow-hidden text-ellipsis"
+              >
+                {{ booking.cancel_time }}
               </td>
 
               <!-- Room Number -->
@@ -227,74 +191,20 @@
     </div>
   </div>
 </template>
-<script setup lang="ts">
-import { pb } from '@/services/pb'
-import { computed, onMounted, ref, watch } from 'vue'
-import 'flatpickr/dist/flatpickr.css'
-import type { RecordModel } from 'pocketbase'
-import { DateTime } from 'luxon'
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import _, { debounce } from 'lodash'
-import 'dropzone-vue/dist/dropzone-vue.common.css'
-import CustomCalendar from '@/components/CustomCalendar.vue'
-import { useRoute, useRouter } from 'vue-router'
 
-const router = useRouter()
+<script setup lang="ts">
+import { ref, onMounted, computed, watch } from 'vue'
+import { pb } from '@/services/pb' // Adjust import based on your project setup
+import { DateTime } from 'luxon'
+import _ from 'lodash'
+import CustomCalendar from '@/components/CustomCalendar.vue'
 
 const bookings = ref<any>([])
-const searchQuery = ref('')
 const filterFromDate = ref('')
 const today = new Date()
 
 const currentPage = ref(1)
 const perPage = ref(10)
-
-const goToEdit = (bookId: string) => {
-  router.push({ name: 'Booking Edit', params: { id: bookId } })
-}
-
-const prevPage = () => {
-  currentPage.value = currentPage.value - 1
-  onSearch()
-}
-const nextPage = () => {
-  currentPage.value = currentPage.value + 1
-  onSearch()
-}
-
-watch(filterFromDate, (newDate, oldDate) => {
-  if (newDate != oldDate) {
-    onSearch()
-  }
-})
-
-const onInputSearch = debounce(() => {
-  onSearch()
-}, 500)
-
-const onSearch = async () => {
-  const queryText = searchQuery.value
-  const fromDate = filterFromDate.value
-
-  var filters = ''
-  if (queryText) {
-    filters += `(room.room_no ?= '${queryText}' || cus_name ~ '${queryText}')`
-  }
-  if (fromDate) {
-    if (filters) {
-      filters += ' && '
-    }
-    filters += `(created >= '${fromDate} 00:00:00' && created <= '${fromDate} 23:59:59' &&  status != 'cancel')`
-  }
-
-  const records = await pb.collection('bookings_view').getList(currentPage.value, perPage.value, {
-    sort: 'check_in_date,cus_name',
-    filter: filters,
-    expand: 'room',
-    fields: '*'
-  })
-  bookings.value = records
-}
 
 const bookingsView = computed(() => {
   var bookingV = bookings.value?.items?.map((book: any) => {
@@ -302,7 +212,7 @@ const bookingsView = computed(() => {
       id: book.id,
       room_no: getListValJoin(book.expand.room, 'room_no'),
       cus_name: book.cus_name,
-
+      cancel_time: formatDate(book.cancel_time),
       status: book.status,
       room_price: book.room_price_snapshort,
       days: dayCount(book.check_out_date, book.check_in_date),
@@ -320,6 +230,60 @@ const bookingsView = computed(() => {
   })
   return bookingV
 })
+
+function formatDate(dateString: string) {
+  if (!dateString) {
+    return ''
+  }
+  var s = dateString.split(' ').join('T')
+  return DateTime.fromISO(s) // Parse as UTC
+    .toFormat('dd-MM-yyyy HH:mm') // Format as dd-MM-yyyy HH:mm
+}
+
+const prevPage = () => {
+  currentPage.value = currentPage.value - 1
+  onSearch()
+}
+const nextPage = () => {
+  currentPage.value = currentPage.value + 1
+  onSearch()
+}
+
+watch(filterFromDate, (newDate, oldDate) => {
+  if (newDate != oldDate) {
+    onSearch()
+  }
+})
+
+const onSearch = async () => {
+  const fromDate = filterFromDate.value
+
+  var filters = ''
+
+  if (fromDate) {
+    if (filters) {
+      filters += ' && '
+    }
+    filters += `(created >= '${fromDate} 00:00:00' && created <= '${fromDate} 23:59:59' &&  status = 'cancel')`
+  }
+
+  const records = await pb.collection('bookings_view').getList(currentPage.value, perPage.value, {
+    sort: '-cancel_time,cus_name',
+    filter: filters,
+    expand: 'room',
+    fields: '*'
+  })
+  bookings.value = records
+}
+
+const dayCount = (f: string, t: string) => {
+  var s = f.split(' ').join('T')
+  var e = t.split(' ').join('T')
+  var start = DateTime.fromISO(s)
+  var end = DateTime.fromISO(e)
+  const diff = start.diff(end, ['days'])
+  return diff.days
+}
 
 const getPayTranslate = (chan: string) => {
   if (chan == 'cash') {
@@ -339,15 +303,6 @@ const isToday = (date: string, filter: DateTime) => {
 
 const refresh = async () => {
   onSearch()
-}
-
-const dayCount = (f: string, t: string) => {
-  var s = f.split(' ').join('T')
-  var e = t.split(' ').join('T')
-  var start = DateTime.fromISO(s)
-  var end = DateTime.fromISO(e)
-  const diff = start.diff(end, ['days'])
-  return diff.days
 }
 
 const getListValJoin = (list: any, key: string) => {

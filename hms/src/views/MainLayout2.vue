@@ -41,7 +41,16 @@
               <div class="grid mr-4 place-items-center">
                 <font-awesome-icon icon="bars-staggered"></font-awesome-icon>
               </div>
-              ลูกค้าเข้าพัก
+              ລູກຄ້າເຂົ້າພັກ
+            </RouterLink>
+          </li>
+          <hr class="border-2 border-[#2A3663] dark:border-white" />
+          <li>
+            <RouterLink :to="'/booking-cancel'" activeClass="bg-[#E9EED9] rounded">
+              <div class="grid mr-4 place-items-center">
+                <font-awesome-icon icon="times-circle"></font-awesome-icon>
+              </div>
+              ລາຍການຍົກເລີກ
             </RouterLink>
           </li>
           <hr class="border-2 border-[#2A3663] dark:border-white" />

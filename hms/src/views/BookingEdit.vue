@@ -382,6 +382,9 @@ const roomTranslate: any = {
 }
 
 function numberWithCommas(x: any) {
+  if (!x) {
+    return ''
+  }
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')
 }
 
@@ -470,6 +473,11 @@ const editBook = async () => {
   }
 
   setIfExist(formData, 'status', bookingStatus.value)
+  if (bookingStatus.value == 'cancel') {
+    console.log('status is ', bookingStatus.value)
+    const now = DateTime.now().toUTC().toFormat('yyyy-MM-dd hh:mm:ss')
+    setIfExist(formData, 'cancel_time', now)
+  }
   setIfExist(formData, 'price', price)
   formData.append('update_by', pb.authStore.model?.name)
   const res = await pb.collection('bookings').update(bookId, formData)

@@ -53,6 +53,10 @@ const router = createRouter({
           component: () => import('@/views/BookingList.vue'),
           meta: { requiresAuth: true },
         },
+        { path: '/booking-cancel', 
+          name: 'Booking Cancel', 
+          component: () => import('@/views/BookingCancel.vue'),
+          meta: { requiresAuth: true },},
         {
           path: '/booking-edit/:id',
           name: 'Booking Edit', // 'patients'
